@@ -1,0 +1,35 @@
+Volatility 3 Framework 2.7.0
+
+Offset	FileFullPath	File output
+
+0xa8032f064000		Disabled
+0xa8032f089000	\REGISTRY\MACHINE\SYSTEM	Disabled
+0xa8032f135000	\REGISTRY\MACHINE\HARDWARE	Disabled
+0xa8033262f000	\Device\HarddiskVolume1\Boot\BCD	Disabled
+0xa8032fac1000	\SystemRoot\System32\Config\SOFTWARE	Disabled
+0xa8032f632000	\SystemRoot\System32\Config\DEFAULT	Disabled
+0xa803327aa000	\SystemRoot\System32\Config\SECURITY	Disabled
+0xa8033281e000	\SystemRoot\System32\Config\SAM	Disabled
+0xa80332915000	\??\C:\Windows\ServiceProfiles\NetworkService\NTUSER.DAT	Disabled
+0xa80332a95000	\SystemRoot\System32\Config\BBI	Disabled
+0xa80332aab000	\??\C:\Windows\ServiceProfiles\LocalService\NTUSER.DAT	Disabled
+0xa80333cda000	\??\C:\Users\John Doe\ntuser.dat	Disabled
+0xa80333d60000	\??\C:\Users\John Doe\AppData\Local\Microsoft\Windows\UsrClass.dat	Disabled
+0xa803346e5000	\??\C:\Windows\AppCompat\Programs\Amcache.hve	Disabled
+0xa80334a27000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.Windows.StartMenuExperienceHost_10.0.19041.610_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80334a9e000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa80334b8b000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.Windows.Search_1.14.0.19041_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80334cd8000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa80334d62000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.LockApp_10.0.19041.423_neutral__cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa8033522b000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.LockApp_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa8033542c000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.YourPhone_1.21022.215.0_x64__8wekyb3d8bbwe\ActivationStore.dat	Disabled
+0xa80335548000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.YourPhone_8wekyb3d8bbwe\Settings\settings.dat	Disabled
+0xa803354da000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\MicrosoftWindows.Client.CBS_120.2212.551.0_x64__cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80335d1e000	\??\C:\Users\John Doe\AppData\Local\Packages\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa8032f785000	\??\C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\State\dosvcState.dat	Disabled
+0xa80336f5b000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.Windows.ShellExperienceHost_10.0.19041.610_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80336ff2000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.Windows.ShellExperienceHost_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa803326c3000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.WindowsStore_11910.1002.5.0_x64__8wekyb3d8bbwe\ActivationStore.dat	Disabled
+0xa8033704c000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\Settings\settings.dat	Disabled
+0xa80337088000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\windows.immersivecontrolpanel_10.0.2.1000_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80338669000	\SystemRoot\System32\config\DRIVERS	Disabled

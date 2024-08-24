@@ -1,0 +1,52 @@
+
+    <html>
+    <head>
+        <title>Disk Image Analysis Report</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h1 { color: #333; }
+            h2 { color: #555; }
+            pre { background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; }
+        </style>
+    </head>
+    <body>
+        <h1>Disk Image Analysis Report</h1>
+        <h2>Report Generated on 2024-08-21 08:03:57</h2>
+    <h2>Partition Analysis</h2><pre>GUID Partition Table (EFI)
+Offset Sector: 0
+Units are in 512-byte sectors
+
+      Slot      Start        End          Length       Description
+000:  Meta      0000000000   0000000000   0000000001   Safety Table
+001:  -------   0000000000   0000000033   0000000034   Unallocated
+002:  Meta      0000000001   0000000001   0000000001   GPT Header
+003:  Meta      0000000002   0000000033   0000000032   Partition Table
+004:  000       0000000034   0000065569   0000065536   Microsoft reserved partition
+005:  -------   0000065570   0000065663   0000000094   Unallocated
+006:  001       0000065664   0001736831   0001671168   Basic data partition
+007:  -------   0001736832   0001740799   0000003968   Unallocated
+</pre><h2>File System Analysis</h2><pre>Error: Error stat(ing) image file (raw_open: image "-o" - No such file or directory)
+</pre><h2>File Listing</h2><pre>Error: Error stat(ing) image file (raw_open: image "-o" - No such file or directory)
+</pre><h2>File Carving</h2><pre>Error: Missing output directory and/or image name
+usage: E:\Lab\Applications\Sleuthkit\bin\tsk_recover [-vVae] [-f fstype] [-i imgtype] [-b dev_sector_size] [-o sector_offset] [-P pooltype] [-B pool_volume_block] [-d dir_inum] image [image] output_dir
+	-i imgtype: The format of the image file (use '-i list' for supported types)
+	-b dev_sector_size: The size (in bytes) of the device sectors
+	-f fstype: The file system type (use '-f list' for supported types)
+	-v: verbose output to stderr
+	-V: Print version
+	-a: Recover allocated files only
+	-e: Recover all files (allocated and unallocated)
+	-o sector_offset: sector offset for a volume to recover (recovers only that volume)
+	-P pooltype: Pool container type (use '-P list' for supported types)
+	-B pool_volume_block: Starting block (for pool volumes only)
+	-d dir_inum: Directory inum to recover from (must also specify a specific partition using -o or there must not be a volume system)
+</pre><h2>File Hash Calculation</h2><pre>Error: '"E:\Lab\Applications\Sleuthkit\bin\tsk_hash"' is not recognized as an internal or external command,
+operable program or batch file.
+</pre><h2>File Metadata Extraction</h2><pre>Error: Error stat(ing) image file (raw_open: image "-o" - No such file or directory)
+</pre><h2>Volume Information</h2><pre>Error: Cannot determine file system type
+</pre><h2>File Type Identification</h2><pre>Error: '"E:\Lab\Applications\Sleuthkit\bin\file"' is not recognized as an internal or external command,
+operable program or batch file.
+</pre><h2>Disk Image Integrity Check</h2><pre>\4193cc3bc7111ddf8be7a00677f2a2f4 *E:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\2020JimmyWilson.E01
+</pre><h2>Deleted File Recovery</h2><pre>Error: Error stat(ing) image file (raw_open: image "-o" - No such file or directory)
+</pre><h2>Filesystem Type Detection</h2><pre>Error: Cannot determine file system type
+</pre></body></html>

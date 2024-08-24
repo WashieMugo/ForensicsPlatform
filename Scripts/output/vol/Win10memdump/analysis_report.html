@@ -1,0 +1,1211 @@
+
+    <html>
+    <head>
+        <title>Memory Image Analysis Report</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h1 { color: #333; }
+            h2 { color: #555; }
+            pre { background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; }
+        </style>
+    </head>
+    <body>
+        <h1>Memory Image Analysis Report</h1>
+        <h2>Report Generated on 2024-08-21 07:19:47</h2>
+    <h2>Basic Information</h2><pre>Volatility 3 Framework 2.7.0
+
+Variable	Value
+
+Kernel Base	0xf8043cc00000
+DTB	0x1aa000
+Symbols	file:///C:/dev/volatility3/volatility3/symbols/windows/ntkrnlmp.pdb/769C521E4833ECF72E21F02BF33691A5-1.json.xz
+Is64Bit	True
+IsPAE	False
+layer_name	0 WindowsIntel32e
+memory_layer	1 FileLayer
+KdVersionBlock	0xf8043d80f368
+Major/Minor	15.19041
+MachineType	34404
+KeNumberProcessors	4
+SystemTime	2021-04-30 17:52:19
+NtSystemRoot	C:\Windows
+NtProductType	NtProductWinNt
+NtMajorVersion	10
+NtMinorVersion	0
+PE MajorOperatingSystemVersion	10
+PE MinorOperatingSystemVersion	0
+PE Machine	34404
+PE TimeDateStamp	Tue Oct 11 07:04:26 1977
+</pre><h2>Profile Detection</h2><pre>Volatility 3 Framework 2.7.0
+
+Variable	Value
+
+Kernel Base	0xf8043cc00000
+DTB	0x1aa000
+Symbols	file:///C:/dev/volatility3/volatility3/symbols/windows/ntkrnlmp.pdb/769C521E4833ECF72E21F02BF33691A5-1.json.xz
+Is64Bit	True
+IsPAE	False
+layer_name	0 WindowsIntel32e
+memory_layer	1 FileLayer
+KdVersionBlock	0xf8043d80f368
+Major/Minor	15.19041
+MachineType	34404
+KeNumberProcessors	4
+SystemTime	2021-04-30 17:52:19
+NtSystemRoot	C:\Windows
+NtProductType	NtProductWinNt
+NtMajorVersion	10
+NtMinorVersion	0
+PE MajorOperatingSystemVersion	10
+PE MinorOperatingSystemVersion	0
+PE Machine	34404
+PE TimeDateStamp	Tue Oct 11 07:04:26 1977
+</pre><h2>Process List</h2><pre>Volatility 3 Framework 2.7.0
+
+PID	PPID	ImageFileName	Offset(V)	Threads	Handles	SessionId	Wow64	CreateTime	ExitTime	File output
+
+4	0	System	0xbf0f64a63080	132	-	N/A	False	2021-04-30 12:39:40.000000 	N/A	Disabled
+108	4	Registry	0xbf0f64bc6040	4	-	N/A	False	2021-04-30 12:39:38.000000 	N/A	Disabled
+396	4	smss.exe	0xbf0f66967040	2	-	N/A	False	2021-04-30 12:39:40.000000 	N/A	Disabled
+492	484	csrss.exe	0xbf0f6adb6080	13	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+568	484	wininit.exe	0xbf0f6b67a080	1	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+584	560	csrss.exe	0xbf0f6b681080	16	-	1	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+668	560	winlogon.exe	0xbf0f6b6db080	5	-	1	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+712	568	services.exe	0xbf0f6b6da080	11	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+736	568	lsass.exe	0xbf0f6b6fb0c0	10	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+856	712	svchost.exe	0xbf0f6b7042c0	20	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+884	568	fontdrvhost.ex	0xbf0f6b70b1c0	5	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+892	668	fontdrvhost.ex	0xbf0f6b7091c0	5	-	1	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+976	712	svchost.exe	0xbf0f6b785340	12	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+320	712	svchost.exe	0xbf0f6b78a2c0	6	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+564	668	LogonUI.exe	0xbf0f6b7b7100	0	-	1	False	2021-04-30 12:39:44.000000 	2021-04-30 17:39:58.000000 	Disabled
+560	668	dwm.exe	0xbf0f6b7ba080	21	-	1	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1080	712	svchost.exe	0xbf0f6be74340	2	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1088	712	svchost.exe	0xbf0f6be77080	3	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1164	712	svchost.exe	0xbf0f6becd300	5	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1172	712	svchost.exe	0xbf0f6becc080	3	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1204	712	svchost.exe	0xbf0f6bed1080	1	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1296	712	svchost.exe	0xbf0f6bf192c0	7	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1336	712	svchost.exe	0xbf0f6bf20080	8	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1376	712	svchost.exe	0xbf0f6be1c080	6	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1440	712	svchost.exe	0xbf0f6bf9a0c0	4	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1452	712	svchost.exe	0xbf0f6bfa52c0	8	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1556	712	svchost.exe	0xbf0f64a81080	8	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1660	712	VBoxService.ex	0xbf0f6bff4080	11	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1684	712	svchost.exe	0xbf0f6bff5080	5	-	0	False	2021-04-30 12:39:44.000000 	N/A	Disabled
+1784	712	svchost.exe	0xbf0f6c03d340	4	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1804	712	svchost.exe	0xbf0f6c03b080	5	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1824	712	svchost.exe	0xbf0f6bfee080	3	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1880	712	svchost.exe	0xbf0f6c0b1340	2	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1904	4	MemCompression	0xbf0f6c0b0040	34	-	N/A	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1928	712	svchost.exe	0xbf0f6c0d4340	6	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1960	712	svchost.exe	0xbf0f6c0d62c0	2	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1540	712	svchost.exe	0xbf0f6c1af080	3	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1600	712	svchost.exe	0xbf0f6c1ae300	2	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+1668	712	svchost.exe	0xbf0f6c1b1340	6	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2168	712	svchost.exe	0xbf0f6c0d3080	9	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2284	712	svchost.exe	0xbf0f6c280080	11	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2392	712	svchost.exe	0xbf0f6c2e1080	7	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2404	712	svchost.exe	0xbf0f6c2b8080	3	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2420	712	svchost.exe	0xbf0f6c2e6080	6	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2480	712	svchost.exe	0xbf0f6c2c82c0	8	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2600	712	spoolsv.exe	0xbf0f6c392280	7	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2632	712	svchost.exe	0xbf0f6c32a080	13	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+2676	712	svchost.exe	0xbf0f6c39d080	5	-	0	False	2021-04-30 17:39:46.000000 	N/A	Disabled
+3008	712	svchost.exe	0xbf0f6c5b02c0	9	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3016	712	svchost.exe	0xbf0f6c39b080	16	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3028	712	svchost.exe	0xbf0f6c5d92c0	7	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3036	712	svchost.exe	0xbf0f6c1342c0	11	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+2764	712	svchost.exe	0xbf0f6c5ee2c0	6	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+2772	712	svchost.exe	0xbf0f6c5f6340	1	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+2840	712	svchost.exe	0xbf0f6bfed080	4	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+2824	712	svchost.exe	0xbf0f6c5e9080	3	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+1156	712	MsMpEng.exe	0xbf0f6c58f0c0	32	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+2812	712	svchost.exe	0xbf0f6c5912c0	11	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+2964	712	svchost.exe	0xbf0f6c568080	4	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3088	712	svchost.exe	0xbf0f6c60d2c0	14	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3264	712	svchost.exe	0xbf0f6c6c72c0	11	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3412	712	svchost.exe	0xbf0f6ad8c080	1	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3608	1452	sihost.exe	0xbf0f6c7d3080	13	-	1	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3656	712	svchost.exe	0xbf0f6c80f080	10	-	1	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3688	712	svchost.exe	0xbf0f6c810080	8	-	1	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3808	1296	taskhostw.exe	0xbf0f6c85d080	8	-	1	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3920	712	svchost.exe	0xbf0f6c8b72c0	5	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3988	712	svchost.exe	0xbf0f6c8fd300	4	-	0	False	2021-04-30 17:39:47.000000 	N/A	Disabled
+3152	3988	ctfmon.exe	0xbf0f6c957340	11	-	1	False	2021-04-30 17:39:48.000000 	N/A	Disabled
+4128	712	svchost.exe	0xbf0f6c859080	5	-	0	False	2021-04-30 17:39:48.000000 	N/A	Disabled
+4296	668	userinit.exe	0xbf0f6ca8f080	0	-	1	False	2021-04-30 17:39:48.000000 	2021-04-30 17:40:12.000000 	Disabled
+4352	4296	explorer.exe	0xbf0f6ca662c0	82	-	1	False	2021-04-30 17:39:48.000000 	N/A	Disabled
+4456	712	svchost.exe	0xbf0f6cb5d080	5	-	0	False	2021-04-30 17:39:48.000000 	N/A	Disabled
+4716	712	svchost.exe	0xbf0f6cc77080	5	-	1	False	2021-04-30 17:39:49.000000 	N/A	Disabled
+4828	856	StartMenuExper	0xbf0f6c5a9300	8	-	1	False	2021-04-30 17:39:49.000000 	N/A	Disabled
+2924	856	RuntimeBroker.	0xbf0f6cfeb0c0	1	-	1	False	2021-04-30 17:39:49.000000 	N/A	Disabled
+5084	712	NisSrv.exe	0xbf0f6ce550c0	5	-	0	False	2021-04-30 17:39:50.000000 	N/A	Disabled
+5104	856	SearchApp.exe	0xbf0f6cff7080	54	-	1	False	2021-04-30 17:39:50.000000 	N/A	Disabled
+3764	712	SearchIndexer.	0xbf0f6ce02300	31	-	0	False	2021-04-30 17:39:50.000000 	N/A	Disabled
+5144	856	RuntimeBroker.	0xbf0f6d3220c0	19	-	1	False	2021-04-30 17:39:50.000000 	N/A	Disabled
+5548	856	YourPhone.exe	0xbf0f6d7492c0	13	-	1	False	2021-04-30 17:39:50.000000 	N/A	Disabled
+5664	856	LockApp.exe	0xbf0f6d11d080	15	-	1	False	2021-04-30 17:39:51.000000 	N/A	Disabled
+5792	856	RuntimeBroker.	0xbf0f6d14f080	3	-	1	False	2021-04-30 17:39:51.000000 	N/A	Disabled
+5940	856	RuntimeBroker.	0xbf0f6d42a080	7	-	1	False	2021-04-30 17:39:51.000000 	N/A	Disabled
+6072	712	svchost.exe	0xbf0f6d909340	2	-	0	False	2021-04-30 17:39:51.000000 	N/A	Disabled
+5632	712	svchost.exe	0xbf0f6d452080	4	-	0	False	2021-04-30 17:39:51.000000 	N/A	Disabled
+6200	712	svchost.exe	0xbf0f6d9d72c0	15	-	0	False	2021-04-30 17:39:52.000000 	N/A	Disabled
+6716	856	smartscreen.ex	0xbf0f6d496080	9	-	1	False	2021-04-30 17:40:00.000000 	N/A	Disabled
+6772	4352	SecurityHealth	0xbf0f6d493080	1	-	1	False	2021-04-30 17:40:00.000000 	N/A	Disabled
+6808	712	SecurityHealth	0xbf0f6d8d3340	9	-	0	False	2021-04-30 17:40:00.000000 	N/A	Disabled
+6884	4352	VBoxTray.exe	0xbf0f6d186080	11	-	1	False	2021-04-30 17:40:01.000000 	N/A	Disabled
+6988	4352	OneDrive.exe	0xbf0f6d4262c0	26	-	1	True	2021-04-30 17:40:01.000000 	N/A	Disabled
+7112	712	svchost.exe	0xbf0f6cd082c0	0	-	0	False	2021-04-30 17:40:02.000000 	2021-04-30 17:45:02.000000 	Disabled
+4912	856	TextInputHost.	0xbf0f6cfd6080	10	-	1	False	2021-04-30 17:40:12.000000 	N/A	Disabled
+5844	856	dllhost.exe	0xbf0f6d39a080	10	-	1	False	2021-04-30 17:40:12.000000 	N/A	Disabled
+2388	856	RuntimeBroker.	0xbf0f6d0c5300	1	-	1	False	2021-04-30 17:40:36.000000 	N/A	Disabled
+3148	712	svchost.exe	0xbf0f6d5bb300	10	-	0	False	2021-04-30 17:41:24.000000 	N/A	Disabled
+5624	712	svchost.exe	0xbf0f6c5ae080	18	-	0	False	2021-04-30 17:41:47.000000 	N/A	Disabled
+432	712	svchost.exe	0xbf0f6d1a8300	7	-	0	False	2021-04-30 17:41:47.000000 	N/A	Disabled
+6380	712	svchost.exe	0xbf0f6d392080	2	-	1	False	2021-04-30 17:41:47.000000 	N/A	Disabled
+2116	712	svchost.exe	0xbf0f6d592300	12	-	0	False	2021-04-30 17:41:47.000000 	N/A	Disabled
+4432	712	svchost.exe	0xbf0f6d5a92c0	5	-	0	False	2021-04-30 17:41:48.000000 	N/A	Disabled
+6696	712	SgrmBroker.exe	0xbf0f6bff1300	7	-	0	False	2021-04-30 17:41:48.000000 	N/A	Disabled
+1708	712	svchost.exe	0xbf0f6d80a2c0	7	-	0	False	2021-04-30 17:41:48.000000 	N/A	Disabled
+808	712	svchost.exe	0xbf0f6d14e2c0	8	-	0	False	2021-04-30 17:41:49.000000 	N/A	Disabled
+2072	856	ShellExperienc	0xbf0f6d0e9080	15	-	1	False	2021-04-30 17:42:10.000000 	N/A	Disabled
+2296	856	RuntimeBroker.	0xbf0f6ce1f2c0	6	-	1	False	2021-04-30 17:42:10.000000 	N/A	Disabled
+3712	856	WinStore.App.e	0xbf0f6d0c02c0	12	-	1	False	2021-04-30 17:42:37.000000 	N/A	Disabled
+3544	856	ApplicationFra	0xbf0f6d52b2c0	6	-	1	False	2021-04-30 17:42:37.000000 	N/A	Disabled
+3492	856	RuntimeBroker.	0xbf0f6d577300	1	-	1	False	2021-04-30 17:42:37.000000 	N/A	Disabled
+5168	712	svchost.exe	0xbf0f6d4870c0	0	-	0	False	2021-04-30 17:42:46.000000 	2021-04-30 17:42:52.000000 	Disabled
+1728	856	SystemSettings	0xbf0f6d5bd2c0	17	-	1	False	2021-04-30 17:43:07.000000 	N/A	Disabled
+5156	856	WmiPrvSE.exe	0xbf0f6d01c2c0	4	-	0	False	2021-04-30 17:43:47.000000 	N/A	Disabled
+2520	2152	notepad.exe	0xbf0f6d8450c0	1	-	1	False	2021-04-30 17:44:28.000000 	N/A	Disabled
+1328	4352	chrome.exe	0xbf0f6d53e080	26	-	1	False	2021-04-30 17:44:52.000000 	N/A	Disabled
+6764	1328	chrome.exe	0xbf0f6d748080	7	-	1	False	2021-04-30 17:44:52.000000 	N/A	Disabled
+4508	1328	chrome.exe	0xbf0f6be38340	10	-	1	False	2021-04-30 17:44:53.000000 	N/A	Disabled
+1840	1328	chrome.exe	0xbf0f6cbc5080	12	-	1	False	2021-04-30 17:44:53.000000 	N/A	Disabled
+5492	1328	chrome.exe	0xbf0f6a897080	7	-	1	False	2021-04-30 17:44:53.000000 	N/A	Disabled
+2432	1328	chrome.exe	0xbf0f6a9e7080	19	-	1	False	2021-04-30 17:44:53.000000 	N/A	Disabled
+5888	1328	chrome.exe	0xbf0f6d2ea340	13	-	1	False	2021-04-30 17:44:57.000000 	N/A	Disabled
+460	1328	chrome.exe	0xbf0f6d591300	12	-	1	False	2021-04-30 17:48:07.000000 	N/A	Disabled
+4108	1328	chrome.exe	0xbf0f667f1300	12	-	1	False	2021-04-30 17:48:07.000000 	N/A	Disabled
+3380	1328	chrome.exe	0xbf0f6d182080	6	-	1	False	2021-04-30 17:48:07.000000 	N/A	Disabled
+4856	1872	brave.exe	0xbf0f6ca782c0	0	-	1	False	2021-04-30 17:48:45.000000 	2021-04-30 17:50:56.000000 	Disabled
+6160	2284	audiodg.exe	0xbf0f6a53a080	5	-	0	False	2021-04-30 17:49:52.000000 	N/A	Disabled
+7436	712	svchost.exe	0xbf0f6ca04080	5	-	0	False	2021-04-30 17:50:01.000000 	N/A	Disabled
+8160	712	svchost.exe	0xbf0f6a9e2080	4	-	0	False	2021-04-30 17:51:09.000000 	N/A	Disabled
+4408	712	WUDFHost.exe	0xbf0f6ca68080	8	-	0	False	2021-04-30 17:51:09.000000 	N/A	Disabled
+7704	712	svchost.exe	0xbf0f6d50f340	3	-	0	False	2021-04-30 17:51:15.000000 	N/A	Disabled
+7212	712	svchost.exe	0xbf0f6d0ce300	2	-	0	False	2021-04-30 17:51:18.000000 	N/A	Disabled
+5096	4352	powershell.exe	0xbf0f6d97f2c0	12	-	1	False	2021-04-30 17:51:19.000000 	N/A	Disabled
+4968	5096	conhost.exe	0xbf0f6ab952c0	5	-	1	False	2021-04-30 17:51:20.000000 	N/A	Disabled
+3536	5096	FTK Imager.exe	0xbf0f6a707340	20	-	1	True	2021-04-30 17:51:31.000000 	N/A	Disabled
+</pre><h2>Open Files</h2><pre>Error: 
+Progress:    0.00		Scanning FileLayer using PageMapScanner
+
+Progress:   23.33		Scanning FileLayer using PageMapScanner
+
+Progress:  100.00		Stacking attempts finished             
+
+Progress:    0.00		Scanning memory_layer using BytesScanner
+
+Progress:    0.35		Scanning memory_layer using BytesScanner
+
+Progress:    0.69		Scanning memory_layer using BytesScanner
+
+Progress:    1.04		Scanning memory_layer using BytesScanner
+
+Progress:    1.39		Scanning memory_layer using BytesScanner
+
+Progress:    1.74		Scanning memory_layer using BytesScanner
+
+Progress:    2.08		Scanning memory_layer using BytesScanner
+
+Progress:    2.43		Scanning memory_layer using BytesScanner
+
+Progress:    2.78		Scanning memory_layer using BytesScanner
+
+Progress:    3.13		Scanning memory_layer using BytesScanner
+
+Progress:    3.47		Scanning memory_layer using BytesScanner
+
+Progress:    3.82		Scanning memory_layer using BytesScanner
+
+Progress:    4.17		Scanning memory_layer using BytesScanner
+
+Progress:    4.51		Scanning memory_layer using BytesScanner
+
+Progress:    4.86		Scanning memory_layer using BytesScanner
+
+Progress:    5.21		Scanning memory_layer using BytesScanner
+
+Progress:    5.56		Scanning memory_layer using BytesScanner
+
+Progress:    5.90		Scanning memory_layer using BytesScanner
+
+Progress:    6.25		Scanning memory_layer using BytesScanner
+
+Progress:    6.60		Scanning memory_layer using BytesScanner
+
+Progress:    6.94		Scanning memory_layer using BytesScanner
+
+Progress:    7.29		Scanning memory_layer using BytesScanner
+
+Progress:    7.64		Scanning memory_layer using BytesScanner
+
+Progress:    7.99		Scanning memory_layer using BytesScanner
+
+Progress:    8.33		Scanning memory_layer using BytesScanner
+
+Progress:    8.68		Scanning memory_layer using BytesScanner
+
+Progress:    9.03		Scanning memory_layer using BytesScanner
+
+Progress:    9.38		Scanning memory_layer using BytesScanner
+
+Progress:    9.72		Scanning memory_layer using BytesScanner
+
+Progress:   10.07		Scanning memory_layer using BytesScanner
+
+Progress:   10.42		Scanning memory_layer using BytesScanner
+
+Progress:   10.76		Scanning memory_layer using BytesScanner
+
+Progress:   11.11		Scanning memory_layer using BytesScanner
+
+Progress:   11.46		Scanning memory_layer using BytesScanner
+
+Progress:   11.81		Scanning memory_layer using BytesScanner
+
+Progress:   12.15		Scanning memory_layer using BytesScanner
+
+Progress:   12.50		Scanning memory_layer using BytesScanner
+
+Progress:   12.85		Scanning memory_layer using BytesScanner
+
+Progress:   13.19		Scanning memory_layer using BytesScanner
+
+Progress:   13.54		Scanning memory_layer using BytesScanner
+
+Progress:   13.89		Scanning memory_layer using BytesScanner
+
+Progress:   14.24		Scanning memory_layer using BytesScanner
+
+Progress:   14.58		Scanning memory_layer using BytesScanner
+
+Progress:   14.93		Scanning memory_layer using BytesScanner
+
+Progress:   15.28		Scanning memory_layer using BytesScanner
+
+Progress:   15.63		Scanning memory_layer using BytesScanner
+
+Progress:   15.97		Scanning memory_layer using BytesScanner
+
+Progress:   16.32		Scanning memory_layer using BytesScanner
+
+Progress:   16.67		Scanning memory_layer using BytesScanner
+
+Progress:   17.01		Scanning memory_layer using BytesScanner
+
+Progress:   17.36		Scanning memory_layer using BytesScanner
+
+Progress:   17.71		Scanning memory_layer using BytesScanner
+
+Progress:   18.06		Scanning memory_layer using BytesScanner
+
+Progress:   18.40		Scanning memory_layer using BytesScanner
+
+Progress:   18.75		Scanning memory_layer using BytesScanner
+
+Progress:   19.10		Scanning memory_layer using BytesScanner
+
+Progress:   19.44		Scanning memory_layer using BytesScanner
+
+Progress:   19.79		Scanning memory_layer using BytesScanner
+
+Progress:   20.14		Scanning memory_layer using BytesScanner
+
+Progress:   20.49		Scanning memory_layer using BytesScanner
+
+Progress:   20.83		Scanning memory_layer using BytesScanner
+
+Progress:   21.18		Scanning memory_layer using BytesScanner
+
+Progress:   21.53		Scanning memory_layer using BytesScanner
+
+Progress:   21.88		Scanning memory_layer using BytesScanner
+
+Progress:   22.22		Scanning memory_layer using BytesScanner
+
+Progress:   22.57		Scanning memory_layer using BytesScanner
+
+Progress:   22.92		Scanning memory_layer using BytesScanner
+
+Progress:   23.26		Scanning memory_layer using BytesScanner
+
+Progress:   23.61		Scanning memory_layer using BytesScanner
+
+Progress:   23.96		Scanning memory_layer using BytesScanner
+
+Progress:   24.31		Scanning memory_layer using BytesScanner
+
+Progress:   24.65		Scanning memory_layer using BytesScanner
+
+Progress:   25.00		Scanning memory_layer using BytesScanner
+
+Progress:   25.35		Scanning memory_layer using BytesScanner
+
+Progress:   25.69		Scanning memory_layer using BytesScanner
+
+Progress:   26.04		Scanning memory_layer using BytesScanner
+
+Progress:   26.39		Scanning memory_layer using BytesScanner
+
+Progress:   26.74		Scanning memory_layer using BytesScanner
+
+Progress:   27.08		Scanning memory_layer using BytesScanner
+
+Progress:   27.43		Scanning memory_layer using BytesScanner
+
+Progress:   27.78		Scanning memory_layer using BytesScanner
+
+Progress:   28.13		Scanning memory_layer using BytesScanner
+
+Progress:   28.47		Scanning memory_layer using BytesScanner
+
+Progress:   28.82		Scanning memory_layer using BytesScanner
+
+Progress:   29.17		Scanning memory_layer using BytesScanner
+
+Progress:   29.51		Scanning memory_layer using BytesScanner
+
+Progress:   29.86		Scanning memory_layer using BytesScanner
+
+Progress:   30.21		Scanning memory_layer using BytesScanner
+
+Progress:   30.56		Scanning memory_layer using BytesScanner
+
+Progress:   30.90		Scanning memory_layer using BytesScanner
+
+Progress:   31.25		Scanning memory_layer using BytesScanner
+
+Progress:   31.60		Scanning memory_layer using BytesScanner
+
+Progress:   31.94		Scanning memory_layer using BytesScanner
+
+Progress:   32.29		Scanning memory_layer using BytesScanner
+
+Progress:   32.64		Scanning memory_layer using BytesScanner
+
+Progress:   32.99		Scanning memory_layer using BytesScanner
+
+Progress:   33.33		Scanning memory_layer using BytesScanner
+
+Progress:   33.68		Scanning memory_layer using BytesScanner
+
+Progress:   34.03		Scanning memory_layer using BytesScanner
+
+Progress:   34.38		Scanning memory_layer using BytesScanner
+
+Progress:   34.72		Scanning memory_layer using BytesScanner
+
+Progress:   35.07		Scanning memory_layer using BytesScanner
+
+Progress:   35.42		Scanning memory_layer using BytesScanner
+
+Progress:   35.76		Scanning memory_layer using BytesScanner
+
+Progress:   36.11		Scanning memory_layer using BytesScanner
+
+Progress:   36.46		Scanning memory_layer using BytesScanner
+
+Progress:   36.81		Scanning memory_layer using BytesScanner
+
+Progress:   37.15		Scanning memory_layer using BytesScanner
+
+Progress:   37.50		Scanning memory_layer using BytesScanner
+
+Progress:   37.85		Scanning memory_layer using BytesScanner
+
+Progress:   38.19		Scanning memory_layer using BytesScanner
+
+Progress:   38.54		Scanning memory_layer using BytesScanner
+
+Progress:   38.89		Scanning memory_layer using BytesScanner
+
+Progress:   39.24		Scanning memory_layer using BytesScanner
+
+Progress:   39.58		Scanning memory_layer using BytesScanner
+
+Progress:   39.93		Scanning memory_layer using BytesScanner
+
+Progress:   40.28		Scanning memory_layer using BytesScanner
+
+Progress:   40.63		Scanning memory_layer using BytesScanner
+
+Progress:   40.97		Scanning memory_layer using BytesScanner
+
+Progress:   41.32		Scanning memory_layer using BytesScanner
+
+Progress:   41.67		Scanning memory_layer using BytesScanner
+
+Progress:   42.01		Scanning memory_layer using BytesScanner
+
+Progress:   42.36		Scanning memory_layer using BytesScanner
+
+Progress:   42.71		Scanning memory_layer using BytesScanner
+
+Progress:   43.06		Scanning memory_layer using BytesScanner
+
+Progress:   43.40		Scanning memory_layer using BytesScanner
+
+Progress:   43.75		Scanning memory_layer using BytesScanner
+
+Progress:   44.10		Scanning memory_layer using BytesScanner
+
+Progress:   44.44		Scanning memory_layer using BytesScanner
+
+Progress:   44.79		Scanning memory_layer using BytesScanner
+
+Progress:   45.14		Scanning memory_layer using BytesScanner
+
+Progress:   45.49		Scanning memory_layer using BytesScanner
+
+Progress:   45.83		Scanning memory_layer using BytesScanner
+
+Progress:   46.18		Scanning memory_layer using BytesScanner
+
+Progress:   46.53		Scanning memory_layer using BytesScanner
+
+Progress:   46.88		Scanning memory_layer using BytesScanner
+
+Progress:   47.22		Scanning memory_layer using BytesScanner
+
+Progress:   47.57		Scanning memory_layer using BytesScanner
+
+Progress:   47.92		Scanning memory_layer using BytesScanner
+
+Progress:   48.26		Scanning memory_layer using BytesScanner
+
+Progress:   48.61		Scanning memory_layer using BytesScanner
+
+Progress:   48.96		Scanning memory_layer using BytesScanner
+
+Progress:   49.31		Scanning memory_layer using BytesScanner
+
+Progress:   49.65		Scanning memory_layer using BytesScanner
+
+Progress:   50.00		Scanning memory_layer using BytesScanner
+
+Progress:   50.35		Scanning memory_layer using BytesScanner
+
+Progress:   50.69		Scanning memory_layer using BytesScanner
+
+Progress:   51.04		Scanning memory_layer using BytesScanner
+
+Progress:   51.39		Scanning memory_layer using BytesScanner
+
+Progress:   51.74		Scanning memory_layer using BytesScanner
+
+Progress:   52.08		Scanning memory_layer using BytesScanner
+
+Progress:   52.43		Scanning memory_layer using BytesScanner
+
+Progress:   52.78		Scanning memory_layer using BytesScanner
+
+Progress:   53.13		Scanning memory_layer using BytesScanner
+
+Progress:   53.47		Scanning memory_layer using BytesScanner
+
+Progress:   53.82		Scanning memory_layer using BytesScanner
+
+Progress:   54.17		Scanning memory_layer using BytesScanner
+
+Progress:   54.51		Scanning memory_layer using BytesScanner
+
+Progress:   54.86		Scanning memory_layer using BytesScanner
+
+Progress:   55.21		Scanning memory_layer using BytesScanner
+
+Progress:   55.56		Scanning memory_layer using BytesScanner
+
+Progress:   55.90		Scanning memory_layer using BytesScanner
+
+Progress:   56.25		Scanning memory_layer using BytesScanner
+
+Progress:   56.60		Scanning memory_layer using BytesScanner
+
+Progress:   56.94		Scanning memory_layer using BytesScanner
+
+Progress:   57.29		Scanning memory_layer using BytesScanner
+
+Progress:   57.64		Scanning memory_layer using BytesScanner
+
+Progress:   57.99		Scanning memory_layer using BytesScanner
+
+Progress:   58.33		Scanning memory_layer using BytesScanner
+
+Progress:   58.68		Scanning memory_layer using BytesScanner
+
+Progress:   59.03		Scanning memory_layer using BytesScanner
+
+Progress:   59.38		Scanning memory_layer using BytesScanner
+
+Progress:   59.72		Scanning memory_layer using BytesScanner
+
+Progress:   60.07		Scanning memory_layer using BytesScanner
+
+Progress:   60.42		Scanning memory_layer using BytesScanner
+
+Progress:   60.76		Scanning memory_layer using BytesScanner
+
+Progress:   61.11		Scanning memory_layer using BytesScanner
+
+Progress:   61.46		Scanning memory_layer using BytesScanner
+
+Progress:   61.81		Scanning memory_layer using BytesScanner
+
+Progress:   62.15		Scanning memory_layer using BytesScanner
+
+Progress:   62.50		Scanning memory_layer using BytesScanner
+
+Progress:   62.85		Scanning memory_layer using BytesScanner
+
+Progress:   63.19		Scanning memory_layer using BytesScanner
+
+Progress:   63.54		Scanning memory_layer using BytesScanner
+
+Progress:   63.89		Scanning memory_layer using BytesScanner
+
+Progress:   64.24		Scanning memory_layer using BytesScanner
+
+Progress:   64.58		Scanning memory_layer using BytesScanner
+
+Progress:   64.93		Scanning memory_layer using BytesScanner
+
+Progress:   65.28		Scanning memory_layer using BytesScanner
+
+Progress:   65.63		Scanning memory_layer using BytesScanner
+
+Progress:   65.97		Scanning memory_layer using BytesScanner
+
+Progress:   66.32		Scanning memory_layer using BytesScanner
+
+Progress:   66.67		Scanning memory_layer using BytesScanner
+
+Progress:   67.01		Scanning memory_layer using BytesScanner
+
+Progress:   67.36		Scanning memory_layer using BytesScanner
+
+Progress:   67.71		Scanning memory_layer using BytesScanner
+
+Progress:   68.06		Scanning memory_layer using BytesScanner
+
+Progress:   68.40		Scanning memory_layer using BytesScanner
+
+Progress:   68.75		Scanning memory_layer using BytesScanner
+
+Progress:   69.10		Scanning memory_layer using BytesScanner
+
+Progress:   69.44		Scanning memory_layer using BytesScanner
+
+Progress:   69.79		Scanning memory_layer using BytesScanner
+
+Progress:   70.14		Scanning memory_layer using BytesScanner
+
+Progress:   70.49		Scanning memory_layer using BytesScanner
+
+Progress:   70.83		Scanning memory_layer using BytesScanner
+
+Progress:   71.18		Scanning memory_layer using BytesScanner
+
+Progress:   71.53		Scanning memory_layer using BytesScanner
+
+Progress:   71.88		Scanning memory_layer using BytesScanner
+
+Progress:   72.22		Scanning memory_layer using BytesScanner
+
+Progress:   72.57		Scanning memory_layer using BytesScanner
+
+Progress:   72.92		Scanning memory_layer using BytesScanner
+
+Progress:   73.26		Scanning memory_layer using BytesScanner
+
+Progress:   73.61		Scanning memory_layer using BytesScanner
+
+Progress:   73.96		Scanning memory_layer using BytesScanner
+
+Progress:   74.31		Scanning memory_layer using BytesScanner
+
+Progress:   74.65		Scanning memory_layer using BytesScanner
+
+Progress:   75.00		Scanning memory_layer using BytesScanner
+
+Progress:   75.35		Scanning memory_layer using BytesScanner
+
+Progress:   75.69		Scanning memory_layer using BytesScanner
+
+Progress:   76.04		Scanning memory_layer using BytesScanner
+
+Progress:   76.39		Scanning memory_layer using BytesScanner
+
+Progress:   76.74		Scanning memory_layer using BytesScanner
+
+Progress:   77.08		Scanning memory_layer using BytesScanner
+
+Progress:   77.43		Scanning memory_layer using BytesScanner
+
+Progress:   77.78		Scanning memory_layer using BytesScanner
+
+Progress:   78.13		Scanning memory_layer using BytesScanner
+
+Progress:   78.47		Scanning memory_layer using BytesScanner
+
+Progress:   78.82		Scanning memory_layer using BytesScanner
+
+Progress:   79.17		Scanning memory_layer using BytesScanner
+
+Progress:   79.51		Scanning memory_layer using BytesScanner
+
+Progress:   79.86		Scanning memory_layer using BytesScanner
+
+Progress:   80.21		Scanning memory_layer using BytesScanner
+
+Progress:   80.56		Scanning memory_layer using BytesScanner
+
+Progress:   80.90		Scanning memory_layer using BytesScanner
+
+Progress:   81.25		Scanning memory_layer using BytesScanner
+
+Progress:   81.60		Scanning memory_layer using BytesScanner
+
+Progress:   81.94		Scanning memory_layer using BytesScanner
+
+Progress:   82.29		Scanning memory_layer using BytesScanner
+
+Progress:   82.64		Scanning memory_layer using BytesScanner
+
+Progress:   82.99		Scanning memory_layer using BytesScanner
+
+Progress:   83.33		Scanning memory_layer using BytesScanner
+
+Progress:   83.68		Scanning memory_layer using BytesScanner
+
+Progress:   84.03		Scanning memory_layer using BytesScanner
+
+Progress:   84.38		Scanning memory_layer using BytesScanner
+
+Progress:   84.72		Scanning memory_layer using BytesScanner
+
+Progress:   85.07		Scanning memory_layer using BytesScanner
+
+Progress:   85.42		Scanning memory_layer using BytesScanner
+
+Progress:   85.76		Scanning memory_layer using BytesScanner
+
+Progress:   86.11		Scanning memory_layer using BytesScanner
+
+Progress:   86.46		Scanning memory_layer using BytesScanner
+
+Progress:   86.81		Scanning memory_layer using BytesScanner
+
+Progress:   87.15		Scanning memory_layer using BytesScanner
+
+Progress:   87.50		Scanning memory_layer using BytesScanner
+
+Progress:   87.85		Scanning memory_layer using BytesScanner
+
+Progress:   88.19		Scanning memory_layer using BytesScanner
+
+Progress:   88.54		Scanning memory_layer using BytesScanner
+
+Progress:   88.89		Scanning memory_layer using BytesScanner
+
+Progress:   89.24		Scanning memory_layer using BytesScanner
+
+Progress:   89.58		Scanning memory_layer using BytesScanner
+
+Progress:   89.93		Scanning memory_layer using BytesScanner
+
+Progress:   90.28		Scanning memory_layer using BytesScanner
+
+Progress:   90.63		Scanning memory_layer using BytesScanner
+
+Progress:   90.97		Scanning memory_layer using BytesScanner
+
+Progress:   91.32		Scanning memory_layer using BytesScanner
+
+Progress:   91.67		Scanning memory_layer using BytesScanner
+
+Progress:   92.01		Scanning memory_layer using BytesScanner
+
+Progress:   92.36		Scanning memory_layer using BytesScanner
+
+Progress:   92.71		Scanning memory_layer using BytesScanner
+
+Progress:   93.06		Scanning memory_layer using BytesScanner
+
+Progress:   93.40		Scanning memory_layer using BytesScanner
+
+Progress:   93.75		Scanning memory_layer using BytesScanner
+
+Progress:   94.10		Scanning memory_layer using BytesScanner
+
+Progress:   94.44		Scanning memory_layer using BytesScanner
+
+Progress:   94.79		Scanning memory_layer using BytesScanner
+
+Progress:   95.14		Scanning memory_layer using BytesScanner
+
+Progress:   95.49		Scanning memory_layer using BytesScanner
+
+Progress:   95.83		Scanning memory_layer using BytesScanner
+
+Progress:   96.18		Scanning memory_layer using BytesScanner
+
+Progress:   96.53		Scanning memory_layer using BytesScanner
+
+Progress:   96.88		Scanning memory_layer using BytesScanner
+
+Progress:   97.22		Scanning memory_layer using BytesScanner
+
+Progress:   97.57		Scanning memory_layer using BytesScanner
+
+Progress:   97.92		Scanning memory_layer using BytesScanner
+
+Progress:   98.26		Scanning memory_layer using BytesScanner
+
+Progress:   98.61		Scanning memory_layer using BytesScanner
+
+Progress:   98.96		Scanning memory_layer using BytesScanner
+
+Progress:   99.31		Scanning memory_layer using BytesScanner
+
+Progress:   99.65		Scanning memory_layer using BytesScanner
+
+Progress:    0.00		Scanning memory_layer using BytesScanner
+
+Progress:    0.35		Scanning memory_layer using BytesScanner
+
+Progress:    0.69		Scanning memory_layer using BytesScanner
+
+Progress:    1.04		Scanning memory_layer using BytesScanner
+
+Progress:    1.39		Scanning memory_layer using BytesScanner
+
+Progress:    1.74		Scanning memory_layer using BytesScanner
+
+Progress:    2.08		Scanning memory_layer using BytesScanner
+
+Progress:    2.43		Scanning memory_layer using BytesScanner
+
+Progress:    2.78		Scanning memory_layer using BytesScanner
+
+Progress:    3.13		Scanning memory_layer using BytesScanner
+
+Progress:    3.47		Scanning memory_layer using BytesScanner
+
+Progress:    3.82		Scanning memory_layer using BytesScanner
+
+Progress:    4.17		Scanning memory_layer using BytesScanner
+
+Progress:    4.51		Scanning memory_layer using BytesScanner
+
+Progress:    4.86		Scanning memory_layer using BytesScanner
+
+Progress:    5.21		Scanning memory_layer using BytesScanner
+
+Progress:    5.56		Scanning memory_layer using BytesScanner
+
+Progress:    5.90		Scanning memory_layer using BytesScanner
+
+Progress:    6.25		Scanning memory_layer using BytesScanner
+
+Progress:    6.60		Scanning memory_layer using BytesScanner
+
+Progress:    6.94		Scanning memory_layer using BytesScanner
+
+Progress:    7.29		Scanning memory_layer using BytesScanner
+
+Progress:    7.64		Scanning memory_layer using BytesScanner
+
+Progress:    7.99		Scanning memory_layer using BytesScanner
+
+Progress:    8.33		Scanning memory_layer using BytesScanner
+
+Progress:    8.68		Scanning memory_layer using BytesScanner
+
+Progress:    9.03		Scanning memory_layer using BytesScanner
+
+Progress:    9.38		Scanning memory_layer using BytesScanner
+
+Progress:    9.72		Scanning memory_layer using BytesScanner
+
+Progress:   10.07		Scanning memory_layer using BytesScanner
+
+Progress:   10.42		Scanning memory_layer using BytesScanner
+
+Progress:   10.76		Scanning memory_layer using BytesScanner
+
+Progress:   11.11		Scanning memory_layer using BytesScanner
+
+Progress:   11.46		Scanning memory_layer using BytesScanner
+
+Progress:   11.81		Scanning memory_layer using BytesScanner
+
+Progress:   12.15		Scanning memory_layer using BytesScanner
+
+Progress:   12.50		Scanning memory_layer using BytesScanner
+
+Progress:   12.85		Scanning memory_layer using BytesScanner
+
+Progress:   13.19		Scanning memory_layer using BytesScanner
+
+Progress:   13.54		Scanning memory_layer using BytesScanner
+
+Progress:   13.89		Scanning memory_layer using BytesScanner
+
+Progress:   14.24		Scanning memory_layer using BytesScanner
+
+Progress:    0.00		Scanning layer_name using PdbSignatureScanner
+
+Progress:    0.00		Scanning layer_name using PdbSignatureScanner
+
+Progress:  100.00		PDB scanning finished                        
+Volatility could not import a necessary module: capstone
+Requires capstone to find the SAR value for decoding handle table pointers
+
+	* A required python module is not installed (install the module and re-run)
+
+No further results will be produced
+</pre><h2>Network Connections</h2><pre>Volatility 3 Framework 2.7.0
+
+Offset	Proto	LocalAddr	LocalPort	ForeignAddr	ForeignPort	State	PID	Owner	Created
+
+0xbf0f64a8a730	TCPv4	0.0.0.0	49669	0.0.0.0	0	LISTENING	712	services.exe	2021-04-30 17:39:47.000000 
+0xbf0f64a8a890	TCPv4	0.0.0.0	49669	0.0.0.0	0	LISTENING	712	services.exe	2021-04-30 17:39:47.000000 
+0xbf0f64a8a890	TCPv6	::	49669	::	0	LISTENING	712	services.exe	2021-04-30 17:39:47.000000 
+0xbf0f664072b0	UDPv4	0.0.0.0	5355	*	0		2168	svchost.exe	2021-04-30 17:41:58.000000 
+0xbf0f664072b0	UDPv6	::	5355	*	0		2168	svchost.exe	2021-04-30 17:41:58.000000 
+0xbf0f66407a80	UDPv4	0.0.0.0	5355	*	0		2168	svchost.exe	2021-04-30 17:41:58.000000 
+0xbf0f66443b40	TCPv4	10.0.2.15	49839	23.35.68.233	443	CLOSE_WAIT	5104	SearchApp.exe	2021-04-30 17:51:24.000000 
+0xbf0f66a9a470	TCPv4	0.0.0.0	7680	0.0.0.0	0	LISTENING	2116	svchost.exe	2021-04-30 17:41:47.000000 
+0xbf0f66a9a470	TCPv6	::	7680	::	0	LISTENING	2116	svchost.exe	2021-04-30 17:41:47.000000 
+0xbf0f66ff6050	TCPv4	0.0.0.0	49665	0.0.0.0	0	LISTENING	568	wininit.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff6050	TCPv6	::	49665	::	0	LISTENING	568	wininit.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff6890	TCPv4	0.0.0.0	49666	0.0.0.0	0	LISTENING	1336	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff6e10	TCPv4	0.0.0.0	135	0.0.0.0	0	LISTENING	976	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff70d0	TCPv4	0.0.0.0	49666	0.0.0.0	0	LISTENING	1336	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff70d0	TCPv6	::	49666	::	0	LISTENING	1336	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff77b0	TCPv4	0.0.0.0	49664	0.0.0.0	0	LISTENING	736	lsass.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff77b0	TCPv6	::	49664	::	0	LISTENING	736	lsass.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff7910	TCPv4	0.0.0.0	135	0.0.0.0	0	LISTENING	976	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff7910	TCPv6	::	135	::	0	LISTENING	976	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff7d30	TCPv4	0.0.0.0	49664	0.0.0.0	0	LISTENING	736	lsass.exe	2021-04-30 12:39:44.000000 
+0xbf0f66ff7e90	TCPv4	0.0.0.0	49665	0.0.0.0	0	LISTENING	568	wininit.exe	2021-04-30 12:39:44.000000 
+0xbf0f6a535aa0	TCPv4	10.0.2.15	49846	96.90.32.107	7680	SYN_SENT	2116	svchost.exe	2021-04-30 17:52:01.000000 
+0xbf0f6a53ca20	TCPv4	10.0.2.15	49833	52.230.222.68	443	ESTABLISHED	2812	svchost.exe	2021-04-30 17:50:07.000000 
+0xbf0f6a5a6050	TCPv4	0.0.0.0	49668	0.0.0.0	0	LISTENING	2600	spoolsv.exe	2021-04-30 17:39:46.000000 
+0xbf0f6a5a6730	TCPv4	0.0.0.0	49667	0.0.0.0	0	LISTENING	1296	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f6a5a6730	TCPv6	::	49667	::	0	LISTENING	1296	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f6a5a69f0	TCPv4	0.0.0.0	49667	0.0.0.0	0	LISTENING	1296	svchost.exe	2021-04-30 12:39:44.000000 
+0xbf0f6a5a6e10	TCPv4	0.0.0.0	445	0.0.0.0	0	LISTENING	4	System	2021-04-30 17:39:47.000000 
+0xbf0f6a5a6e10	TCPv6	::	445	::	0	LISTENING	4	System	2021-04-30 17:39:47.000000 
+0xbf0f6a5a7230	TCPv4	10.0.2.15	139	0.0.0.0	0	LISTENING	4	System	2021-04-30 12:39:44.000000 
+0xbf0f6a5a7a70	TCPv4	0.0.0.0	49668	0.0.0.0	0	LISTENING	2600	spoolsv.exe	2021-04-30 17:39:46.000000 
+0xbf0f6a5a7a70	TCPv6	::	49668	::	0	LISTENING	2600	spoolsv.exe	2021-04-30 17:39:46.000000 
+0xbf0f6a837e10	TCPv4	0.0.0.0	5040	0.0.0.0	0	LISTENING	4128	svchost.exe	2021-04-30 17:39:48.000000 
+0xbf0f6a88fae0	TCPv4	10.0.2.15	49826	40.125.122.151	443	CLOSED	6200	svchost.exe	2021-04-30 17:49:53.000000 
+0xbf0f6a896ae0	TCPv4	10.0.2.15	49773	185.70.41.35	443	FIN_WAIT2	1840	chrome.exe	2021-04-30 17:44:58.000000 
+0xbf0f6aa4a6a0	UDPv4	0.0.0.0	5353	*	0		1328	chrome.exe	2021-04-30 17:45:04.000000 
+0xbf0f6aa4a6a0	UDPv6	::	5353	*	0		1328	chrome.exe	2021-04-30 17:45:04.000000 
+0xbf0f6aa4b320	UDPv4	0.0.0.0	5353	*	0		1328	chrome.exe	2021-04-30 17:45:04.000000 
+0xbf0f6aa4f010	UDPv4	0.0.0.0	5353	*	0		1328	chrome.exe	2021-04-30 17:45:04.000000 
+0xbf0f6aa4f010	UDPv6	::	5353	*	0		1328	chrome.exe	2021-04-30 17:45:04.000000 
+0xbf0f6abbd490	UDPv4	0.0.0.0	0	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abbd490	UDPv6	::	0	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abbf560	UDPv4	10.0.2.15	55035	*	0		3088	svchost.exe	2021-04-30 17:41:51.000000 
+0xbf0f6abc0050	UDPv4	0.0.0.0	5353	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abc0050	UDPv6	::	5353	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abc2760	UDPv4	0.0.0.0	5353	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abc28f0	UDPv4	10.0.2.15	54805	*	0		3088	svchost.exe	2021-04-30 17:42:00.000000 
+0xbf0f6abc70d0	UDPv6	::1	64461	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abc7260	UDPv4	127.0.0.1	64463	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abc8b60	UDPv4	10.0.2.15	64462	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abc8cf0	UDPv6	fe80::417e:4ac4:e8ea:c3fb	64460	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abc9010	UDPv4	0.0.0.0	3544	*	0		3088	svchost.exe	2021-04-30 17:41:57.000000 
+0xbf0f6abcfd70	UDPv4	10.0.2.15	54758	*	0		3088	svchost.exe	2021-04-30 17:43:21.000000 
+0xbf0f6ad16050	TCPv4	10.0.2.15	49829	142.250.191.208	443	ESTABLISHED	5624	svchost.exe	2021-04-30 17:49:58.000000 
+0xbf0f6ad1fad0	TCPv4	10.0.2.15	49847	52.230.222.68	443	ESTABLISHED	2812	svchost.exe	2021-04-30 17:52:17.000000 
+0xbf0f6bf9c8a0	TCPv4	10.0.2.15	49844	172.217.9.46	80	CLOSED	5624	svchost.exe	2021-04-30 17:51:35.000000 
+0xbf0f6bfb7890	UDPv4	10.0.2.15	138	*	0		4	System	2021-04-30 12:39:44.000000 
+0xbf0f6bfb9640	UDPv4	10.0.2.15	137	*	0		4	System	2021-04-30 12:39:44.000000 
+0xbf0f6c0cbce0	UDPv4	10.0.2.15	54636	*	0		3088	svchost.exe	2021-04-30 17:44:01.000000 
+0xbf0f6c6352b0	TCPv4	10.0.2.15	49842	52.113.196.254	443	ESTABLISHED	5104	SearchApp.exe	2021-04-30 17:51:25.000000 
+0xbf0f6c69f6a0	UDPv4	127.0.0.1	55787	*	0		3088	svchost.exe	2021-04-30 17:39:47.000000 
+0xbf0f6c7104d0	TCPv4	10.0.2.15	49778	185.70.41.130	443	ESTABLISHED	1840	chrome.exe	2021-04-30 17:45:00.000000 
+0xbf0f6c85bb20	TCPv4	10.0.2.15	49775	185.70.41.35	443	FIN_WAIT2	1840	chrome.exe	2021-04-30 17:44:58.000000 
+0xbf0f6c8a11a0	UDPv4	0.0.0.0	5050	*	0		4128	svchost.exe	2021-04-30 17:39:48.000000 
+0xbf0f6ca71a20	TCPv4	10.0.2.15	49769	142.250.190.14	443	CLOSE_WAIT	1840	chrome.exe	2021-04-30 17:44:55.000000 
+0xbf0f6cbb9530	TCPv4	10.0.2.15	49772	185.70.41.35	443	FIN_WAIT2	1840	chrome.exe	2021-04-30 17:44:58.000000 
+0xbf0f6ccc14d0	TCPv4	10.0.2.15	49840	69.85.230.250	7680	CLOSED	2116	svchost.exe	2021-04-30 17:51:24.000000 
+0xbf0f6cd4fa20	TCPv4	10.0.2.15	49837	204.79.197.200	443	ESTABLISHED	5104	SearchApp.exe	2021-04-30 17:51:18.000000 
+0xbf0f6cd8a240	UDPv4	10.0.2.15	54683	*	0		3088	svchost.exe	2021-04-30 17:43:57.000000 
+0xbf0f6cfd17f0	TCPv4	10.0.2.15	49777	35.186.220.63	443	CLOSE_WAIT	1840	chrome.exe	2021-04-30 17:44:58.000000 
+0xbf0f6d09e450	UDPv6	fe80::417e:4ac4:e8ea:c3fb	1900	*	0		432	svchost.exe	2021-04-30 17:41:47.000000 
+0xbf0f6d09fd50	UDPv4	10.0.2.15	1900	*	0		432	svchost.exe	2021-04-30 17:41:47.000000 
+0xbf0f6d0a0070	UDPv4	127.0.0.1	1900	*	0		432	svchost.exe	2021-04-30 17:41:47.000000 
+0xbf0f6d0a0520	UDPv6	::1	1900	*	0		432	svchost.exe	2021-04-30 17:41:47.000000 
+0xbf0f6d0c64a0	TCPv4	10.0.2.15	49843	204.79.197.222	443	ESTABLISHED	5104	SearchApp.exe	2021-04-30 17:51:26.000000 
+0xbf0f6d3814e0	TCPv4	10.0.2.15	49841	73.30.45.11	7680	CLOSED	2116	svchost.exe	2021-04-30 17:51:24.000000 
+0xbf0f6d51c010	TCPv4	10.0.2.15	49763	172.217.4.35	443	CLOSE_WAIT	1840	chrome.exe	2021-04-30 17:44:53.000000 
+0xbf0f6d51c4a0	TCPv4	10.0.2.15	49838	13.107.3.254	443	ESTABLISHED	5104	SearchApp.exe	2021-04-30 17:51:23.000000 
+0xbf0f6d5204a0	TCPv4	10.0.2.15	49816	52.242.211.89	443	CLOSED	2812	svchost.exe	2021-04-30 17:49:05.000000 
+0xbf0f6d525a20	TCPv4	10.0.2.15	49845	23.101.202.202	443	ESTABLISHED	1156	MsMpEng.exe	2021-04-30 17:51:36.000000 
+0xbf0f6d5c8a70	TCPv4	10.0.2.15	49797	172.217.4.74	443	CLOSE_WAIT	1840	chrome.exe	2021-04-30 17:48:27.000000 
+0xbf0f6d5d1ac0	TCPv4	10.0.2.15	49770	185.70.41.35	443	FIN_WAIT2	1840	chrome.exe	2021-04-30 17:44:57.000000 
+0xbf0f6d8a1010	TCPv4	10.0.2.15	49771	185.70.41.35	443	CLOSE_WAIT	1840	chrome.exe	2021-04-30 17:44:57.000000 
+0xbf0f6db90c90	UDPv4	10.0.2.15	55137	*	0		3088	svchost.exe	2021-04-30 17:46:38.000000 
+0xbf0f6db96a50	UDPv4	10.0.2.15	55870	*	0		3088	svchost.exe	2021-04-30 17:46:42.000000 
+0xbf0f6db9b550	UDPv4	10.0.2.15	62319	*	0		3088	svchost.exe	2021-04-30 17:46:02.000000 
+0xbf0f6dbaadc0	UDPv4	0.0.0.0	0	*	0		1660	VBoxService.ex	2021-04-30 17:52:06.000000 
+0xbf0f6de63b50	UDPv4	0.0.0.0	0	*	0		1660	VBoxService.ex	2021-04-30 17:52:31.000000 
+0xbf0f6e9baae0	UDPv4	0.0.0.0	59533	*	0		-	-	2021-04-30 17:49:34.000000 
+0xbf0f6e9c0710	UDPv4	0.0.0.0	64265	*	0		-	-	2021-04-30 17:49:30.000000 
+0xe800000e0760	UDPv4	0.0.0.0	5353	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xe800000e08f0	UDPv4	10.0.2.15	54805	*	0		3088	svchost.exe	2021-04-30 17:42:00.000000 
+0xe800000f30d0	UDPv6	::1	64461	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xe800000f3260	UDPv4	127.0.0.1	64463	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xe800000f4b60	UDPv4	10.0.2.15	64462	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xe800000f4cf0	UDPv6	fe80::417e:4ac4:e8ea:c3fb	64460	*	0		432	svchost.exe	2021-04-30 17:41:57.000000 
+0xe800000f5010	UDPv4	0.0.0.0	3544	*	0		3088	svchost.exe	2021-04-30 17:41:57.000000 
+0xe80000111050	UDPv4	0.0.0.0	5353	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xe80000111050	UDPv6	::	5353	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xe80000113560	UDPv4	10.0.2.15	55035	*	0		3088	svchost.exe	2021-04-30 17:41:51.000000 
+0xe80000114490	UDPv4	0.0.0.0	0	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xe80000114490	UDPv6	::	0	*	0		2168	svchost.exe	2021-04-30 17:41:57.000000 
+0xe80000193a20	TCPv4	10.0.2.15	49845	23.101.202.202	443	ESTABLISHED	1156	MsMpEng.exe	2021-04-30 17:51:36.000000 
+</pre><h2>Registry Hives</h2><pre>Volatility 3 Framework 2.7.0
+
+Offset	FileFullPath	File output
+
+0xa8032f064000		Disabled
+0xa8032f089000	\REGISTRY\MACHINE\SYSTEM	Disabled
+0xa8032f135000	\REGISTRY\MACHINE\HARDWARE	Disabled
+0xa8033262f000	\Device\HarddiskVolume1\Boot\BCD	Disabled
+0xa8032fac1000	\SystemRoot\System32\Config\SOFTWARE	Disabled
+0xa8032f632000	\SystemRoot\System32\Config\DEFAULT	Disabled
+0xa803327aa000	\SystemRoot\System32\Config\SECURITY	Disabled
+0xa8033281e000	\SystemRoot\System32\Config\SAM	Disabled
+0xa80332915000	\??\C:\Windows\ServiceProfiles\NetworkService\NTUSER.DAT	Disabled
+0xa80332a95000	\SystemRoot\System32\Config\BBI	Disabled
+0xa80332aab000	\??\C:\Windows\ServiceProfiles\LocalService\NTUSER.DAT	Disabled
+0xa80333cda000	\??\C:\Users\John Doe\ntuser.dat	Disabled
+0xa80333d60000	\??\C:\Users\John Doe\AppData\Local\Microsoft\Windows\UsrClass.dat	Disabled
+0xa803346e5000	\??\C:\Windows\AppCompat\Programs\Amcache.hve	Disabled
+0xa80334a27000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.Windows.StartMenuExperienceHost_10.0.19041.610_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80334a9e000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa80334b8b000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.Windows.Search_1.14.0.19041_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80334cd8000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa80334d62000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.LockApp_10.0.19041.423_neutral__cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa8033522b000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.LockApp_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa8033542c000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.YourPhone_1.21022.215.0_x64__8wekyb3d8bbwe\ActivationStore.dat	Disabled
+0xa80335548000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.YourPhone_8wekyb3d8bbwe\Settings\settings.dat	Disabled
+0xa803354da000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\MicrosoftWindows.Client.CBS_120.2212.551.0_x64__cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80335d1e000	\??\C:\Users\John Doe\AppData\Local\Packages\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa8032f785000	\??\C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\State\dosvcState.dat	Disabled
+0xa80336f5b000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.Windows.ShellExperienceHost_10.0.19041.610_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80336ff2000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.Windows.ShellExperienceHost_cw5n1h2txyewy\Settings\settings.dat	Disabled
+0xa803326c3000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\Microsoft.WindowsStore_11910.1002.5.0_x64__8wekyb3d8bbwe\ActivationStore.dat	Disabled
+0xa8033704c000	\??\C:\Users\John Doe\AppData\Local\Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\Settings\settings.dat	Disabled
+0xa80337088000	\??\C:\ProgramData\Microsoft\Windows\AppRepository\Packages\windows.immersivecontrolpanel_10.0.2.1000_neutral_neutral_cw5n1h2txyewy\ActivationStore.dat	Disabled
+0xa80338669000	\SystemRoot\System32\config\DRIVERS	Disabled
+</pre><h2>User Accounts</h2><pre>Volatility 3 Framework 2.7.0
+
+User	rid	lmhash	nthash
+
+Administrator	500	aad3b435b51404eeaad3b435b51404ee	31d6cfe0d16ae931b73c59d7e0c089c0
+Guest	501	aad3b435b51404eeaad3b435b51404ee	31d6cfe0d16ae931b73c59d7e0c089c0
+DefaultAccount	503	aad3b435b51404eeaad3b435b51404ee	31d6cfe0d16ae931b73c59d7e0c089c0
+WDAGUtilityAccount	504	aad3b435b51404eeaad3b435b51404ee	69dbee1a98d4f53fbccb1fe5ce37c851
+John Doe	1001	aad3b435b51404eeaad3b435b51404ee	ecf53750b76cc9a62057ca85ff4c850e
+</pre><h2>Kernel Modules</h2><pre>Volatility 3 Framework 2.7.0
+
+Offset	Base	Size	Name	Path	File output
+
+0xbf0f64a4ea10	0xf8043cc00000	0x1046000	ntoskrnl.exe	\SystemRoot\system32\ntoskrnl.exe	Disabled
+0xbf0f64a4ee20	0xf8043b6a0000	0x6000	hal.dll	\SystemRoot\system32\hal.dll	Disabled
+0xbf0f64a5a050	0xf8043b6b0000	0xb000	kdcom.dll	\SystemRoot\system32\kd.dll	Disabled
+0xbf0f64a5a200	0xf8043b300000	0x39d000	mcupdate.dll	\SystemRoot\system32\mcupdate_GenuineIntel.dll	Disabled
+0xbf0f64a5a430	0xf80440c00000	0x6a000	CLFS.SYS	\SystemRoot\System32\drivers\CLFS.SYS	Disabled
+0xbf0f64a5a5e0	0xf8043b6c0000	0x27000	tm.sys	\SystemRoot\System32\drivers\tm.sys	Disabled
+0xbf0f64a5a790	0xf80440c70000	0x1a000	PSHED.dll	\SystemRoot\system32\PSHED.dll	Disabled
+0xbf0f64a5a950	0xf8043b6f0000	0xb000	BOOTVID.dll	\SystemRoot\system32\BOOTVID.dll	Disabled
+0xbf0f64a5ab00	0xf80440db0000	0x6f000	FLTMGR.SYS	\SystemRoot\System32\drivers\FLTMGR.SYS	Disabled
+0xbf0f64a5acc0	0xf80440e50000	0x63000	msrpc.sys	\SystemRoot\System32\drivers\msrpc.sys	Disabled
+0xbf0f64a5b010	0xf80440e20000	0x29000	ksecdd.sys	\SystemRoot\System32\drivers\ksecdd.sys	Disabled
+0xbf0f64a593b0	0xf80440c90000	0x113000	clipsp.sys	\SystemRoot\System32\drivers\clipsp.sys	Disabled
+0xbf0f64a5b1d0	0xf80440ec0000	0xe000	cmimcext.sys	\SystemRoot\System32\drivers\cmimcext.sys	Disabled
+0xbf0f64a5b390	0xf80440ed0000	0x11000	werkernel.sys	\SystemRoot\System32\drivers\werkernel.sys	Disabled
+0xbf0f64a5b550	0xf80440ef0000	0xc000	ntosext.sys	\SystemRoot\System32\drivers\ntosext.sys	Disabled
+0xbf0f64a5b700	0xf80440f00000	0xe3000	CI.dll	\SystemRoot\system32\CI.dll	Disabled
+0xbf0f64a5b8d0	0xf80440ff0000	0xb7000	cng.sys	\SystemRoot\System32\drivers\cng.sys	Disabled
+0xbf0f64a5ba90	0xf804410b0000	0xd2000	Wdf01000.sys	\SystemRoot\system32\drivers\Wdf01000.sys	Disabled
+0xbf0f64a5bc60	0xf80441190000	0x13000	WDFLDR.SYS	\SystemRoot\system32\drivers\WDFLDR.SYS	Disabled
+0xbf0f64a5be10	0xf804411c0000	0x11000	WppRecorder.sys	\SystemRoot\system32\drivers\WppRecorder.sys	Disabled
+0xbf0f64a5c010	0xf804411b0000	0xf000	SleepStudyHelper.sys	\SystemRoot\system32\drivers\SleepStudyHelper.sys	Disabled
+0xbf0f64a5c1d0	0xf804411e0000	0x26000	acpiex.sys	\SystemRoot\System32\Drivers\acpiex.sys	Disabled
+0xbf0f64a5c380	0xf80441210000	0x1a000	SgrmAgent.sys	\SystemRoot\system32\drivers\SgrmAgent.sys	Disabled
+0xbf0f64a5c540	0xf80441230000	0xcc000	ACPI.sys	\SystemRoot\System32\drivers\ACPI.sys	Disabled
+0xbf0f64a5c710	0xf80441300000	0xc000	WMILIB.SYS	\SystemRoot\System32\drivers\WMILIB.SYS	Disabled
+0xbf0f64a5ca70	0xf80441330000	0x6b000	intelpep.sys	\SystemRoot\System32\drivers\intelpep.sys	Disabled
+0xbf0f64a5cc30	0xf804413a0000	0x17000	WindowsTrustedRT.sys	\SystemRoot\system32\drivers\WindowsTrustedRT.sys	Disabled
+0xbf0f64a5cdf0	0xf804413c0000	0xb000	IntelTA.sys	\SystemRoot\System32\drivers\IntelTA.sys	Disabled
+0xbf0f64a5d010	0xf804413d0000	0xb000	WindowsTrustedRTProxy.sys	\SystemRoot\System32\drivers\WindowsTrustedRTProxy.sys	Disabled
+0xbf0f64a5d1e0	0xf804413e0000	0x14000	pcw.sys	\SystemRoot\System32\drivers\pcw.sys	Disabled
+0xbf0f64a5d390	0xf80441400000	0xb000	msisadrv.sys	\SystemRoot\System32\drivers\msisadrv.sys	Disabled
+0xbf0f64a5d540	0xf80441410000	0x76000	pci.sys	\SystemRoot\System32\drivers\pci.sys	Disabled
+0xbf0f64a5d6f0	0xf80441490000	0x15000	vdrvroot.sys	\SystemRoot\System32\drivers\vdrvroot.sys	Disabled
+0xbf0f64a5d8a0	0xf804414b0000	0x2f000	pdc.sys	\SystemRoot\system32\drivers\pdc.sys	Disabled
+0xbf0f64a5da50	0xf804414e0000	0x19000	CEA.sys	\SystemRoot\system32\drivers\CEA.sys	Disabled
+0xbf0f64a6b390	0xf80441500000	0x31000	partmgr.sys	\SystemRoot\System32\drivers\partmgr.sys	Disabled
+0xbf0f64a5dc00	0xf80441540000	0xaa000	spaceport.sys	\SystemRoot\System32\drivers\spaceport.sys	Disabled
+0xbf0f64a6b050	0xf804415f0000	0x19000	volmgr.sys	\SystemRoot\System32\drivers\volmgr.sys	Disabled
+0xbf0f64a5ddd0	0xf80441610000	0x63000	volmgrx.sys	\SystemRoot\System32\drivers\volmgrx.sys	Disabled
+0xbf0f64a6bbb0	0xf80441680000	0x1e000	mountmgr.sys	\SystemRoot\System32\drivers\mountmgr.sys	Disabled
+0xbf0f64a6bd50	0xf804416a0000	0x32000	storahci.sys	\SystemRoot\System32\drivers\storahci.sys	Disabled
+0xbf0f64a5e010	0xf804416e0000	0xb3000	storport.sys	\SystemRoot\System32\drivers\storport.sys	Disabled
+0xbf0f64a6b1f0	0xf804417c0000	0x1a000	fileinfo.sys	\SystemRoot\System32\drivers\fileinfo.sys	Disabled
+0xbf0f64a6ba10	0xf804417e0000	0x40000	Wof.sys	\SystemRoot\System32\Drivers\Wof.sys	Disabled
+0xbf0f64a5e3a0	0xf80441830000	0x6a000	WdFilter.sys	\SystemRoot\system32\drivers\wd\WdFilter.sys	Disabled
+0xbf0f64a58de0	0xf804418a0000	0x2d9000	Ntfs.sys	\SystemRoot\System32\Drivers\Ntfs.sys	Disabled
+0xbf0f64a5e560	0xf80441b80000	0x58000	VBoxGuest.sys	\SystemRoot\system32\DRIVERS\VBoxGuest.sys	Disabled
+0xbf0f64a6b530	0xf80441be0000	0xd000	Fs_Rec.sys	\SystemRoot\System32\Drivers\Fs_Rec.sys	Disabled
+0xbf0f64a5e720	0xf80441bf0000	0x16f000	ndis.sys	\SystemRoot\system32\drivers\ndis.sys	Disabled
+0xbf0f64a5e900	0xf80441d60000	0x98000	NETIO.SYS	\SystemRoot\system32\drivers\NETIO.SYS	Disabled
+0xbf0f64a6b870	0xf80441e00000	0x32000	ksecpkg.sys	\SystemRoot\System32\Drivers\ksecpkg.sys	Disabled
+0xbf0f64a5ead0	0xf80441e40000	0x2eb000	tcpip.sys	\SystemRoot\System32\drivers\tcpip.sys	Disabled
+0xbf0f64a6c8c0	0xf80442130000	0x7f000	fwpkclnt.sys	\SystemRoot\System32\drivers\fwpkclnt.sys	Disabled
+0xbf0f64a6b6d0	0xf804421b0000	0x30000	wfplwfs.sys	\SystemRoot\System32\drivers\wfplwfs.sys	Disabled
+0xbf0f64a5ecf0	0xf804421f0000	0xc8000	fvevol.sys	\SystemRoot\System32\DRIVERS\fvevol.sys	Disabled
+0xbf0f64a6e090	0xf804422c0000	0xb000	volume.sys	\SystemRoot\System32\drivers\volume.sys	Disabled
+0xbf0f64a6c560	0xf804422d0000	0x6d000	volsnap.sys	\SystemRoot\System32\drivers\volsnap.sys	Disabled
+0xbf0f64a6ca70	0xf80442340000	0x50000	rdyboost.sys	\SystemRoot\System32\drivers\rdyboost.sys	Disabled
+0xbf0f64a6e8b0	0xf804423a0000	0x26000	mup.sys	\SystemRoot\System32\Drivers\mup.sys	Disabled
+0xbf0f64a6ea50	0xf804423d0000	0x12000	iorate.sys	\SystemRoot\system32\drivers\iorate.sys	Disabled
+0xbf0f64a6e230	0xf80442410000	0x1c000	disk.sys	\SystemRoot\System32\drivers\disk.sys	Disabled
+0xbf0f64a6cdd0	0xf80442430000	0x6c000	CLASSPNP.SYS	\SystemRoot\System32\drivers\CLASSPNP.SYS	Disabled
+0xbf0f664f83d0	0xf80443730000	0x1e000	crashdmp.sys	\SystemRoot\System32\Drivers\crashdmp.sys	Disabled
+0xbf0f664f7530	0xf80442a40000	0x30000	cdrom.sys	\SystemRoot\System32\drivers\cdrom.sys	Disabled
+0xbf0f660f7d00	0xf80442a80000	0x15000	filecrypt.sys	\SystemRoot\system32\drivers\filecrypt.sys	Disabled
+0xbf0f664f76d0	0xf80442aa0000	0xe000	tbs.sys	\SystemRoot\system32\drivers\tbs.sys	Disabled
+0xbf0f64a3e310	0xf80442ab0000	0xa000	Null.SYS	\SystemRoot\System32\Drivers\Null.SYS	Disabled
+0xbf0f64a3d9b0	0xf80442ac0000	0xa000	Beep.SYS	\SystemRoot\System32\Drivers\Beep.SYS	Disabled
+0xbf0f6665b010	0xf80442ad0000	0x3a4000	dxgkrnl.sys	\SystemRoot\System32\drivers\dxgkrnl.sys	Disabled
+0xbf0f666dc050	0xf80442e80000	0x18000	watchdog.sys	\SystemRoot\System32\drivers\watchdog.sys	Disabled
+0xbf0f660f6200	0xf80442ea0000	0x16000	BasicDisplay.sys	\SystemRoot\System32\DriverStore\FileRepository\basicdisplay.inf_amd64_65ab9a260dbf7467\BasicDisplay.sys	Disabled
+0xbf0f660f6560	0xf80442ec0000	0x11000	BasicRender.sys	\SystemRoot\System32\DriverStore\FileRepository\basicrender.inf_amd64_df49c4daa6251397\BasicRender.sys	Disabled
+0xbf0f660f6710	0xf80442ee0000	0x42000	QuickCryptoOTFE-x64.sys	\SystemRoot\system32\DRIVERS\QuickCryptoOTFE-x64.sys	Disabled
+0xbf0f666dd3d0	0xf80442f30000	0x1c000	Npfs.SYS	\SystemRoot\System32\Drivers\Npfs.SYS	Disabled
+0xbf0f666dc6d0	0xf80442f50000	0x11000	Msfs.SYS	\SystemRoot\System32\Drivers\Msfs.SYS	Disabled
+0xbf0f666dd570	0xf80442f70000	0x1b000	CimFS.SYS	\SystemRoot\System32\Drivers\CimFS.SYS	Disabled
+0xbf0f666dc390	0xf80442f90000	0x22000	tdx.sys	\SystemRoot\system32\DRIVERS\tdx.sys	Disabled
+0xbf0f666dc870	0xf80442fc0000	0x10000	TDI.SYS	\SystemRoot\system32\DRIVERS\TDI.SYS	Disabled
+0xbf0f660f7130	0xf80442fe0000	0x5c000	netbt.sys	\SystemRoot\System32\DRIVERS\netbt.sys	Disabled
+0xbf0f660f6c20	0xf80443040000	0x13000	afunix.sys	\SystemRoot\system32\drivers\afunix.sys	Disabled
+0xbf0f64d875e0	0xf80443060000	0xa3000	afd.sys	\SystemRoot\system32\drivers\afd.sys	Disabled
+0xbf0f666dcbb0	0xf80443110000	0x13000	npcap.sys	\SystemRoot\system32\DRIVERS\npcap.sys	Disabled
+0xbf0f666dcd50	0xf80443130000	0x1a000	vwififlt.sys	\SystemRoot\System32\drivers\vwififlt.sys	Disabled
+0xbf0f666dd230	0xf80443150000	0x2b000	pacer.sys	\SystemRoot\System32\drivers\pacer.sys	Disabled
+0xbf0f66879230	0xf80443180000	0x14000	ndiscap.sys	\SystemRoot\System32\drivers\ndiscap.sys	Disabled
+0xbf0f66878d50	0xf804431a0000	0x14000	netbios.sys	\SystemRoot\system32\drivers\netbios.sys	Disabled
+0xbf0f66878a10	0xf804431c0000	0x7a000	VBoxSF.sys	\SystemRoot\System32\drivers\VBoxSF.sys	Disabled
+0xbf0f660f6a70	0xf80443240000	0xa1000	Vid.sys	\SystemRoot\System32\drivers\Vid.sys	Disabled
+0xbf0f6685e9a0	0xf804432f0000	0x21000	winhvr.sys	\SystemRoot\System32\drivers\winhvr.sys	Disabled
+0xbf0f6685d050	0xf80443320000	0x7b000	rdbss.sys	\SystemRoot\system32\DRIVERS\rdbss.sys	Disabled
+0xbf0f668793d0	0xf804433a0000	0x12000	nsiproxy.sys	\SystemRoot\system32\drivers\nsiproxy.sys	Disabled
+0xbf0f6685e130	0xf804433c0000	0xe000	npsvctrig.sys	\SystemRoot\System32\drivers\npsvctrig.sys	Disabled
+0xbf0f66879570	0xf804433d0000	0x10000	mssmbios.sys	\SystemRoot\System32\drivers\mssmbios.sys	Disabled
+0xbf0f66879090	0xf804433f0000	0xa000	gpuenergydrv.sys	\SystemRoot\System32\drivers\gpuenergydrv.sys	Disabled
+0xbf0f66878bb0	0xf80443400000	0x2c000	dfsc.sys	\SystemRoot\System32\Drivers\dfsc.sys	Disabled
+0xbf0f66878390	0xf80443450000	0x17000	bam.sys	\SystemRoot\system32\drivers\bam.sys	Disabled
+0xbf0f6685eb50	0xf80443470000	0x4e000	ahcache.sys	\SystemRoot\system32\DRIVERS\ahcache.sys	Disabled
+0xbf0f6685e490	0xf804434c0000	0x12000	CompositeBus.sys	\SystemRoot\System32\DriverStore\FileRepository\compositebus.inf_amd64_7500cffa210c6946\CompositeBus.sys	Disabled
+0xbf0f668781f0	0xf804434e0000	0xd000	kdnic.sys	\SystemRoot\System32\drivers\kdnic.sys	Disabled
+0xbf0f66879d90	0xf804434f0000	0x15000	umbus.sys	\SystemRoot\System32\DriverStore\FileRepository\umbus.inf_amd64_b78a9c5b6fd62c27\umbus.sys	Disabled
+0xbf0f66878530	0xf80443510000	0x15000	CAD.sys	\SystemRoot\System32\drivers\CAD.sys	Disabled
+0xbf0f66926090	0xf80443530000	0x21000	i8042prt.sys	\SystemRoot\System32\drivers\i8042prt.sys	Disabled
+0xbf0f66925390	0xf80443560000	0x14000	kbdclass.sys	\SystemRoot\System32\drivers\kbdclass.sys	Disabled
+0xbf0f6685d560	0xf80443580000	0x4a000	VBoxMouse.sys	\SystemRoot\system32\DRIVERS\VBoxMouse.sys	Disabled
+0xbf0f66926230	0xf804435d0000	0x13000	mouclass.sys	\SystemRoot\System32\drivers\mouclass.sys	Disabled
+0xbf0f669263d0	0xf804435f0000	0x76000	VBoxWddm.sys	\SystemRoot\system32\DRIVERS\VBoxWddm.sys	Disabled
+0xbf0f6687ab40	0xf80443670000	0x25000	E1G6032E.sys	\SystemRoot\System32\drivers\E1G6032E.sys	Disabled
+0xbf0f66926710	0xf804436a0000	0x25000	HDAudBus.sys	\SystemRoot\System32\drivers\HDAudBus.sys	Disabled
+0xbf0f6685d710	0xf80443a50000	0x66000	portcls.sys	\SystemRoot\System32\drivers\portcls.sys	Disabled
+0xbf0f66925a10	0xf80443ac0000	0x21000	drmk.sys	\SystemRoot\System32\drivers\drmk.sys	Disabled
+0xbf0f6685d8c0	0xf80443af0000	0x76000	ks.sys	\SystemRoot\System32\drivers\ks.sys	Disabled
+0xbf0f64d91de0	0xf80443800000	0x98000	USBXHCI.SYS	\SystemRoot\System32\drivers\USBXHCI.SYS	Disabled
+0xbf0f668e0490	0xf804438a0000	0x44000	ucx01000.sys	\SystemRoot\system32\drivers\ucx01000.sys	Disabled
+0xbf0f66926bf0	0xf804438f0000	0xf000	CmBatt.sys	\SystemRoot\System32\drivers\CmBatt.sys	Disabled
+0xbf0f66926570	0xf80443900000	0x10000	BATTC.SYS	\SystemRoot\System32\drivers\BATTC.SYS	Disabled
+0xbf0f669256d0	0xf80443920000	0x40000	intelppm.sys	\SystemRoot\System32\drivers\intelppm.sys	Disabled
+0xbf0f669dd8c0	0xf80443970000	0xd000	NdisVirtualBus.sys	\SystemRoot\System32\drivers\NdisVirtualBus.sys	Disabled
+0xbf0f66925530	0xf80443980000	0xc000	swenum.sys	\SystemRoot\System32\DriverStore\FileRepository\swenum.inf_amd64_16a14542b63c02af\swenum.sys	Disabled
+0xbf0f669268b0	0xf80443990000	0xe000	rdpbus.sys	\SystemRoot\System32\drivers\rdpbus.sys	Disabled
+0xbf0f64d978e0	0xf804439a0000	0xa3000	UsbHub3.sys	\SystemRoot\System32\drivers\UsbHub3.sys	Disabled
+0xbf0f66f8d870	0xf80443b70000	0xe000	USBD.SYS	\SystemRoot\System32\drivers\USBD.SYS	Disabled
+0xbf0f669de640	0xf80443b80000	0x6f000	HdAudio.sys	\SystemRoot\System32\drivers\HdAudio.sys	Disabled
+0xbf0f66f8e230	0xf80443bf0000	0xf000	ksthunk.sys	\SystemRoot\system32\drivers\ksthunk.sys	Disabled
+0xbf0f66f8ed90	0xf804436d0000	0x12000	hidusb.sys	\SystemRoot\System32\drivers\hidusb.sys	Disabled
+0xbf0f66f8d050	0xf80444190000	0x3f000	HIDCLASS.SYS	\SystemRoot\System32\drivers\HIDCLASS.SYS	Disabled
+0xbf0f66f8d1f0	0xf804441d0000	0x13000	HIDPARSE.SYS	\SystemRoot\System32\drivers\HIDPARSE.SYS	Disabled
+0xbf0f66f8d6d0	0xf80443c00000	0x10000	mouhid.sys	\SystemRoot\System32\drivers\mouhid.sys	Disabled
+0xbf0f660f68c0	0xf80443c30000	0xe000	dump_storport.sys	\SystemRoot\System32\Drivers\dump_diskdump.sys	Disabled
+0xbf0f660f79a0	0xf80443c80000	0x32000	dump_storahci.sys	\SystemRoot\System32\drivers\dump_storahci.sys	Disabled
+0xbf0f660f63b0	0xf80443ce0000	0x1d000	dump_dumpfve.sys	\SystemRoot\System32\Drivers\dump_dumpfve.sys	Disabled
+0xbf0f6ad97460	0xfa13a3100000	0x9a000	win32k.sys	\SystemRoot\System32\win32k.sys	Disabled
+0xbf0f6ad8a010	0xfa13a2200000	0x2d9000	win32kbase.sys	\SystemRoot\System32\win32kbase.sys	Disabled
+0xbf0f6adc2310	0xfa13a24e0000	0x3b6000	win32kfull.sys	\SystemRoot\System32\win32kfull.sys	Disabled
+0xbf0f6667c880	0xf80443d00000	0x1b000	monitor.sys	\SystemRoot\System32\drivers\monitor.sys	Disabled
+0xbf0f64da0860	0xf80443d20000	0xe1000	dxgmms2.sys	\SystemRoot\System32\drivers\dxgmms2.sys	Disabled
+0xbf0f6adac720	0xfa13a28a0000	0x4a000	cdd.dll	\SystemRoot\System32\cdd.dll	Disabled
+0xbf0f668057f0	0xf80443e10000	0x29000	luafv.sys	\SystemRoot\system32\drivers\luafv.sys	Disabled
+0xbf0f6667d3e0	0xf80443e40000	0x36000	wcifs.sys	\SystemRoot\system32\drivers\wcifs.sys	Disabled
+0xbf0f66805d00	0xf80443e80000	0x81000	cldflt.sys	\SystemRoot\system32\drivers\cldflt.sys	Disabled
+0xbf0f666b4dd0	0xf80443f10000	0x1a000	storqosflt.sys	\SystemRoot\system32\drivers\storqosflt.sys	Disabled
+0xbf0f6667d240	0xf80443f30000	0x28000	bindflt.sys	\SystemRoot\system32\drivers\bindflt.sys	Disabled
+0xbf0f6667c060	0xf80443f60000	0x12000	condrv.sys	\SystemRoot\System32\drivers\condrv.sys	Disabled
+0xbf0f64a6ebf0	0xf80443f80000	0x18000	lltdio.sys	\SystemRoot\system32\drivers\lltdio.sys	Disabled
+0xbf0f6667d580	0xf80443fa0000	0x18000	mslldp.sys	\SystemRoot\system32\drivers\mslldp.sys	Disabled
+0xbf0f6667e5c0	0xf80443fc0000	0x1b000	rspndr.sys	\SystemRoot\system32\drivers\rspndr.sys	Disabled
+0xbf0f6667e760	0xf80443fe0000	0x1d000	wanarp.sys	\SystemRoot\System32\DRIVERS\wanarp.sys	Disabled
+0xbf0f6a9443b0	0xf80444000000	0x56000	msquic.sys	\SystemRoot\system32\drivers\msquic.sys	Disabled
+0xbf0f664a2a90	0xf80444720000	0x185000	HTTP.sys	\SystemRoot\system32\drivers\HTTP.sys	Disabled
+0xbf0f6a944560	0xf804448b0000	0x25000	bowser.sys	\SystemRoot\system32\DRIVERS\bowser.sys	Disabled
+0xbf0f6667eaa0	0xf804448e0000	0x1a000	mpsdrv.sys	\SystemRoot\System32\drivers\mpsdrv.sys	Disabled
+0xbf0f6c1e4a10	0xf80444900000	0x94000	mrxsmb.sys	\SystemRoot\system32\DRIVERS\mrxsmb.sys	Disabled
+0xbf0f6a944710	0xf804449a0000	0x45000	mrxsmb20.sys	\SystemRoot\system32\DRIVERS\mrxsmb20.sys	Disabled
+0xbf0f6c3c1730	0xf80444400000	0x53000	srvnet.sys	\SystemRoot\System32\DRIVERS\srvnet.sys	Disabled
+0xbf0f6c3c04a0	0xf80444460000	0x14000	mmcss.sys	\SystemRoot\system32\drivers\mmcss.sys	Disabled
+0xbf0f6c3c0140	0xf80444480000	0xc7000	srv2.sys	\SystemRoot\System32\DRIVERS\srv2.sys	Disabled
+0xbf0f6667f600	0xf80444550000	0x27000	Ndu.sys	\SystemRoot\system32\drivers\Ndu.sys	Disabled
+0xbf0f6a492430	0xf80444580000	0xd6000	peauth.sys	\SystemRoot\system32\drivers\peauth.sys	Disabled
+0xbf0f6c3c24b0	0xf80444660000	0x52000	mrxsmb10.sys	\SystemRoot\system32\DRIVERS\mrxsmb10.sys	Disabled
+0xbf0f6c4e9900	0xf804446c0000	0x15000	tcpipreg.sys	\SystemRoot\System32\drivers\tcpipreg.sys	Disabled
+0xbf0f6c4e83e0	0xf804446e0000	0x1c000	rassstp.sys	\SystemRoot\System32\drivers\rassstp.sys	Disabled
+0xbf0f6c4e80a0	0xf80444700000	0x1d000	NDProxy.sys	\SystemRoot\System32\DRIVERS\NDProxy.sys	Disabled
+0xbf0f6c4e8240	0xf80444060000	0x28000	AgileVpn.sys	\SystemRoot\System32\drivers\AgileVpn.sys	Disabled
+0xbf0f6c3c02f0	0xf80444090000	0x21000	rasl2tp.sys	\SystemRoot\System32\drivers\rasl2tp.sys	Disabled
+0xbf0f6c3c0b60	0xf804440c0000	0x21000	raspptp.sys	\SystemRoot\System32\drivers\raspptp.sys	Disabled
+0xbf0f6c4e9760	0xf804440f0000	0x1c000	raspppoe.sys	\SystemRoot\System32\drivers\raspppoe.sys	Disabled
+0xbf0f6c4e8da0	0xf804449f0000	0xf000	ndistapi.sys	\SystemRoot\System32\DRIVERS\ndistapi.sys	Disabled
+0xbf0f6c4e7540	0xf80444110000	0x3a000	ndiswan.sys	\SystemRoot\System32\drivers\ndiswan.sys	Disabled
+0xbf0f6c4e9c40	0xf80444150000	0x16000	WdNisDrv.sys	\SystemRoot\system32\drivers\wd\WdNisDrv.sys	Disabled
+0xbf0f6c4ea120	0xf80443750000	0x2a000	tunnel.sys	\SystemRoot\System32\drivers\tunnel.sys	Disabled
+0xbf0f6daa50f0	0xf80443780000	0x25000	USBSTOR.SYS	\SystemRoot\System32\drivers\USBSTOR.SYS	Disabled
+0xbf0f6ad0e090	0xf8043ae90000	0x6c000	fastfat.SYS	\SystemRoot\System32\Drivers\fastfat.SYS	Disabled
+0xbf0f6ad0e240	0xf8043af00000	0x54000	WUDFRd.sys	\SystemRoot\system32\DRIVERS\WUDFRd.sys	Disabled
+0xbf0f6ad0f170	0xf8043af60000	0xe000	WpdUpFltr.sys	\SystemRoot\System32\drivers\WpdUpFltr.sys	Disabled
+0xbf0f6daa81b0	0xf8043af70000	0x9000	ad_driver.sys	\??\C:\Users\JOHNDO~1\AppData\Local\Temp\ad_driver.sys	Disabled
+</pre>
+    </body>
+    </html>
+    
