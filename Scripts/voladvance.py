@@ -38,12 +38,6 @@ def save_to_html(filename, content):
     with open(filename, 'w') as file:
         file.write(content)
 
-def get_basic_info():
-    """Run basic info analysis."""
-    command = f'python "{VOL_TOOL_PATH}" -f "{IMAGE_PATH}" windows.info'
-    result = run_command(command)
-    return result
-
 def get_profile_detection():
     """Detect the profile of the memory image."""
     command = f'python "{VOL_TOOL_PATH}" -f "{IMAGE_PATH}" windows.info'
@@ -53,12 +47,6 @@ def get_profile_detection():
 def get_process_list():
     """List running processes."""
     command = f'python "{VOL_TOOL_PATH}" -f "{IMAGE_PATH}" windows.pslist'
-    result = run_command(command)
-    return result
-
-def get_open_files():
-    """List open files by processes."""
-    command = f'python "{VOL_TOOL_PATH}" -f "{IMAGE_PATH}" windows.handles.Handles'
     result = run_command(command)
     return result
 
@@ -73,52 +61,6 @@ def get_registry_hives():
     command = f'python "{VOL_TOOL_PATH}" -f "{IMAGE_PATH}" windows.registry.hivelist.HiveList'
     result = run_command(command)
     return result
-
-# def get_registry_data(hive_offset):
-#     """
-#     Extracts registry data including certificates, registry keys, and user assist information from a memory image.
-#     It reads the registry hive list from a previously saved text file to avoid redundant command execution.
-
-#     Parameters:
-#     - hive_offset: The offset of the registry hive to extract data from.
-#     """
-
-#     # Path to the text file containing the registry hive list
-#     hive_list_file = os.path.join("reports", "registry_hives.txt")
-
-#     # Check if the hive list file exists
-#     if not os.path.exists(hive_list_file):
-#         print(f"Registry hive list file not found at {hive_list_file}. Please ensure the file is available.")
-#         return
-
-#     # Read the registry hive list from the file
-#     with open(hive_list_file, "r") as file:
-#         hivelist = [line.strip() for line in file.readlines()]
-
-#     print(f"Registry hives: {hivelist}")
-
-#     # Assuming hive_offset is one of the offsets in the hivelist
-#     if hive_offset not in hivelist:
-#         print(f"Hive offset {hive_offset} not found in the hive list.")
-#         return
-
-#     print(f"Dumping registry data from hive offset {hive_offset}...")
-
-#     # Running the commands to extract registry data
-#     commands = [
-#         f"python3 vol.py -f {IMAGE_PATH} windows.registry.certificates.Certificates --hive-offset {hive_offset} > {os.path.join('reports', 'certificates.txt')}",
-#         f"python3 vol.py -f {IMAGE_PATH} windows.registry.printkey.PrintKey --key 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run' --hive-offset {hive_offset} > {os.path.join('reports', 'autorun_keys.txt')}",
-#         f"python3 vol.py -f {IMAGE_PATH} windows.registry.userassist.UserAssist --hive-offset {hive_offset} > {os.path.join('reports', 'user_assist.txt')}"
-#     ]
-
-#     # Execute the commands
-#     for command in commands:
-#         os.system(command)
-#         print(f"Executed command: {command}")
-
-#     print("Registry data extraction complete.")
-
-
 
 def get_user_accounts():
     """List user accounts."""
@@ -139,7 +81,7 @@ def generate_html_report():
     report_content = f"""
     <html>
     <head>
-        <title>Memory Image Analysis Report</title>
+        <title>Volatility Analysis Report for {IMAGE_NAME}</title>
         <style>
             body {{ font-family: Arial, sans-serif; margin: 20px; }}
             h1 {{ color: #333; }}
@@ -152,19 +94,6 @@ def generate_html_report():
         <h2>Report Generated on {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</h2>
     """
     
-    # Get basic information
-    print("Getting basic information...")
-    result = get_basic_info()
-    report_content += "<h2>Basic Information</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-        print(f"Error retrieving basic information: {result['error']}")
-    else:
-        basic_info_file = os.path.join(SCANS_DIR, 'basic_info.txt')
-        save_to_file(basic_info_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-        print(f"Basic information saved to {basic_info_file}")
-
     # Detect profile
     print("Detecting profile...")
     result = get_profile_detection()
@@ -191,19 +120,6 @@ def generate_html_report():
         report_content += f"<pre>{result['output']}</pre>"
         print(f"Process list saved to {process_list_file}")
 
-    # List open files
-    print("Listing open files...")
-    result = get_open_files()
-    report_content += "<h2>Open Files</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-        print(f"Error listing open files: {result['error']}")
-    else:
-        open_files_file = os.path.join(SCANS_DIR, 'open_files.txt')
-        save_to_file(open_files_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-        print(f"Open files saved to {open_files_file}")
-
     # List network connections
     print("Listing network connections...")
     result = get_network_connections()
@@ -229,19 +145,6 @@ def generate_html_report():
         save_to_file(registry_hives_file, result['output'])
         report_content += f"<pre>{result['output']}</pre>"
         print(f"Registry hives saved to {registry_hives_file}")
-
-    # Extract data from specific registry hive (example)
-    # print(f"Dumping registry data from hive offset...")
-    # result = get_registry_data()
-    # report_content += "<h2>Registry Data (Hive Offset)</h2>"
-    # if "error" in result:
-    #     report_content += f"<pre>Error: {result['error']}</pre>"
-    #     print(f"Error dumping registry data: {result['error']}")
-    # else:
-    #     registry_data_file = os.path.join(SCANS_DIR, 'registry_data.txt')
-    #     save_to_file(registry_data_file, result['output'])
-    #     report_content += f"<pre>{result['output']}</pre>"
-    #     print(f"Registry data saved to {registry_data_file}")
 
     # List user accounts
     print("Listing user accounts...")

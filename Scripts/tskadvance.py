@@ -2,14 +2,15 @@ import os
 import subprocess
 import json
 import datetime
+import re
 
 # Path to Sleuthkit command-line tools
 TSK_TOOL_PATH = "E:\\Lab\\Applications\\Sleuthkit\\bin"
 
 # Absolute path to the disk image to be analyzed
 p1 = "E:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\2020JimmyWilson.E01"
-p2 = "E:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\mem\\Win10memdump.mem"
-IMAGE_PATH = os.path.abspath(p1)
+p2 = "E:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\extparttest2.dd"
+IMAGE_PATH = os.path.abspath(p2)
 
 # Create a directory for the output based on the image name
 IMAGE_NAME = os.path.basename(IMAGE_PATH).split('.')[0]
@@ -20,6 +21,7 @@ os.makedirs(SCANS_DIR, exist_ok=True)
 def run_command(command):
     """Run a shell command and return the output."""
     try:
+        print(f"Running command: {command}")
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
         if result.returncode != 0:
             return {"error": result.stderr}
@@ -29,216 +31,240 @@ def run_command(command):
 
 def save_to_file(filename, content):
     """Save content to a text file."""
-    with open(filename, 'w') as file:
-        file.write(content)
+    try:
+        with open(filename, 'w') as file:
+            file.write(content)
+        print(f"Saved to {filename}")
+    except Exception as e:
+        print(f"Error saving file {filename}: {str(e)}")
 
-def save_to_html(filename, content):
-    """Save content to an HTML file."""
-    with open(filename, 'w') as file:
-        file.write(content)
+def log_message(message):
+    """Log messages to a file."""
+    log_file = os.path.join(OUTPUT_DIR, "analysis_log.txt")
+    with open(log_file, 'a') as log:
+        log.write(f"{datetime.datetime.now()} - {message}\n")
+    print(message)
 
 def get_partition_analysis():
     """Run partition analysis."""
     command = f'"{TSK_TOOL_PATH}\\mmls" "{IMAGE_PATH}"'
     result = run_command(command)
-    return result
-
-def get_file_system_analysis(partition_offset):
-    """Run file system analysis."""
-    command = f'"{TSK_TOOL_PATH}\\fsstat" "{IMAGE_PATH}" -o {partition_offset}'
-    result = run_command(command)
-    return result
-
-def get_file_listing(partition_offset):
-    """Run file listing."""
-    command = f'"{TSK_TOOL_PATH}\\fls" -r -m "/" "{IMAGE_PATH}" -o {partition_offset}'
-    result = run_command(command)
-    return result
-
-def get_file_carving():
-    """Run file carving."""
-    command = f'"{TSK_TOOL_PATH}\\tsk_recover" "{IMAGE_PATH}"'
-    result = run_command(command)
-    return result
-
-def get_file_hash_calculation():
-    """Run file hash calculation."""
-    command = f'"{TSK_TOOL_PATH}\\tsk_hash" "{IMAGE_PATH}"'
-    result = run_command(command)
-    return result
-
-def get_file_metadata_extraction(partition_offset):
-    """Run file metadata extraction."""
-    command = f'"{TSK_TOOL_PATH}\\fsstat" "{IMAGE_PATH}" -o {partition_offset}'
-    result = run_command(command)
-    return result
-
-def get_volume_information():
-    """Run volume information extraction."""
-    command = f'"{TSK_TOOL_PATH}\\blkls" "{IMAGE_PATH}"'
-    result = run_command(command)
-    return result
-
-def get_file_type_identification():
-    """Run file type identification."""
-    command = f'"{TSK_TOOL_PATH}\\file" "{IMAGE_PATH}"'
-    result = run_command(command)
+    if "error" in result:
+        log_message(f"Partition analysis failed: {result['error']}")
     return result
 
 def get_disk_image_integrity_check():
     """Run disk image integrity check."""
     command = f'md5sum "{IMAGE_PATH}"'
     result = run_command(command)
+    if "error" in result:
+        log_message(f"Disk integrity check failed: {result['error']}")
     return result
 
-def get_deleted_file_recovery(partition_offset):
-    """Run deleted file recovery."""
-    command = f'"{TSK_TOOL_PATH}\\tsk_recover" "{IMAGE_PATH}" -o {partition_offset}'
-    result = run_command(command)
-    return result
+def fetch_partitions():
+    """Read and extract partition details from partition_analysis.txt."""
+    partition_file = os.path.join(SCANS_DIR, 'partition_analysis.txt')
+    
+    if not os.path.exists(partition_file):
+        print(f"Partition analysis file {partition_file} not found!")
+        return None
 
-def get_filesystem_type_detection():
-    """Run filesystem type detection."""
-    command = f'"{TSK_TOOL_PATH}\\fsstat" "{IMAGE_PATH}"'
+    partitions = []
+    
+    with open(partition_file, 'r') as file:
+        lines = file.readlines()
+
+    # Regex pattern to match partition lines (starts with slot number, followed by partition details)
+    partition_pattern = r'^(\d{3}:\s*\S+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(.+)'
+
+    # Parsing the file content to extract partition information
+    for line in lines:
+        match = re.match(partition_pattern, line)
+        if match:
+            # Extract slot, start, end, length, and description from the matched line
+            partition_data = {
+                "Slot": match.group(1),
+                "Start": match.group(2),
+                "End": match.group(3),
+                "Length": match.group(4),
+                "Description": match.group(5)
+            }
+            partitions.append(partition_data)
+
+    if partitions:
+        # Log the partition data
+        print("Extracted Partition Information:")
+        for partition in partitions:
+            print(partition)
+    else:
+        print("No partitions found in the analysis file.")
+
+    return partitions
+
+def run_command_and_write(command, file):
+    """Run a shell command and write its output to a file."""
+    try:
+        # Run command
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        # Check if command was successful
+        if result.returncode == 0:
+            file.write(result.stdout)
+        else:
+            file.write(f"Error executing command: {result.stderr}\n")
+    except Exception as e:
+        file.write(f"Exception occurred: {str(e)}\n")
+
+def fetch_partitions_with_filter():
+    """Fetch partition details and run analysis while skipping invalid partitions."""
+    partitions = fetch_partitions()
+    
+    if partitions is None:
+        return
+    
+    for partition in partitions:
+        slot = partition['Slot']
+        start = partition['Start']
+        description = partition['Description']
+        
+        # Skip partitions based on improved conditions
+        if 'meta' in slot.lower() or 'reserved' in description.lower() or 'table' in description.lower() or 'unallocated' in description.lower():
+            continue
+        
+        # Extract numeric part of slot (before ':')
+        slot_num = slot.split(':')[0].strip()
+        
+        # Create a file for each valid partition
+        output_file = os.path.join(SCANS_DIR, f"partition_{slot_num}.txt")
+        
+        with open(output_file, 'w') as file:
+            # Write header with partition info
+            file.write(f"<h1>Analysis for Partition {slot}</h1>\n")
+            file.write(f"<h2>Description: {description}</h2>\n\n")
+            
+            # File System Statistics
+            file.write("<h2>File System Statistics</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fsstat" -o {start} "{IMAGE_PATH}"', file)
+            
+            # Top file directory listing
+            file.write("<h2>Top File Directory Listing</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -o {start} "{IMAGE_PATH}"', file)
+            
+            # Directories
+            file.write("<h2>Directories</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /R "^d"', file)
+
+            
+            # Executables & Compressed Files
+            file.write("<h2>Executables </h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.exe \.bat \.vbs"', file)
+
+
+            # Documents
+            file.write("<h2>Documents</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.xlsx \.pptx \.docx \.pdf"', file)
+            
+            # Compressed Files
+            file.write("<h2>Compressed Files</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.tar \.7z \.rar \.zip"', file)
+            
+            # Databases
+            file.write("<h2>Databases</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.db \.sqlite"', file)
+            
+            # Mail & Communications
+            file.write("<h2>Mail & Communications</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.pst \.ost \.eml \.msg" ', file)
+
+            # Last 20 linked, allocated, and used inodes
+            file.write("<h2>Last 20 Inodes</h2>\n")
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\ils" -o {start} -l -a -Z -m "{IMAGE_PATH}" | tail -n 20', file)
+
+def run_command_and_write(command, file):
+    """Run command and write output to a file."""
     result = run_command(command)
-    return result
+    if "error" in result:
+        file.write(f"Error executing {command}: {result['error']}\n")
+    else:
+        file.write(result['output'])
 
 def generate_html_report():
     """Generate an HTML report of the analysis."""
     report_content = f"""
     <html>
     <head>
-        <title>Disk Image Analysis Report</title>
+        <title>TSK (Autopsy) Disk Image Analysis Report for {IMAGE_NAME}</title>
         <style>
             body {{ font-family: Arial, sans-serif; margin: 20px; }}
             h1 {{ color: #333; }}
             h2 {{ color: #555; }}
             pre {{ background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; }}
+            table {{ border-collapse: collapse; width: 100%; }}
+            table, th, td {{ border: 1px solid black; padding: 8px; }}
         </style>
     </head>
     <body>
         <h1>Disk Image Analysis Report</h1>
         <h2>Report Generated on {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</h2>
     """
-    
+
     # Add partition analysis
-    result = get_partition_analysis()
     report_content += "<h2>Partition Analysis</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
+    partition_file = os.path.join(SCANS_DIR, 'partition_analysis.txt')
+    if os.path.exists(partition_file):
+        with open(partition_file, 'r') as file:
+            report_content += f"<pre>{file.read()}</pre>"
     else:
-        partition_file = os.path.join(SCANS_DIR, 'partition_analysis.txt')
-        save_to_file(partition_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Assuming partition number 1 for demonstration
-    partition_offset = 0  # Adjust as needed
-
-    # Add file system analysis
-    result = get_file_system_analysis(partition_offset)
-    report_content += "<h2>File System Analysis</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        fs_file = os.path.join(SCANS_DIR, 'file_system_analysis.txt')
-        save_to_file(fs_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Add file listing
-    result = get_file_listing(partition_offset)
-    report_content += "<h2>File Listing</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        file_listing_file = os.path.join(SCANS_DIR, 'file_listing.txt')
-        save_to_file(file_listing_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Add file carving
-    result = get_file_carving()
-    report_content += "<h2>File Carving</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        file_carving_file = os.path.join(SCANS_DIR, 'file_carving.txt')
-        save_to_file(file_carving_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Add file hash calculation
-    result = get_file_hash_calculation()
-    report_content += "<h2>File Hash Calculation</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        file_hash_file = os.path.join(SCANS_DIR, 'file_hash_calculation.txt')
-        save_to_file(file_hash_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Add file metadata extraction
-    result = get_file_metadata_extraction(partition_offset)
-    report_content += "<h2>File Metadata Extraction</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        file_metadata_file = os.path.join(SCANS_DIR, 'file_metadata_extraction.txt')
-        save_to_file(file_metadata_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Add volume information
-    result = get_volume_information()
-    report_content += "<h2>Volume Information</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        volume_info_file = os.path.join(SCANS_DIR, 'volume_information.txt')
-        save_to_file(volume_info_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Add file type identification
-    result = get_file_type_identification()
-    report_content += "<h2>File Type Identification</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        file_type_file = os.path.join(SCANS_DIR, 'file_type_identification.txt')
-        save_to_file(file_type_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
+        report_content += "<pre>Partition analysis file not found.</pre>"
 
     # Add disk image integrity check
-    result = get_disk_image_integrity_check()
     report_content += "<h2>Disk Image Integrity Check</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
+    integrity_file = os.path.join(SCANS_DIR, 'disk_integrity.txt')
+    if os.path.exists(integrity_file):
+        with open(integrity_file, 'r') as file:
+            report_content += f"<pre>{file.read()}</pre>"
     else:
-        disk_integrity_file = os.path.join(SCANS_DIR, 'disk_image_integrity_check.txt')
-        save_to_file(disk_integrity_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
+        report_content += "<pre>Disk integrity file not found.</pre>"
 
-    # Add deleted file recovery
-    result = get_deleted_file_recovery(partition_offset)
-    report_content += "<h2>Deleted File Recovery</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        deleted_file_recovery_file = os.path.join(SCANS_DIR, 'deleted_file_recovery.txt')
-        save_to_file(deleted_file_recovery_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
-
-    # Add filesystem type detection
-    result = get_filesystem_type_detection()
-    report_content += "<h2>Filesystem Type Detection</h2>"
-    if "error" in result:
-        report_content += f"<pre>Error: {result['error']}</pre>"
-    else:
-        filesystem_type_file = os.path.join(SCANS_DIR, 'filesystem_type_detection.txt')
-        save_to_file(filesystem_type_file, result['output'])
-        report_content += f"<pre>{result['output']}</pre>"
+    # Add additional files
+    report_content += "<h2>Additional Partition Analysis Files</h2>"
+    for filename in os.listdir(SCANS_DIR):
+        if filename.startswith("partition_") and filename.endswith(".txt"):
+            with open(os.path.join(SCANS_DIR, filename), 'r') as file:
+                report_content += f"<h3>{filename}</h3><pre>{file.read()}</pre>"
 
     report_content += "</body></html>"
 
-    html_file = os.path.join(OUTPUT_DIR, 'analysis_report.html')
-    save_to_html(html_file, report_content)
-    print(f"HTML report saved to {html_file}")
+    report_file = os.path.join(OUTPUT_DIR, 'analysis_report.html')
+    try:
+        with open(report_file, 'w') as file:
+            file.write(report_content)
+        print(f"HTML report generated: {report_file}")
+    except Exception as e:
+        print(f"Error generating HTML report: {str(e)}")
 
-# Run the analysis and generate the report
-generate_html_report()
+def main():
+    log_message("Starting analysis...")
+
+    # Run partition analysis and disk image integrity check
+    partition_result = get_partition_analysis()
+    if "error" in partition_result:
+        log_message(f"Partition analysis failed: {partition_result['error']}")
+    else:
+        save_to_file(os.path.join(SCANS_DIR, 'partition_analysis.txt'), partition_result['output'])
+    
+    integrity_result = get_disk_image_integrity_check()
+    if "error" in integrity_result:
+        log_message(f"Disk integrity check failed: {integrity_result['error']}")
+    else:
+        save_to_file(os.path.join(SCANS_DIR, 'disk_integrity.txt'), integrity_result['output'])
+
+    # Fetch and process partitions
+    fetch_partitions_with_filter()
+
+    # Generate the HTML report
+    generate_html_report()
+
+    log_message("Analysis completed and report generated.")
+
+if __name__ == "__main__":
+    main()

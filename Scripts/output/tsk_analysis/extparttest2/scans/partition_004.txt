@@ -1,0 +1,65 @@
+<h1>Analysis for Partition 004:  000:002</h1>
+<h2>Description: DOS FAT16 (0x04)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0x28c1c554
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 104832
+
+File System Layout (in sectors)
+Total Range: 0 - 52415
+* Reserved: 0 - 7
+** Boot Sector: 0
+* FAT 0: 8 - 211
+* FAT 1: 212 - 415
+* Data Area: 416 - 52415
+** Root Directory: 416 - 447
+** Cluster Area: 448 - 52415
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 832006
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51969
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	primary-3.txt
+v/v 832003:	$MBR
+v/v 832004:	$FAT1
+v/v 832005:	$FAT2
+V/V 832006:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "E:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "E:\Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "E:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "E:\Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "E:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "E:\Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "E:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "E:\Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "E:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "E:\Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "E:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "E:\Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+md5|file|st_ino|st_ls|st_uid|st_gid|st_size|st_atime|st_mtime|st_ctime|st_crtime
+0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd--alive-2>|2|-/d---------|0|0|16384|0|0|0|0
+0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd-PRIMAR~1.TXT-alive-4>|4|-/rrwxrwxrwx|0|0|0|1058994000|1059048042|0|1059048042
+0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd-$MBR-alive-832003>|832003|-/v---------|0|0|512|0|0|0|0
+0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd-$FAT1-alive-832004>|832004|-/v---------|0|0|104448|0|0|0|0
+0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd-$FAT2-alive-832005>|832005|-/v---------|0|0|104448|0|0|0|0
+0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\extparttest2.dd-$OrphanFiles-alive-832006>|832006|-/V---------|0|0|0|0|0|0|0

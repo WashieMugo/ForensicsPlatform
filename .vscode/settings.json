@@ -1,0 +1,9 @@
+{
+    "pythonPreview.compactFuncLabels": true,
+    "pythonPreview.showAllFrameLabels": false,
+    "pythonPreview.textualMemoryLabels": false,
+    "pythonPreview.hideCode": false,
+    "pythonPreview.cumulativeMode": true,
+    "debugpy.debugJustMyCode": true,
+    "python.testing.unittestEnabled": true
+}

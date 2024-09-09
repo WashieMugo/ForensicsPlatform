@@ -1,34 +1,4 @@
-
-    <html>
-    <head>
-        <title>TSK (Autopsy) Disk Image Analysis Report for 2020JimmyWilson</title>
-        <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            h1 { color: #333; }
-            h2 { color: #555; }
-            pre { background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; }
-            table { border-collapse: collapse; width: 100%; }
-            table, th, td { border: 1px solid black; padding: 8px; }
-        </style>
-    </head>
-    <body>
-        <h1>Disk Image Analysis Report</h1>
-        <h2>Report Generated on 2024-09-09 10:28:23</h2>
-    <h2>Partition Analysis</h2><pre>GUID Partition Table (EFI)
-Offset Sector: 0
-Units are in 512-byte sectors
-
-      Slot      Start        End          Length       Description
-000:  Meta      0000000000   0000000000   0000000001   Safety Table
-001:  -------   0000000000   0000000033   0000000034   Unallocated
-002:  Meta      0000000001   0000000001   0000000001   GPT Header
-003:  Meta      0000000002   0000000033   0000000032   Partition Table
-004:  000       0000000034   0000065569   0000065536   Microsoft reserved partition
-005:  -------   0000065570   0000065663   0000000094   Unallocated
-006:  001       0000065664   0001736831   0001671168   Basic data partition
-007:  -------   0001736832   0001740799   0000003968   Unallocated
-</pre><h2>Disk Image Integrity Check</h2><pre>\4193cc3bc7111ddf8be7a00677f2a2f4 *E:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\2020JimmyWilson.E01
-</pre><h2>Additional Partition Analysis Files</h2><h3>partition_006.txt</h3><pre><h1>Analysis for Partition 006:  001</h1>
+<h1>Analysis for Partition 006:  001</h1>
 <h2>Description: Basic data partition</h2>
 
 <h2>File System Statistics</h2>
@@ -221,17 +191,3 @@ d/d 4214-144-5:	Windows
 0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\2020JimmyWilson.E01-en-US-alive-5762>|5762|-/drwxrwxrwx|0|0|48|1302596281|1302596271|1432644950|1302596271
 0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\2020JimmyWilson.E01-httperr1.log-alive-5763>|5763|-/rrwxrwxrwx|0|0|0|1432644951|1432644951|1432644951|1432644951
 0|<Work\Abdulrhman\Forensics Platform\Scripts\Files\images\2020JimmyWilson.E01-$OrphanFiles-alive-5888>|5888|-/V---------|0|0|0|0|0|0|0
-</pre><h3>partition_analysis.txt</h3><pre>GUID Partition Table (EFI)
-Offset Sector: 0
-Units are in 512-byte sectors
-
-      Slot      Start        End          Length       Description
-000:  Meta      0000000000   0000000000   0000000001   Safety Table
-001:  -------   0000000000   0000000033   0000000034   Unallocated
-002:  Meta      0000000001   0000000001   0000000001   GPT Header
-003:  Meta      0000000002   0000000033   0000000032   Partition Table
-004:  000       0000000034   0000065569   0000065536   Microsoft reserved partition
-005:  -------   0000065570   0000065663   0000000094   Unallocated
-006:  001       0000065664   0001736831   0001671168   Basic data partition
-007:  -------   0001736832   0001740799   0000003968   Unallocated
-</pre></body></html>
