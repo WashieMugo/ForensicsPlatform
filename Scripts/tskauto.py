@@ -5,11 +5,11 @@ import datetime
 import re
 
 # Path to Sleuthkit command-line tools
-TSK_TOOL_PATH = "E:\\Lab\\Applications\\Sleuthkit\\bin"
+TSK_TOOL_PATH = "D:\\Lab\\Applications\\Sleuthkit\\bin"
 
 # Absolute path to the disk image to be analyzed
-p1 = "E:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\2020JimmyWilson.E01"
-p2 = "E:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\extparttest2.dd"
+p1 = "D:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\2020JimmyWilson.E01"
+p2 = "D:\\Work\\Abdulrhman\\Forensics Platform\\Scripts\\Files\\images\\extparttest2.dd"
 IMAGE_PATH = os.path.abspath(p2)
 
 # Create a directory for the output based on the image name
@@ -152,13 +152,11 @@ def fetch_partitions_with_filter():
             # Directories
             file.write("<h2>Directories</h2>\n")
             run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /R "^d"', file)
-
             
             # Executables & Compressed Files
             file.write("<h2>Executables </h2>\n")
             run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.exe \.bat \.vbs"', file)
-
-
+   
             # Documents
             file.write("<h2>Documents</h2>\n")
             run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.xlsx \.pptx \.docx \.pdf"', file)

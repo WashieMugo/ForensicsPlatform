@@ -3,7 +3,7 @@
 
 ## Tools:
 
-	1. *FTK Imager:* 
+	1. FTK Imager:
 		a. Purpose :
 			- Automate disk image creation and analysis
 			- It can create forensic images of hard drives and analyze them.
@@ -11,7 +11,7 @@
 		b.  environment:
 			- Setup : https://www.exterro.com/digital-forensics-software/ftk-imager
 			- 	
-	2. *Volatility Framework:*
+	2. Volatility Framework:
 		a. Purpose. 
 			- Open-source python drive memory forensics Tools.
 			- Automates memory analysis by integrating Volatility for extracting digital artifacts from volatile memory (RAM)
@@ -43,7 +43,7 @@
 	
 
 	
-	3. *Autopsy*
+	3. Autopsy
 		a. Purpose:
 			- Performs analysis from acopy of a 'suspects' drive.
 			
