@@ -7,38 +7,71 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>{% block title %}Forensics Platform{% endblock %}</title>
+    <style>
+        .navbar-nav {
+            margin: 0 auto; /* Center the navbar items */
+        }
+        .navbar-right {
+            margin-left: auto;
+        }
+    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">ForensiDash</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="/">ForensiDash</a>
+            <!-- Toggler for smaller screens -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Centered Menu Items -->
+                 
+                <ul class="navbar-nav mx-auto">
+                    
                 {% if current_user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="/dashboard">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link" href="/reports">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <span class="navbar-text">Welcome, {{ current_user.username }}!</span>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="/volatility">Volatility</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
+                        <a class="nav-link" href="/autopsy">Autopsy</a>
                     </li>
-                {% endif %}
-            </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Account</a>
+                    </li>
+                </ul>
+                <!-- Right Aligned Username and Logout -->
+                <ul class="navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <span class="navbar-text"> {{ current_user.username }} <i class="bi bi-person-circle"></i></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </nav>
+
     <div class="container-fluid">
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
@@ -79,7 +112,6 @@
             $('#loading').show();
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

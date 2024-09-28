@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, send_from_directory, abort
 from flask_migrate import Migrate
 from models import db, User, UploadedFile, AutoScan
 from forms import RegistrationForm, LoginForm, UploadFileForm
@@ -8,7 +8,7 @@ import os
 import subprocess
 from datetime import datetime
 import math
-
+from sqlalchemy import func
 from dotenv import load_dotenv
 
 load_dotenv('dash.env')
@@ -36,18 +36,29 @@ def dashboard():
     form = UploadFileForm()
 
     if request.method == 'POST' and form.validate_on_submit():
-        # File upload logic will be handled by the upload_file route
-        return redirect(url_for('upload_file'))  # Post will be redirected to the upload logic
+        return redirect(url_for('upload_file'))
 
-    # Fetch user uploaded files to display in the dashboard
     uploaded_files = UploadedFile.query.filter_by(user_id=current_user.id).all()
 
-    # Format file sizes for display
     for file in uploaded_files:
         file.size_display = format_file_size(file.size)
 
-    # Render the dashboard with the uploaded files and form
-    return render_template('dashboard.html', form=form, uploaded_files=uploaded_files)
+    stats = calculate_user_stats(current_user.id)
+    autoscans = fetch_autoscans(current_user.id)
+
+    # Prepare auto scan reports for rendering
+    auto_scan_reports = []
+    for scan, filename in autoscans:
+        total_time = (scan.end_time - scan.start_time).total_seconds() / 60  # Total time in minutes
+        auto_scan_reports.append({
+            'id': scan.id,
+            'filename': filename,
+            'start_time': scan.start_time,
+            'end_time': scan.end_time,
+            'total_time': round(total_time, 2)  # Round to 2 decimal places
+        })
+
+    return render_template('dashboard.html', form=form, uploaded_files=uploaded_files, stats=stats, autoscan_reports=auto_scan_reports)
 
 # Utility function to convert bytes to human-readable format
 def format_file_size(size_in_bytes):
@@ -260,15 +271,71 @@ def auto_scan(file_id):
         print(e.stderr)  # Log any errors for testing
         return jsonify({"error": "Failed to start scan"}), 500
 
+@app.route('/view_report/<int:report_id>')
+@login_required
+def view_report(report_id):
+    # Fetch the AutoScan record by report_id
+    auto_scan = AutoScan.query.get(report_id)
+
+    if auto_scan:
+        # Get the directory and file name from the report path
+        report_path = auto_scan.report
+        report_directory = os.path.dirname(report_path)
+        report_filename = os.path.basename(report_path)
+
+        # Serve the HTML report file
+        return send_from_directory(report_directory, report_filename)
+    else:
+        flash('Report not found.', 'danger')
+        return redirect(url_for('dashboard'))
 
 
 
 
 
+from sqlalchemy import func
+
+def calculate_user_stats(user_id):
+    # Total files uploaded by user
+    total_files = UploadedFile.query.filter_by(user_id=user_id).count()
+
+    # Memory and OS image files breakdown
+    memory_files = UploadedFile.query.filter_by(user_id=user_id, file_type='memory').count()
+    os_image_files = UploadedFile.query.filter_by(user_id=user_id, file_type='os_image').count()
+
+    # Total scans performed (from AutoScan)
+    total_scans = AutoScan.query.filter_by(user_id=user_id).count()
+
+    # Total report files (assuming each AutoScan has one report)
+    total_reports = AutoScan.query.filter_by(user_id=user_id).count()
+
+    # Total storage size (sum of file sizes uploaded by the user)
+    total_storage = db.session.query(func.sum(UploadedFile.size)).filter_by(user_id=user_id).scalar() or 0
+
+    # Storage for memory files and OS image files separately
+    memory_storage = db.session.query(func.sum(UploadedFile.size)).filter_by(user_id=user_id, file_type='memory').scalar() or 0
+    os_image_storage = db.session.query(func.sum(UploadedFile.size)).filter_by(user_id=user_id, file_type='os_image').scalar() or 0
+
+    return {
+        "total_files": total_files,
+        "memory_files": memory_files,
+        "os_image_files": os_image_files,
+        "total_scans": total_scans,
+        "total_reports": total_reports,
+        "total_storage": total_storage,
+        "memory_storage": memory_storage,  # New: Total size of memory files
+        "os_image_storage": os_image_storage  # New: Total size of OS image files
+    }
 
 
-
-
+def fetch_autoscans(user_id):
+    # Fetch all auto scan reports for the user along with the corresponding file name
+    return (
+        db.session.query(AutoScan, UploadedFile.filename)
+        .join(UploadedFile, AutoScan.file_id == UploadedFile.id)
+        .filter(AutoScan.user_id == user_id)
+        .all()
+    )
 
 
 
