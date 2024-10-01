@@ -75,105 +75,116 @@
         </div>
     </form>
 
-    <!-- Uploaded Files Table -->
-    <h4>Files Uploads</h4>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="table-responsive">
-                    <table id="uploaded-files-table" class="tab-content table table-striped">
-                        <thead>
-                            <tr>
-                                <th>f.id</th>
-                                <th>f.name</th>
-                                <th>Type</th>
-                                <th>Format</th>
-                                <th>Size</th>
-                                <th>Upload</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for file in uploaded_files %}
-                                <tr>
-                                    <td>{{ file.id }}</td>
-                                    <td>{{ file.filename }}</td>
-                                    <td>{{ file.file_type }}</td>
-                                    <td>{{ file.format }}</td>
-                                    <td>{{ file.size_display }}</td>
-                                    <td>{{ file.upload_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
-                                    <td>{{ file.status }}</td>
-                                    <td>
-                                        {% if file.status == 'Unscanned' %}
-                                            <a href="#" class="text-primary" title="Auto Scan" data-toggle="modal" data-target="#autoScanModal-{{ file.id }}"><i class="fas fa-robot"></i></a>
-                                            <a href="#" class="text-primary" title="Manual Scan"><i class="fas fa-search"></i></a>
-                                            <a href="#" class="text-danger" title="Delete" data-toggle="modal" data-target="#deleteModal-{{ file.id }}"><i class="fas fa-trash"></i></a>
-                                        {% elif file.status == 'AutoScanned' %}
-                                            <a href="#" class="text-primary" title="Manual Scan"><i class="fas fa-search"></i></a>
-                                            <a href="#" class="text-info" title="View Report"><i class="fas fa-file-alt"></i></a>
-                                            <a href="#" class="text-danger" title="Delete" data-toggle="modal" data-target="#deleteModal-{{ file.id }}"><i class="fas fa-trash"></i></a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-    
-                                <!-- Delete Confirmation Modal -->
-                                <div class="modal fade" id="deleteModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Are you sure you want to delete the file "{{ file.filename }}"?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post" style="display:inline;">
-                                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+    <!-- Uploaded Files Section -->
+<h4>Files Uploads</h4>
+<div class="container-fluid">
+    <div class="row">
+        {% if uploaded_files %}
+            {% for file in uploaded_files %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">File ID: {{ file.id }}</h5>
+                            <p class="card-text">
+                                <strong>Name:</strong> {{ file.filename }}<br>
+                                <strong>Type:</strong> {{ file.file_type }}<br>
+                                <strong>Format:</strong> {{ file.format }}<br>
+                                <strong>Size:</strong> {{ file.size_display }}<br>
+                                <strong>Uploaded:</strong> {{ file.upload_datetime.strftime('%Y-%m-%d %H:%M') }}<br>
+                                <strong>Status:</strong> {{ file.status }}
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-info" data-toggle="modal" data-target="#metadataModal-{{ file.id }}">Fetch Metadata</button>
+                                <div>
+                                    {% if file.status == 'Unscanned' %}
+                                        <a href="#" class="text-primary" title="Auto Scan" data-toggle="modal" data-target="#autoScanModal-{{ file.id }}"><i class="fas fa-robot"></i></a>
+                                        <a href="#" class="text-primary" title="Manual Scan"><i class="fas fa-search"></i></a>
+                                    {% elif file.status == 'AutoScanned' %}
+                                        <a href="#" class="text-info" title="View Report"><i class="fas fa-file-alt"></i></a>
+                                    {% endif %}
+                                    <a href="#" class="text-danger" title="Delete" data-toggle="modal" data-target="#deleteModal-{{ file.id }}"><i class="fas fa-trash"></i></a>
                                 </div>
-    
-                                <!-- Auto Scan Confirmation Modal -->
-                                <div class="modal fade" id="autoScanModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="autoScanModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="autoScanModalLabel">Confirm Auto Scan</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Are you sure you want to perform an auto scan on the file "{{ file.filename }}"?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                <form action="{{ url_for('auto_scan', file_id=file.id) }}" method="post" style="display:inline;">
-                                                    <button type="submit" class="btn btn-primary">Start Auto Scan</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-    
-                            {% else %}
-                                <tr>
-                                    <td colspan="8" class="text-center">No files uploaded yet.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="deleteModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete the file "{{ file.filename }}"?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto Scan Confirmation Modal -->
+                <div class="modal fade" id="autoScanModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="autoScanModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="autoScanModalLabel">Confirm Auto Scan</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to perform an auto scan on the file "{{ file.filename }}"?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <form action="{{ url_for('auto_scan', file_id=file.id) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-primary">Start Auto Scan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metadata Modal -->
+                <div class="modal fade" id="metadataModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="metadataModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="metadataModalLabel">Metadata for "{{ file.filename }}"</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Loading metadata...</p>
+                                <!-- Metadata details will be populated here -->
+                                <div id="metadata-details-{{ file.id }}"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">No files uploaded yet.</div>
             </div>
-        </div>
+        {% endif %}
     </div>
+</div>
 
 
 

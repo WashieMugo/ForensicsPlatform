@@ -2,3 +2,22 @@
     word-wrap: break-word;
     white-space: normal;
 }
+
+/* Add this to your main CSS file or in a <style> tag in the <head> section */
+
+body.dark-mode {
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* Light text */
+}
+
+.table.dark-mode {
+    background-color: #1e1e1e; /* Dark table background */
+    color: #ffffff; /* Light text */
+}
+
+.table.dark-mode th {
+    background-color: #333333; /* Darker header */
+    color: #ffffff; /* Light text */
+}
+
+/* Customize other components as
