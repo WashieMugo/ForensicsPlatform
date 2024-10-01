@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='all.min.css') }}">
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='jquery.dataTables.min.css') }}"> -->
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     
@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{url_for('static',filename='bootstrap-icons.min.css')}}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css" integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
 
     <title>{% block title %}Forensics Platform{% endblock %}</title>
     <style>
@@ -61,10 +63,10 @@
                 <!-- Right Aligned Username and Logout -->
                 <ul class="navbar-nav navbar-right">
                         <li class="nav-item">
-                            <span class="navbar-text"> {{ current_user.username }} <i class="bi bi-person-circle"></i></span>
+                            <span class="navbar-text"> {{ current_user.username }} <i class="far fa-user"></i>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/logout">Logout</a>
+                            <a class="nav-link" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
                         </li>
                     {% else %}
                         <li class="nav-item">
