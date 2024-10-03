@@ -6,3 +6,15 @@ operable program or batch file.
 2024-09-27 06:34:36.420006 - Disk integrity check failed: 'md5sum' is not recognized as an internal or external command,
 operable program or batch file.
 
+2024-10-03 04:35:58.320243 - Starting TSK analysis...
+2024-10-03 04:36:02.876946 - Disk integrity check failed: 'md5sum' is not recognized as an internal or external command,
+operable program or batch file.
+
+2024-10-03 04:50:19.192862 - Starting analysis...
+2024-10-03 04:50:19.357504 - Disk integrity check failed: 'md5sum' is not recognized as an internal or external command,
+operable program or batch file.
+
+2024-10-03 04:50:19.358201 - Disk integrity check failed: 'md5sum' is not recognized as an internal or external command,
+operable program or batch file.
+
+2024-10-03 04:50:31.785462 - Analysis completed and report generated.

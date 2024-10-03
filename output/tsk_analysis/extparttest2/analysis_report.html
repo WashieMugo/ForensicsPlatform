@@ -1,0 +1,423 @@
+
+    <html>
+    <head>
+        <title>TSK (Autopsy) Disk Image Analysis Report for extparttest2</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h1 { color: #333; }
+            h2 { color: #555; }
+            pre { background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; }
+            table { border-collapse: collapse; width: 100%; }
+            table, th, td { border: 1px solid black; padding: 8px; }
+        </style>
+    </head>
+    <body>
+        <h1>Disk Image Analysis Report</h1>
+        <h2>Report Generated on 2024-10-03 04:50:31</h2>
+    <h2>Partition Analysis</h2><pre>DOS Partition Table
+Offset Sector: 0
+Units are in 512-byte sectors
+
+      Slot      Start        End          Length       Description
+000:  Meta      0000000000   0000000000   0000000001   Primary Table (#0)
+001:  -------   0000000000   0000000062   0000000063   Unallocated
+002:  000:000   0000000063   0000052415   0000052353   DOS FAT16 (0x04)
+003:  000:001   0000052416   0000104831   0000052416   DOS FAT16 (0x04)
+004:  000:002   0000104832   0000157247   0000052416   DOS FAT16 (0x04)
+005:  Meta      0000157248   0000312479   0000155232   DOS Extended (0x05)
+006:  Meta      0000157248   0000157248   0000000001   Extended Table (#1)
+007:  -------   0000157248   0000157310   0000000063   Unallocated
+008:  001:000   0000157311   0000209663   0000052353   DOS FAT16 (0x04)
+009:  -------   0000209664   0000209726   0000000063   Unallocated
+010:  001:001   0000209727   0000262079   0000052353   DOS FAT16 (0x04)
+011:  Meta      0000262080   0000312479   0000050400   DOS Extended (0x05)
+012:  Meta      0000262080   0000262080   0000000001   Extended Table (#2)
+013:  -------   0000262080   0000262142   0000000063   Unallocated
+014:  002:000   0000262143   0000312479   0000050337   DOS FAT16 (0x06)
+</pre><h2>Disk Image Integrity Check</h2><pre>Disk integrity file not found.</pre><h2>Additional Partition Analysis Files</h2><h3>partition_002.txt</h3><pre><h1>Analysis for Partition 002:  000:000</h1>
+<h2>Description: DOS FAT16 (0x04)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0x28059448
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 63
+
+File System Layout (in sectors)
+Total Range: 0 - 52352
+* Reserved: 0 - 1
+** Boot Sector: 0
+* FAT 0: 2 - 204
+* FAT 1: 205 - 407
+* Data Area: 408 - 52352
+** Root Directory: 408 - 439
+** Cluster Area: 440 - 52352
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 831126
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51914
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	primary-1.txt
+v/v 831123:	$MBR
+v/v 831124:	$FAT1
+v/v 831125:	$FAT2
+V/V 831126:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000000063 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000000063 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000000063 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000000063 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000000063 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000000063 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\ils" -o 0000000063 -l -a -Z -m "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | tail -n 20: 'tail' is not recognized as an internal or external command,
+operable program or batch file.
+
+</pre><h3>partition_003.txt</h3><pre><h1>Analysis for Partition 003:  000:001</h1>
+<h2>Description: DOS FAT16 (0x04)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0x48f58a3a
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 52416
+
+File System Layout (in sectors)
+Total Range: 0 - 52415
+* Reserved: 0 - 7
+** Boot Sector: 0
+* FAT 0: 8 - 211
+* FAT 1: 212 - 415
+* Data Area: 416 - 52415
+** Root Directory: 416 - 447
+** Cluster Area: 448 - 52415
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 832006
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51969
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	primary-2.txt
+v/v 832003:	$MBR
+v/v 832004:	$FAT1
+v/v 832005:	$FAT2
+V/V 832006:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000052416 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000052416 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000052416 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000052416 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000052416 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000052416 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\ils" -o 0000052416 -l -a -Z -m "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | tail -n 20: 'tail' is not recognized as an internal or external command,
+operable program or batch file.
+
+</pre><h3>partition_004.txt</h3><pre><h1>Analysis for Partition 004:  000:002</h1>
+<h2>Description: DOS FAT16 (0x04)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0x28c1c554
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 104832
+
+File System Layout (in sectors)
+Total Range: 0 - 52415
+* Reserved: 0 - 7
+** Boot Sector: 0
+* FAT 0: 8 - 211
+* FAT 1: 212 - 415
+* Data Area: 416 - 52415
+** Root Directory: 416 - 447
+** Cluster Area: 448 - 52415
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 832006
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51969
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	primary-3.txt
+v/v 832003:	$MBR
+v/v 832004:	$FAT1
+v/v 832005:	$FAT2
+V/V 832006:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000104832 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\ils" -o 0000104832 -l -a -Z -m "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | tail -n 20: 'tail' is not recognized as an internal or external command,
+operable program or batch file.
+
+</pre><h3>partition_008.txt</h3><pre><h1>Analysis for Partition 008:  001:000</h1>
+<h2>Description: DOS FAT16 (0x04)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0xb0dc8330
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 63
+
+File System Layout (in sectors)
+Total Range: 0 - 52352
+* Reserved: 0 - 1
+** Boot Sector: 0
+* FAT 0: 2 - 204
+* FAT 1: 205 - 407
+* Data Area: 408 - 52352
+** Root Directory: 408 - 439
+** Cluster Area: 440 - 52352
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 831126
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51914
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	second-1.txt
+v/v 831123:	$MBR
+v/v 831124:	$FAT1
+v/v 831125:	$FAT2
+V/V 831126:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000157311 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000157311 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000157311 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000157311 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000157311 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000157311 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\ils" -o 0000157311 -l -a -Z -m "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | tail -n 20: 'tail' is not recognized as an internal or external command,
+operable program or batch file.
+
+</pre><h3>partition_010.txt</h3><pre><h1>Analysis for Partition 010:  001:001</h1>
+<h2>Description: DOS FAT16 (0x04)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0x90ed4150
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 63
+
+File System Layout (in sectors)
+Total Range: 0 - 52352
+* Reserved: 0 - 1
+** Boot Sector: 0
+* FAT 0: 2 - 204
+* FAT 1: 205 - 407
+* Data Area: 408 - 52352
+** Root Directory: 408 - 439
+** Cluster Area: 440 - 52352
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 831126
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51914
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	second-2.txt
+v/v 831123:	$MBR
+v/v 831124:	$FAT1
+v/v 831125:	$FAT2
+V/V 831126:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000209727 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000209727 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000209727 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000209727 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000209727 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000209727 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\ils" -o 0000209727 -l -a -Z -m "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | tail -n 20: 'tail' is not recognized as an internal or external command,
+operable program or batch file.
+
+</pre><h3>partition_014.txt</h3><pre><h1>Analysis for Partition 014:  002:000</h1>
+<h2>Description: DOS FAT16 (0x06)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: mkdosfsVolume ID: 0x3f200d60
+Volume Label (Boot Sector):            
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 0
+
+File System Layout (in sectors)
+Total Range: 0 - 50335
+* Reserved: 0 - 0
+** Boot Sector: 0
+* FAT 0: 1 - 50
+* FAT 1: 51 - 100
+* Data Area: 101 - 50335
+** Root Directory: 101 - 132
+** Cluster Area: 133 - 50332
+** Non-clustered: 50333 - 50335
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 803766
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 2048
+Total Cluster Range: 2 - 12551
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	second-3.txt
+v/v 803763:	$MBR
+v/v 803764:	$FAT1
+v/v 803765:	$FAT2
+V/V 803766:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\ils" -o 0000262143 -l -a -Z -m "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | tail -n 20: 'tail' is not recognized as an internal or external command,
+operable program or batch file.
+
+</pre><h3>partition_analysis.txt</h3><pre>DOS Partition Table
+Offset Sector: 0
+Units are in 512-byte sectors
+
+      Slot      Start        End          Length       Description
+000:  Meta      0000000000   0000000000   0000000001   Primary Table (#0)
+001:  -------   0000000000   0000000062   0000000063   Unallocated
+002:  000:000   0000000063   0000052415   0000052353   DOS FAT16 (0x04)
+003:  000:001   0000052416   0000104831   0000052416   DOS FAT16 (0x04)
+004:  000:002   0000104832   0000157247   0000052416   DOS FAT16 (0x04)
+005:  Meta      0000157248   0000312479   0000155232   DOS Extended (0x05)
+006:  Meta      0000157248   0000157248   0000000001   Extended Table (#1)
+007:  -------   0000157248   0000157310   0000000063   Unallocated
+008:  001:000   0000157311   0000209663   0000052353   DOS FAT16 (0x04)
+009:  -------   0000209664   0000209726   0000000063   Unallocated
+010:  001:001   0000209727   0000262079   0000052353   DOS FAT16 (0x04)
+011:  Meta      0000262080   0000312479   0000050400   DOS Extended (0x05)
+012:  Meta      0000262080   0000262080   0000000001   Extended Table (#2)
+013:  -------   0000262080   0000262142   0000000063   Unallocated
+014:  002:000   0000262143   0000312479   0000050337   DOS FAT16 (0x06)
+</pre></body></html>

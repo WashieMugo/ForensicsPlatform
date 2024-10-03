@@ -1,0 +1,13 @@
+GUID Partition Table (EFI)
+Offset Sector: 0
+Units are in 512-byte sectors
+
+      Slot      Start        End          Length       Description
+000:  Meta      0000000000   0000000000   0000000001   Safety Table
+001:  -------   0000000000   0000000033   0000000034   Unallocated
+002:  Meta      0000000001   0000000001   0000000001   GPT Header
+003:  Meta      0000000002   0000000033   0000000032   Partition Table
+004:  000       0000000034   0000065569   0000065536   Microsoft reserved partition
+005:  -------   0000065570   0000065663   0000000094   Unallocated
+006:  001       0000065664   0001736831   0001671168   Basic data partition
+007:  -------   0001736832   0001740799   0000003968   Unallocated

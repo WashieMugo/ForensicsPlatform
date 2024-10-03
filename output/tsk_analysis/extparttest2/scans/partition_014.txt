@@ -1,0 +1,61 @@
+<h1>Analysis for Partition 014:  002:000</h1>
+<h2>Description: DOS FAT16 (0x06)</h2>
+
+<h2>File System Statistics</h2>
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: mkdosfsVolume ID: 0x3f200d60
+Volume Label (Boot Sector):            
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 0
+
+File System Layout (in sectors)
+Total Range: 0 - 50335
+* Reserved: 0 - 0
+** Boot Sector: 0
+* FAT 0: 1 - 50
+* FAT 1: 51 - 100
+* Data Area: 101 - 50335
+** Root Directory: 101 - 132
+** Cluster Area: 133 - 50332
+** Non-clustered: 50333 - 50335
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 803766
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 2048
+Total Cluster Range: 2 - 12551
+
+FAT CONTENTS (in sectors)
+--------------------------------------------
+<h2>Top File Directory Listing</h2>
+r/r 4:	second-3.txt
+v/v 803763:	$MBR
+v/v 803764:	$FAT1
+v/v 803765:	$FAT2
+V/V 803766:	$OrphanFiles
+<h2>Directories</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /R "^d": 
+<h2>Executables </h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.exe \.bat \.vbs": 
+<h2>Documents</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.xlsx \.pptx \.docx \.pdf": 
+<h2>Compressed Files</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.tar \.7z \.rar \.zip": 
+<h2>Databases</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.db \.sqlite": 
+<h2>Mail & Communications</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\fls" -r -o 0000262143 "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | findstr /I "\.pst \.ost \.eml \.msg" : 
+<h2>Last 20 Inodes</h2>
+Error executing "D:\Lab\Applications\Sleuthkit\bin\ils" -o 0000262143 -l -a -Z -m "D:\Work\Abdulrhman\Forensics Platform\Files\images\extparttest2.dd" | tail -n 20: 'tail' is not recognized as an internal or external command,
+operable program or batch file.
+

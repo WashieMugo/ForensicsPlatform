@@ -175,11 +175,19 @@ def fetch_partitions_with_filter():
             
             # Mail & Communications
             file.write("<h2>Mail & Communications</h2>\n")
-            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.pst \.ost \.eml \.msg"', file)
+            run_command_and_write(f'"{TSK_TOOL_PATH}\\fls" -r -o {start} "{IMAGE_PATH}" | findstr /I "\.pst \.ost \.eml \.msg" ', file)
 
             # Last 20 linked, allocated, and used inodes
             file.write("<h2>Last 20 Inodes</h2>\n")
             run_command_and_write(f'"{TSK_TOOL_PATH}\\ils" -o {start} -l -a -Z -m "{IMAGE_PATH}" | tail -n 20', file)
+
+def run_command_and_write(command, file):
+    """Run command and write output to a file."""
+    result = run_command(command)
+    if "error" in result:
+        file.write(f"Error executing {command}: {result['error']}\n")
+    else:
+        file.write(result['output'])
 
 def generate_html_report():
     """Generate an HTML report of the analysis."""
@@ -204,51 +212,61 @@ def generate_html_report():
     # Add partition analysis
     report_content += "<h2>Partition Analysis</h2>"
     partition_file = os.path.join(SCANS_DIR, 'partition_analysis.txt')
-    
     if os.path.exists(partition_file):
-        with open(partition_file, 'r') as pf:
-            report_content += "<pre>" + pf.read() + "</pre>"
+        with open(partition_file, 'r') as file:
+            report_content += f"<pre>{file.read()}</pre>"
     else:
-        report_content += "<p>No partition analysis found.</p>"
+        report_content += "<pre>Partition analysis file not found.</pre>"
 
     # Add disk image integrity check
     report_content += "<h2>Disk Image Integrity Check</h2>"
-    integrity_check_file = os.path.join(SCANS_DIR, 'integrity_check.txt')
-    if os.path.exists(integrity_check_file):
-        with open(integrity_check_file, 'r') as icf:
-            report_content += "<pre>" + icf.read() + "</pre>"
+    integrity_file = os.path.join(SCANS_DIR, 'disk_integrity.txt')
+    if os.path.exists(integrity_file):
+        with open(integrity_file, 'r') as file:
+            report_content += f"<pre>{file.read()}</pre>"
     else:
-        report_content += "<p>No integrity check results found.</p>"
+        report_content += "<pre>Disk integrity file not found.</pre>"
 
-    # Add partition-specific analysis
-    report_content += "<h2>Partition-Specific Analysis</h2>"
-    for partition in fetch_partitions():
-        slot = partition['Slot'].split(':')[0].strip()
-        partition_output_file = os.path.join(SCANS_DIR, f"partition_{slot}.txt")
-        if os.path.exists(partition_output_file):
-            report_content += f"<h3>Analysis for Partition {slot}</h3>"
-            with open(partition_output_file, 'r') as pof:
-                report_content += "<pre>" + pof.read() + "</pre>"
-        else:
-            report_content += f"<p>No analysis found for Partition {slot}.</p>"
+    # Add additional files
+    report_content += "<h2>Additional Partition Analysis Files</h2>"
+    for filename in os.listdir(SCANS_DIR):
+        if filename.startswith("partition_") and filename.endswith(".txt"):
+            with open(os.path.join(SCANS_DIR, filename), 'r') as file:
+                report_content += f"<h3>{filename}</h3><pre>{file.read()}</pre>"
 
-    # Closing HTML tags
-    report_content += """
-        </body>
-    </html>
-    """
+    report_content += "</body></html>"
 
-    # Write the report to an HTML file
-    report_file = os.path.join(OUTPUT_DIR, f"{IMAGE_NAME}_analysis_report.html")
-    with open(report_file, 'w') as rf:
-        rf.write(report_content)
-    print(f"Generated report: {report_file}")
+    report_file = os.path.join(OUTPUT_DIR, 'analysis_report.html')
+    try:
+        with open(report_file, 'w') as file:
+            file.write(report_content)
+        print(f"HTML report generated: {report_file}")
+    except Exception as e:
+        print(f"Error generating HTML report: {str(e)}")
 
-# Main execution flow
-if __name__ == "__main__":
-    log_message("Starting TSK analysis...")
-    get_partition_analysis()
-    get_disk_image_integrity_check()
+def main():
+    log_message("Starting analysis...")
+
+    # Run partition analysis and disk image integrity check
+    partition_result = get_partition_analysis()
+    if "error" in partition_result:
+        log_message(f"Partition analysis failed: {partition_result['error']}")
+    else:
+        save_to_file(os.path.join(SCANS_DIR, 'partition_analysis.txt'), partition_result['output'])
+    
+    integrity_result = get_disk_image_integrity_check()
+    if "error" in integrity_result:
+        log_message(f"Disk integrity check failed: {integrity_result['error']}")
+    else:
+        save_to_file(os.path.join(SCANS_DIR, 'disk_integrity.txt'), integrity_result['output'])
+
+    # Fetch and process partitions
     fetch_partitions_with_filter()
+
+    # Generate the HTML report
     generate_html_report()
-    log_message("TSK analysis completed.")
+
+    log_message("Analysis completed and report generated.")
+
+if __name__ == "__main__":
+    main()

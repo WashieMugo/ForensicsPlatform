@@ -229,7 +229,7 @@ def auto_scan(file_id):
         # Set output folder for SleuthKit analysis
         TSK_OUTPUT_DIR = os.getenv("TSK_OUTPUT_DIR")
         image_name = os.path.basename(file_path).split('.')[0]
-        output_dir = os.path.join(TSK_OUTPUT_PATH, image_name)  # SleuthKit output folder
+        output_dir = os.path.join(TSK_OUTPUT_DIR, image_name)  # SleuthKit output folder
         report_path = os.path.join(output_dir, 'analysis_report.html')
         script_path = 'tskauto.py'  # Path to SleuthKit script
     else:
@@ -266,10 +266,13 @@ def auto_scan(file_id):
         db.session.add(new_scan)
         db.session.commit()
 
-        return jsonify({"message": "Scan completed successfully!"}), 200
+        # Flash a success message
+        flash("Scan completed successfully!", "success")
+        return redirect(url_for('dashboard'))  # Redirect to the dashboard page
     except subprocess.CalledProcessError as e:
         print(e.stderr)  # Log any errors for testing
-        return jsonify({"error": "Failed to start scan"}), 500
+        flash("Failed to start scan", "danger")  # Flash an error message
+        return redirect(url_for('dashboard'))  # Redirect to the dashboard page
 
 @app.route('/view_report/<int:report_id>')
 @login_required
@@ -337,6 +340,10 @@ def fetch_autoscans(user_id):
         .all()
     )
 
+@app.route('/add-documentation/<int:file_id>', methods=['POST'])
+def add_documentation(file_id):
+    # Your logic to handle documentation for the file with `file_id`
+    return "Documentation added"
 
 
 

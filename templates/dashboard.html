@@ -75,114 +75,187 @@
         </div>
     </form>
 
-    <!-- Uploaded Files Section -->
+<!-- Uploaded Files Table -->
 <h4>Files Uploads</h4>
 <div class="container-fluid">
     <div class="row">
-        {% if uploaded_files %}
-            {% for file in uploaded_files %}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">File ID: {{ file.id }}</h5>
-                            <p class="card-text">
-                                <strong>Name:</strong> {{ file.filename }}<br>
-                                <strong>Type:</strong> {{ file.file_type }}<br>
-                                <strong>Format:</strong> {{ file.format }}<br>
-                                <strong>Size:</strong> {{ file.size_display }}<br>
-                                <strong>Uploaded:</strong> {{ file.upload_datetime.strftime('%Y-%m-%d %H:%M') }}<br>
-                                <strong>Status:</strong> {{ file.status }}
-                            </p>
-                            <div class="d-flex justify-content-between">
-                                <button class="btn btn-info" data-toggle="modal" data-target="#metadataModal-{{ file.id }}">Fetch Metadata</button>
-                                <div>
+        <div class="col-12">
+            <div class="table-responsive">
+                <table id="uploaded-files-table" class="tab-content table table-striped">
+                    <thead>
+                        <tr> 
+                            <th>f.id</th>
+                            <th>Upload Info</th>
+                            <th>Metadata</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in uploaded_files %}
+                            <tr>
+                                <td>{{ file.id }}</td>
+                                <td>
+                                    <!-- Card to display file upload info -->
+                                    <div class="card" style="background-color: transparent; border: none;">
+                                        <div class="card-body" style="background-color: transparent;">
+                                            <b>{{ file.filename }}</b>
+                                            <br> <b>Type:</b> {{ file.file_type }}
+                                            <br> <b>Format:</b> {{ file.format }}
+                                            <br> <b>Size:</b> {{ file.size_display }}
+                                            <br> <b>Uploaded on:</b> {{ file.upload_datetime.strftime('%Y-%m-%d %H:%M') }}
+                                            <br> <b>Status:</b> {{ file.status }}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="fetchMetadata('{{ file.id }}')"> <i class="fa-solid fa-file-invoice"></i> Get Metadata </button>
+                                    <br><br><button class="btn btn-info" data-toggle="modal" data-target="#addDocModal-{{ file.id }}"><i class="fa-solid fa-list-check"></i> Document  <i class="fa-regular fa-square-check"></i></button>
+                                    <div id="metadata-{{ file.id }}" class="metadata-display mt-2"></div>
+                                </td>
+                                <td>
                                     {% if file.status == 'Unscanned' %}
-                                        <a href="#" class="text-primary" title="Auto Scan" data-toggle="modal" data-target="#autoScanModal-{{ file.id }}"><i class="fas fa-robot"></i></a>
-                                        <a href="#" class="text-primary" title="Manual Scan"><i class="fas fa-search"></i></a>
+                                        <div class="btn-group-vertical" role="group">
+                                            <button type="button" class="btn btn-outline-primary" title="Auto Scan" data-toggle="modal" data-target="#autoScanModal-{{ file.id }}">
+                                                <i class="fa-solid fa-robot"></i> Autoscan
+                                            </button>
+                                            <button type="button" class="btn btn-outline-info" title="Manual Scan">
+                                                <i class="fa-solid fa-user-pen"></i> Manual Scan
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" title="Delete" data-toggle="modal" data-target="#deleteModal-{{ file.id }}">
+                                                <i class="fa-solid fa-trash"></i> Delete
+                                            </button>
+                                        </div>
                                     {% elif file.status == 'AutoScanned' %}
-                                        <a href="#" class="text-info" title="View Report"><i class="fas fa-file-alt"></i></a>
+                                        <div class="btn-group-vertical" role="group">
+                                            <button type="button" class="btn btn-outline-primary" title="Manual Scan">
+                                                <i class="fa-solid fa-user-pen"></i> Manual Scan
+                                            </button>
+                                            <button type="button" class="btn btn-outline-success" title="View Report">
+                                                <i class="fa-regular fa-file-lines"></i> View Report
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" title="Delete" data-toggle="modal" data-target="#deleteModal-{{ file.id }}">
+                                                <i class="fa-solid fa-trash"></i> Delete
+                                            </button>
+                                        </div>
                                     {% endif %}
-                                    <a href="#" class="text-danger" title="Delete" data-toggle="modal" data-target="#deleteModal-{{ file.id }}"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                             <!-- Documentation Modal -->
+                                <div class="modal fade" id="addDocModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="addDocModalLabel-{{ file.id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addDocModalLabel-{{ file.id }}">Add Documentation for File "{{ file.filename }}"</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Multi-step form -->
+                                                <form id="docForm-{{ file.id }}" method="post" action="{{ url_for('add_documentation', file_id=file.id) }}">
+                                                    <div class="form-step" id="step1-{{ file.id }}">
+                                                        <!-- Page 1: General Information -->
+                                                        <div class="form-group">
+                                                            <label for="caseNumber">Case Number:</label>
+                                                            <input type="text" class="form-control" id="caseNumber" name="case_number" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="investigatorEmail">Investigator Email:</label>
+                                                            <input type="email" class="form-control" id="investigatorEmail" name="investigator_email" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="purpose">Purpose/Notes:</label>
+                                                            <textarea class="form-control" id="purpose" name="purpose" rows="3" required></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="date">Date:</label>
+                                                            <input type="date" class="form-control" id="date" name="date" required>
+                                                        </div>
+                                                        <button type="button" class="btn btn-info" onclick="nextStep('{{ file.id }}')">Next</button>
+                                                    </div>
+
+                                                    <div class="form-step d-none" id="step2-{{ file.id }}">
+                                                        <!-- Page 2: Checklist -->
+                                                        <h5>Checklist Options</h5>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="true" id="option1" name="option1">
+                                                            <label class="form-check-label" for="option1">Option 1: Validated Chain of Custody</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="true" id="option2" name="option2">
+                                                            <label class="form-check-label" for="option2">Option 2: Evidence Backup Created</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="true" id="option3" name="option3">
+                                                            <label class="form-check-label" for="option3">Option 3: Additional Notes Added</label>
+                                                        </div>
+                                                        <!-- Add more checklist options as needed -->
+
+                                                        <div class="form-group mt-3">
+                                                            <button type="button" class="btn btn-info" onclick="previousStep('{{ file.id }}')">Previous</button>
+                                                            <button type="submit" class="btn btn-success">Submit Documentation</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- Delete Confirmation Modal -->
+                            <div class="modal fade" id="deleteModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete the file "{{ file.filename }}"?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                                            <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Delete Confirmation Modal -->
-                <div class="modal fade" id="deleteModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                            <!-- Auto Scan Confirmation Modal -->
+                            <div class="modal fade" id="autoScanModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="autoScanModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="autoScanModalLabel">Confirm Auto Scan</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to perform an auto scan on the file "{{ file.filename }}"?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <form action="{{ url_for('auto_scan', file_id=file.id) }}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-primary">Start Auto Scan</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete the file "{{ file.filename }}"?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Auto Scan Confirmation Modal -->
-                <div class="modal fade" id="autoScanModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="autoScanModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="autoScanModalLabel">Confirm Auto Scan</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to perform an auto scan on the file "{{ file.filename }}"?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <form action="{{ url_for('auto_scan', file_id=file.id) }}" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-primary">Start Auto Scan</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Metadata Modal -->
-                <div class="modal fade" id="metadataModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="metadataModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="metadataModalLabel">Metadata for "{{ file.filename }}"</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Loading metadata...</p>
-                                <!-- Metadata details will be populated here -->
-                                <div id="metadata-details-{{ file.id }}"></div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            {% endfor %}
-        {% else %}
-            <div class="col-12">
-                <div class="alert alert-info text-center">No files uploaded yet.</div>
+                        {% endfor %}
+                        {% if not uploaded_files %}
+                            <tr>
+                                <td colspan="4" class="text-center">No files uploaded yet.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
-        {% endif %}
+        </div>
     </div>
 </div>
 
@@ -190,7 +263,7 @@
 
     <!-- Third Section: Auto Scan Reports Table -->
     <h4>Auto Scan Reports</h4>
-    <div class="table-responsive">
+    <div class="table-responsive" id="reports">
         <table id="autoscan-reports-table" class="table table-striped">
             <thead>
                 <tr>
@@ -211,13 +284,23 @@
                         <td>{{ report.end_time.strftime('%Y-%m-%d %H:%M') }}</td>
                         <td>{{ report.total_time }}</td>
                         <td>
-                            <a href="{{ url_for('view_report', report_id=report.id) }}" class="text-info" title="View Report" target="_blank">
-                                <i class="fas fa-file-alt"></i>
-                            </a>
-                            <a href="#" class="text-danger" title="Delete Report">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            <div class="btn-group" role="group" aria-label="Report Actions">
+                                <button class="btn btn-outline-success me-1" title="View Report" onclick="window.open('{{ url_for('view_report', report_id=report.id) }}', '_blank')">
+                                    <i class="fas fa-file-alt"></i>
+                                </button>
+                                <button class="btn btn-info me-1" title="View Summary" onclick="viewSummaryFunction()">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                                <button class="btn btn-outline-primary me-1" title="Download Report" onclick="downloadReportFunction()">
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                </button>
+                                <button class="btn btn-danger" title="Delete Report" onclick="deleteReportFunction()">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            
                         </td>
+                        
                     </tr>
                 {% else %}
                     <tr>
@@ -227,6 +310,21 @@
             </tbody>
         </table>
     </div>
+
+   
+
+    <script>
+        // JavaScript to handle form step navigation
+        function nextStep(fileId) {
+            document.getElementById('step1-' + fileId).classList.add('d-none');
+            document.getElementById('step2-' + fileId).classList.remove('d-none');
+        }
+
+        function previousStep(fileId) {
+            document.getElementById('step2-' + fileId).classList.add('d-none');
+            document.getElementById('step1-' + fileId).classList.remove('d-none');
+        }
+    </script>
 
     <!-- Charts JavaScript -->
     <script>
