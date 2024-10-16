@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, send_from_directory, abort
 from flask_migrate import Migrate
-from models import db, User, UploadedFile, AutoScan
+from models import db, User, UploadedFile, AutoScan, Documentation
 from forms import RegistrationForm, LoginForm, UploadFileForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
@@ -38,11 +38,17 @@ def dashboard():
     if request.method == 'POST' and form.validate_on_submit():
         return redirect(url_for('upload_file'))
 
+    # Retrieve the uploaded files for the current user
     uploaded_files = UploadedFile.query.filter_by(user_id=current_user.id).all()
 
+    # Format file size for display and check for existing documentation
     for file in uploaded_files:
         file.size_display = format_file_size(file.size)
 
+        # Retrieve the associated documentation, if it exists
+        file.documentation = Documentation.query.filter_by(file_id=file.id).first() or None  # Attach the documentation to the file object
+
+    # Fetch user stats and auto scan reports
     stats = calculate_user_stats(current_user.id)
     autoscans = fetch_autoscans(current_user.id)
 
@@ -58,7 +64,12 @@ def dashboard():
             'total_time': round(total_time, 2)  # Round to 2 decimal places
         })
 
-    return render_template('dashboard.html', form=form, uploaded_files=uploaded_files, stats=stats, autoscan_reports=auto_scan_reports)
+    return render_template('dashboard.html', 
+                           form=form, 
+                           uploaded_files=uploaded_files, 
+                           stats=stats, 
+                           autoscan_reports=auto_scan_reports)
+
 
 # Utility function to convert bytes to human-readable format
 def format_file_size(size_in_bytes):
@@ -165,6 +176,7 @@ def upload_file():
             format=file_format,
             size=file_size,
             user_id=current_user.id,  # Assuming you use Flask-Login for user management
+            doc_exists=False,
         )
 
         db.session.add(uploaded_file)
@@ -340,7 +352,7 @@ def fetch_autoscans(user_id):
         .all()
     )
 
-@app.route('/add-documentation/<int:file_id>', methods=['POST'])
+@app.route('/add-documentation/<int:file_id>', methods=['GET', 'POST'])
 def add_documentation(file_id):
     # Your logic to handle documentation for the file with `file_id`
     return "Documentation added"
