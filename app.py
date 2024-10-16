@@ -307,7 +307,6 @@ def view_report(report_id):
 
 
 
-
 from sqlalchemy import func
 
 def calculate_user_stats(user_id):
@@ -354,18 +353,51 @@ def fetch_autoscans(user_id):
 
 @app.route('/add-documentation/<int:file_id>', methods=['GET', 'POST'])
 def add_documentation(file_id):
-    # Your logic to handle documentation for the file with `file_id`
-    return "Documentation added"
+    uploaded_file = UploadedFile.query.get(file_id)  # Get the uploaded file object
 
+    if request.method == 'POST':
+        # Get data from the form
+        case_number = request.form.get('case_number')
+        investigator_email = request.form.get('investigator_email')
+        purpose = request.form.get('purpose')
+        option1 = 'option1' in request.form
+        option2 = 'option2' in request.form
+        option3 = 'option3' in request.form
 
+        # Check if documentation already exists
+        documentation = Documentation.query.filter_by(file_id=file_id).first()
 
+        if documentation:
+            # Update existing documentation
+            documentation.case_number = case_number
+            documentation.investigator_email = investigator_email
+            documentation.purpose = purpose
+            documentation.option1 = option1
+            documentation.option2 = option2
+            documentation.option3 = option3
+            documentation.last_updated = datetime.utcnow()
+        else:
+            # Add new documentation
+            new_doc = Documentation(
+                file_id=file_id, case_number=case_number,
+                investigator_email=investigator_email, purpose=purpose,
+                option1=option1, option2=option2, option3=option3
+            )
+            db.session.add(new_doc)
 
+        # Update doc_exists to True if documentation is added or updated
+        uploaded_file.doc_exists = True
 
+        # Commit all changes (for both Documentation and UploadedFile)
+        db.session.commit()
 
+        flash('Documentation saved successfully', 'success')
+        return redirect(url_for('dashboard'))
 
+    # GET request: Load existing documentation if any
+    documentation = Documentation.query.filter_by(file_id=file_id).first()
 
-
-
+    return render_template('add_documentation.html', file_id=file_id, documentation=documentation)
 
 
 

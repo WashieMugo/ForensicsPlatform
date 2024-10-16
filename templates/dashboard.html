@@ -144,67 +144,67 @@
                                     {% endif %}
                                 </td>
                             </tr>
-                             <!-- Documentation Modal -->
-                                <div class="modal fade" id="addDocModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="addDocModalLabel-{{ file.id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addDocModalLabel-{{ file.id }}">Add Documentation for File "{{ file.filename }}"</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- Multi-step form -->
-                                                <form id="docForm-{{ file.id }}" method="post" action="{{ url_for('add_documentation', file_id=file.id) }}">
-                                                    <div class="form-step" id="step1-{{ file.id }}">
-                                                        <!-- Page 1: General Information -->
-                                                        <div class="form-group">
-                                                            <label for="caseNumber">Case Number:</label>
-                                                            <input type="text" class="form-control" id="caseNumber" name="case_number" required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="investigatorEmail">Investigator Email:</label>
-                                                            <input type="email" class="form-control" id="investigatorEmail" name="investigator_email" required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="purpose">Purpose/Notes:</label>
-                                                            <textarea class="form-control" id="purpose" name="purpose" rows="3" required></textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="date">Date:</label>
-                                                            <input type="date" class="form-control" id="date" name="date" required>
-                                                        </div>
-                                                        <button type="button" class="btn btn-info" onclick="nextStep('{{ file.id }}')">Next</button>
+                           <!-- Documentation Modal -->
+                            <div class="modal fade" id="addDocModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="addDocModalLabel-{{ file.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addDocModalLabel-{{ file.id }}">Add Documentation for File "{{ file.filename }}"</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Multi-step form -->
+                                            <form id="docForm-{{ file.id }}" method="post" action="{{ url_for('add_documentation', file_id=file.id) }}">
+                                                <div class="form-step" id="step1-{{ file.id }}">
+                                                    <!-- Pre-fill fields if documentation exists -->
+                                                    <div class="form-group">
+                                                        <label for="caseNumber">Case Number:</label>
+                                                        <input type="text" class="form-control" id="caseNumber" name="case_number" value="{{ file.documentation.case_number if file.documentation else '' }}" required>
                                                     </div>
-
-                                                    <div class="form-step d-none" id="step2-{{ file.id }}">
-                                                        <!-- Page 2: Checklist -->
-                                                        <h5>Checklist Options</h5>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="true" id="option1" name="option1">
-                                                            <label class="form-check-label" for="option1">Option 1: Validated Chain of Custody</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="true" id="option2" name="option2">
-                                                            <label class="form-check-label" for="option2">Option 2: Evidence Backup Created</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="true" id="option3" name="option3">
-                                                            <label class="form-check-label" for="option3">Option 3: Additional Notes Added</label>
-                                                        </div>
-                                                        <!-- Add more checklist options as needed -->
-
-                                                        <div class="form-group mt-3">
-                                                            <button type="button" class="btn btn-info" onclick="previousStep('{{ file.id }}')">Previous</button>
-                                                            <button type="submit" class="btn btn-success">Submit Documentation</button>
-                                                        </div>
+                                                    <div class="form-group">
+                                                        <label for="investigatorEmail">Investigator Email:</label>
+                                                        <input type="email" class="form-control" id="investigatorEmail" name="investigator_email" value="{{ file.documentation.investigator_email if file.documentation else '' }}" required>
                                                     </div>
-                                                </form>
-                                            </div>
+                                                    <div class="form-group">
+                                                        <label for="purpose">Purpose/Notes:</label>
+                                                        <textarea class="form-control" id="purpose" name="purpose" rows="3" required>{{ file.documentation.purpose if file.documentation else '' }}</textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="date">Date:</label>
+                                                        <input type="date" class="form-control" id="date" name="date" required>
+                                                    </div>
+                                                    <button type="button" class="btn btn-info" onclick="nextStep('{{ file.id }}')">Next</button>
+                                                </div>
+                                            
+                                                <div class="form-step d-none" id="step2-{{ file.id }}">
+                                                    <!-- Pre-tick checkboxes if previously selected -->
+                                                    <h5>Checklist Options</h5>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="option1" name="option1" {{ 'checked' if file.documentation and file.documentation.option1 else '' }}>
+                                                        <label class="form-check-label" for="option1">Option 1: Validated Chain of Custody</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="option2" name="option2" {{ 'checked' if file.documentation and file.documentation.option2 else '' }}>
+                                                        <label class="form-check-label" for="option2">Option 2: Evidence Backup Created</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="option3" name="option3" {{ 'checked' if file.documentation and file.documentation.option3 else '' }}>
+                                                        <label class="form-check-label" for="option3">Option 3: Additional Notes Added</label>
+                                                    </div>
+                                            
+                                                    <div class="form-group mt-3">
+                                                        <button type="button" class="btn btn-info" onclick="previousStep('{{ file.id }}')">Previous</button>
+                                                        <button type="submit" class="btn btn-success">{{ 'Update Documentation' if file.documentation else 'Submit Documentation' }}</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
                             <!-- Delete Confirmation Modal -->
                             <div class="modal fade" id="deleteModal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
