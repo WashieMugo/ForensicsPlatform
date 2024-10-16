@@ -4,3 +4,10 @@
 
 > pip install Flask-Migrate
 > pip install python-dotenv
+
+
+# Update db Table:
+
+flask db init
+flask db migrate -m "Add has_metadata and metadata_file_path fields"
+flask db upgrade

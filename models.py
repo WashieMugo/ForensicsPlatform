@@ -22,6 +22,8 @@ class UploadedFile(db.Model):
     upload_datetime = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String(50), default='Unscanned')
     doc_exists = db.Column(db.Boolean, default=False)  # Add this line
+    has_metadata = db.Column(db.Boolean, default=False) 
+    metadata_file_path = db.Column(db.String, nullable=True)  # Add this line for JSON file path
 
     def __init__(self, filename, file_type, format=None, size=None, user_id=None):
         self.filename = filename

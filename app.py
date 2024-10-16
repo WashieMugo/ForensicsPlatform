@@ -10,12 +10,21 @@ from datetime import datetime
 import math
 from sqlalchemy import func
 from dotenv import load_dotenv
+from flask_wtf.csrf import CSRFProtect
 
 load_dotenv('dash.env')
+
+
+# Tool paths and output directories
+VOL_TOOL_PATH = os.getenv("VOL_TOOL_PATH")
+VOL_OUTPUT_DIR = os.getenv("VOL_OUTPUT_DIR")
+TSK_TOOL_PATH = os.getenv("TSK_TOOL_PATH")
+TSK_OUTPUT_DIR = os.getenv("TSK_OUTPUT_DIR")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///forensiDB.db'
 app.config['SECRET_KEY'] = 'your_secret_key'
+csrf = CSRFProtect(app)
 db.init_app(app)
 
 migrate = Migrate(app, db)
@@ -304,6 +313,23 @@ def view_report(report_id):
         flash('Report not found.', 'danger')
         return redirect(url_for('dashboard'))
 
+@app.route('/view_report2/<int:file_id>')
+@login_required
+def view_report2(file_id):
+    # Fetch the AutoScan record by report_id
+    auto_scan = AutoScan.query.get(file_id)
+
+    if auto_scan:
+        # Get the directory and file name from the report path
+        report_path = auto_scan.report
+        report_directory = os.path.dirname(report_path)
+        report_filename = os.path.basename(report_path)
+
+        # Serve the HTML report file
+        return send_from_directory(report_directory, report_filename)
+    else:
+        flash('Report not found.', 'danger')
+        return redirect(url_for('dashboard'))
 
 
 
@@ -399,6 +425,63 @@ def add_documentation(file_id):
 
     return render_template('add_documentation.html', file_id=file_id, documentation=documentation)
 
+
+# -------- FETCH METADATA -----------------------
+from volmeta import fetch_memory_metadata
+from stkmeta import fetch_image_metadata
+import os
+from flask import jsonify
+
+import os
+import json
+
+@app.route('/fetch_metadata/<int:file_id>', methods=['POST'])
+@login_required
+def fetch_metadata(file_id):
+    """Fetch metadata for the uploaded file based on its type."""
+    uploaded_file = UploadedFile.query.get(file_id)
+    if not uploaded_file:
+        return jsonify({"error": "File not found"}), 404
+
+    # Get the path of the file
+    file_path = os.path.join(MEM_DIR if uploaded_file.file_type == 'memory' else IMAGES_DIR, uploaded_file.filename)
+    output_dir = os.getenv('VOL_OUTPUT_DIR' if uploaded_file.file_type == 'memory' else 'TSK_OUTPUT_DIR')
+
+    # Initialize metadata variable
+    metadata = {}
+
+    if uploaded_file.file_type == 'memory':
+        metadata = fetch_memory_metadata(file_path, output_dir)
+    elif uploaded_file.file_type == 'os_image':
+        metadata = fetch_image_metadata(file_path, output_dir)  # Assuming similar function exists for image
+    else:
+        return jsonify({"error": "Unsupported file type"}), 400
+
+    # Save metadata to a JSON file
+    metadata_file_path = os.path.join(output_dir, f'{uploaded_file.filename}_metadata.json')
+    with open(metadata_file_path, 'w') as json_file:
+        json.dump(metadata, json_file)
+
+    # Update the uploaded file record
+    uploaded_file.has_metadata = True
+    uploaded_file.metadata_file_path = metadata_file_path  # Store the JSON file path
+    db.session.commit()  # Commit the changes to the database
+
+    return jsonify({"message": "Metadata fetched successfully", "data": metadata, "metadata_file_path": metadata_file_path}), 200
+
+@app.route('/view_metadata/<int:file_id>', methods=['GET'])
+@login_required
+def view_metadata(file_id):
+    """View metadata for the uploaded file."""
+    uploaded_file = UploadedFile.query.get(file_id)
+    if not uploaded_file or not uploaded_file.metadata_file_path:
+        return jsonify({"error": "Metadata not found"}), 404
+
+    # Load the metadata from the JSON file
+    with open(uploaded_file.metadata_file_path, 'r') as json_file:
+        metadata = json.load(json_file)
+
+    return jsonify({"metadata": metadata}), 200
 
 
 
