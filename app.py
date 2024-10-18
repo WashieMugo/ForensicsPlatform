@@ -20,6 +20,7 @@ VOL_TOOL_PATH = os.getenv("VOL_TOOL_PATH")
 VOL_OUTPUT_DIR = os.getenv("VOL_OUTPUT_DIR")
 TSK_TOOL_PATH = os.getenv("TSK_TOOL_PATH")
 TSK_OUTPUT_DIR = os.getenv("TSK_OUTPUT_DIR")
+WHK_PATH = os.getenv("WHK_PATH")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///forensiDB.db'
@@ -519,22 +520,42 @@ def view_full_metadata(file_id):
     return render_template('view_full_metadata.html', metadata=metadata, filename=uploaded_file.filename)
 
 # DOWNLOAD REPORT: @app.route('/download_report/<int:report_id>')
-from flask import send_file, abort
 import os
+from flask import send_file, abort, make_response
+import pdfkit
+
+# Retrieve the path to wkhtmltopdf from environment variables
+WHK_PATH = os.getenv("WHK_PATH")
+
+# Check if the path is set correctly
+if not WHK_PATH:
+    raise ValueError("WHK_PATH is not set in the environment variables.")
+
+# Specify the path to wkhtmltopdf.exe
+pdfkit_config = pdfkit.configuration(wkhtmltopdf=WHK_PATH)
 
 @app.route('/download_report/<int:report_id>')
 def download_report(report_id):
-    # Query the autoscans table to get the report details for the given report_id
     report = AutoScan.query.get(report_id)
     if report:
         report_path = report.report
-        # Make sure the report exists
         if os.path.exists(report_path):
-            return send_file(report_path, as_attachment=True)
+            try:
+                # Use the configuration here
+                pdf = pdfkit.from_file(report_path, False, configuration=pdfkit_config)
+                
+                response = make_response(pdf)
+                response.headers['Content-Type'] = 'application/pdf'
+                response.headers['Content-Disposition'] = f'attachment; filename=report_{report_id}.pdf'
+
+                return response
+            except Exception as e:
+                abort(500, description=f"Failed to generate PDF: {str(e)}")
         else:
             abort(404, description="Report not found")
     else:
         abort(404, description="Report not found")
+
 
 
 if __name__ == '__main__':

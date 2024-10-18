@@ -17,3 +17,9 @@ ram file samples:
  - https://corp.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/
 
 challenge.raw: https://drive.usercontent.google.com/download?id=1MjMGRiPzweCOdikO3DTaVfbdBK5kyynT&export=download&authuser=0
+
+
+## report download as pdf
+donwload and install wkhtmltopdf :  add install location to path in dash.env 
+    default:"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+> pip install pdfkit
