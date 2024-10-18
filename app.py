@@ -185,7 +185,7 @@ def upload_file():
             format=file_format,
             size=file_size,
             user_id=current_user.id,  # Assuming you use Flask-Login for user management
-            doc_exists=False,
+            # doc_exists=False,
         )
 
         db.session.add(uploaded_file)
@@ -224,10 +224,15 @@ def delete_file(file_id):
     return redirect(url_for('dashboard'))
 
 
-
+from flask_wtf.csrf import validate_csrf
 @app.route('/auto_scan/<int:file_id>', methods=['POST'])
 @login_required
 def auto_scan(file_id):
+    try:
+        validate_csrf(request.form.get('csrf_token'))
+    except Exception as e:
+        return jsonify({"error": "CSRF validation failed"}), 400
+        
     # Retrieve the file information from the database
     uploaded_file = UploadedFile.query.get(file_id)
     if not uploaded_file:
@@ -481,10 +486,39 @@ def view_metadata(file_id):
     with open(uploaded_file.metadata_file_path, 'r') as json_file:
         metadata = json.load(json_file)
 
-    return jsonify({"metadata": metadata}), 200
+    # Process metadata to show top 5 entries where necessary
+    limited_metadata = {}
+    for key, value in metadata.items():
+        if isinstance(value, list) and len(value) > 5:
+            limited_metadata[key] = value[:5]  # Show only the top 5
+            limited_metadata[f"{key}_truncated"] = True  # Mark as truncated
+        else:
+            limited_metadata[key] = value
 
+        # Convert objects in the lists to a more readable format (customize as needed)
+        if isinstance(value, list):
+            for index in range(len(limited_metadata[key])):
+                if isinstance(limited_metadata[key][index], dict):
+                    # Convert the object to a string representation, e.g., join specific fields
+                    limited_metadata[key][index] = ", ".join(f"{k}: {v}" for k, v in limited_metadata[key][index].items() if k != "other_field")
 
+    return jsonify({"metadata": limited_metadata, "file_id": file_id}), 200
 
+@app.route('/view_full_metadata/<int:file_id>', methods=['GET'])
+@login_required
+def view_full_metadata(file_id):
+    """View full metadata for the uploaded file."""
+    uploaded_file = UploadedFile.query.get(file_id)
+    if not uploaded_file or not uploaded_file.metadata_file_path:
+        return "Metadata not found", 404
+
+    # Load the metadata from the JSON file
+    with open(uploaded_file.metadata_file_path, 'r') as json_file:
+        metadata = json.load(json_file)
+
+    return render_template('view_full_metadata.html', metadata=metadata, filename=uploaded_file.filename)
+
+    
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

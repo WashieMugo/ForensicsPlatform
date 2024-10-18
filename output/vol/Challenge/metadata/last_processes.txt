@@ -1,0 +1,38 @@
+Volatility 3 Framework 2.7.0
+
+PID	PPID	ImageFileName	Offset(V)	Threads	Handles	SessionId	Wow64	CreateTime	ExitTime	File output
+
+4	0	System	0x83d09c58	85	483	N/A	False	2018-10-23 08:29:16.000000 	N/A	Disabled
+260	4	smss.exe	0x8437db18	2	29	N/A	False	2018-10-23 08:29:16.000000 	N/A	Disabled
+340	332	csrss.exe	0x84d69030	8	347	0	False	2018-10-23 08:29:21.000000 	N/A	Disabled
+380	372	csrss.exe	0x84d8d030	9	188	1	False	2018-10-23 08:29:23.000000 	N/A	Disabled
+388	332	wininit.exe	0x84d93c68	3	79	0	False	2018-10-23 08:29:23.000000 	N/A	Disabled
+424	372	winlogon.exe	0x84dcbd20	6	117	1	False	2018-10-23 08:29:23.000000 	N/A	Disabled
+484	388	services.exe	0x84debd20	10	191	0	False	2018-10-23 08:29:25.000000 	N/A	Disabled
+492	388	lsass.exe	0x84def3d8	7	480	0	False	2018-10-23 08:29:25.000000 	N/A	Disabled
+500	388	lsm.exe	0x84df2378	10	146	0	False	2018-10-23 08:29:25.000000 	N/A	Disabled
+592	484	svchost.exe	0x84e23030	12	358	0	False	2018-10-23 08:29:30.000000 	N/A	Disabled
+652	484	VBoxService.ex	0x84e41708	12	116	0	False	2018-10-23 08:29:31.000000 	N/A	Disabled
+716	484	svchost.exe	0x84e54030	9	243	0	False	2018-10-23 08:29:32.000000 	N/A	Disabled
+804	484	svchost.exe	0x84e7ad20	19	378	0	False	2018-10-23 08:29:32.000000 	N/A	Disabled
+848	484	svchost.exe	0x84e84898	20	400	0	False	2018-10-23 08:29:33.000000 	N/A	Disabled
+872	484	svchost.exe	0x84e89c68	19	342	0	False	2018-10-23 08:29:33.000000 	N/A	Disabled
+896	484	svchost.exe	0x84e8c648	30	809	0	False	2018-10-23 08:29:33.000000 	N/A	Disabled
+988	804	audiodg.exe	0x84ea7d20	6	127	0	False	2018-10-23 08:29:35.000000 	N/A	Disabled
+1192	484	svchost.exe	0x84f033c8	15	365	0	False	2018-10-23 08:29:40.000000 	N/A	Disabled
+1336	484	spoolsv.exe	0x84f323f8	16	295	0	False	2018-10-23 08:29:43.000000 	N/A	Disabled
+1364	484	svchost.exe	0x84f4dca0	19	307	0	False	2018-10-23 08:29:43.000000 	N/A	Disabled
+1460	484	svchost.exe	0x84f7d578	11	148	0	False	2018-10-23 08:29:44.000000 	N/A	Disabled
+1488	484	svchost.exe	0x84f828f8	8	170	0	False	2018-10-23 08:29:44.000000 	N/A	Disabled
+308	484	taskhost.exe	0x850b2538	8	151	1	False	2018-10-23 08:29:55.000000 	N/A	Disabled
+1164	484	sppsvc.exe	0x850d0030	6	154	0	False	2018-10-23 08:29:57.000000 	N/A	Disabled
+1992	848	dwm.exe	0x85109030	5	132	1	False	2018-10-23 08:30:04.000000 	N/A	Disabled
+324	1876	explorer.exe	0x85097870	33	827	1	False	2018-10-23 08:30:04.000000 	N/A	Disabled
+1000	324	VBoxTray.exe	0x85135af8	14	159	1	False	2018-10-23 08:30:08.000000 	N/A	Disabled
+2032	484	SearchIndexer.	0x85164030	14	614	0	False	2018-10-23 08:30:14.000000 	N/A	Disabled
+284	2032	SearchProtocol	0x8515ad20	7	235	0	False	2018-10-23 08:30:16.000000 	N/A	Disabled
+1292	2032	SearchFilterHo	0x8515cd20	5	80	0	False	2018-10-23 08:30:17.000000 	N/A	Disabled
+2096	324	cmd.exe	0x851a6610	1	22	1	False	2018-10-23 08:30:18.000000 	N/A	Disabled
+2104	380	conhost.exe	0x851a5cd8	2	52	1	False	2018-10-23 08:30:18.000000 	N/A	Disabled
+2412	324	DumpIt.exe	0x845a8d20	2	38	1	False	2018-10-23 08:30:48.000000 	N/A	Disabled
+2424	380	conhost.exe	0x84d83d20	2	51	1	False	2018-10-23 08:30:48.000000 	N/A	Disabled

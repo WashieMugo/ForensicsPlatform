@@ -1,0 +1,27 @@
+Volatility 3 Framework 2.7.0
+
+Variable	Value
+
+Kernel Base	0x82604000
+DTB	0x185000
+Symbols	file:///C:/dev/volatility3/volatility3/symbols/windows/ntkrpamp.pdb/EDD3760CEE2B45D2A63BF8C26EE11FAF-2.json.xz
+Is64Bit	False
+IsPAE	True
+layer_name	0 WindowsIntelPAE
+memory_layer	1 FileLayer
+KdDebuggerDataBlock	0x8273cb78
+NTBuildLab	7601.24260.x86fre.win7sp1_ldr.18
+CSDVersion	1
+KdVersionBlock	0x8273cb50
+Major/Minor	15.7601
+MachineType	332
+KeNumberProcessors	1
+SystemTime	2018-10-23 08:30:51
+NtSystemRoot	C:\Windows
+NtProductType	NtProductWinNt
+NtMajorVersion	6
+NtMinorVersion	1
+PE MajorOperatingSystemVersion	6
+PE MinorOperatingSystemVersion	1
+PE Machine	332
+PE TimeDateStamp	Sun Sep  9 00:14:23 2018

@@ -1,0 +1,7 @@
+Volatility 3 Framework 2.7.0
+
+User	rid	lmhash	nthash
+
+Administrator	500	aad3b435b51404eeaad3b435b51404ee	31d6cfe0d16ae931b73c59d7e0c089c0
+Guest	501	aad3b435b51404eeaad3b435b51404ee	31d6cfe0d16ae931b73c59d7e0c089c0
+hello	1000	aad3b435b51404eeaad3b435b51404ee	101da33f44e92c27835e64322d72e8b7
