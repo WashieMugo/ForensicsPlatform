@@ -518,7 +518,25 @@ def view_full_metadata(file_id):
 
     return render_template('view_full_metadata.html', metadata=metadata, filename=uploaded_file.filename)
 
-    
+# DOWNLOAD REPORT: @app.route('/download_report/<int:report_id>')
+from flask import send_file, abort
+import os
+
+@app.route('/download_report/<int:report_id>')
+def download_report(report_id):
+    # Query the autoscans table to get the report details for the given report_id
+    report = AutoScan.query.get(report_id)
+    if report:
+        report_path = report.report
+        # Make sure the report exists
+        if os.path.exists(report_path):
+            return send_file(report_path, as_attachment=True)
+        else:
+            abort(404, description="Report not found")
+    else:
+        abort(404, description="Report not found")
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

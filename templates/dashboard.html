@@ -136,18 +136,18 @@
                                             <button type="button" class="btn btn-outline-primary" title="Auto Scan" data-toggle="modal" data-target="#autoScanModal-{{ file.id }}">
                                                 <i class="fa-solid fa-robot"></i> Autoscan
                                             </button>
-                                            <button type="button" class="btn btn-outline-info" title="Manual Scan">
+                                            <!-- <button type="button" class="btn btn-outline-info" title="Manual Scan">
                                                 <i class="fa-solid fa-user-pen"></i> Manual Scan
-                                            </button>
+                                            </button> -->
                                             <button type="button" class="btn btn-outline-secondary" title="Delete" data-toggle="modal" data-target="#deleteModal-{{ file.id }}">
                                                 <i class="fa-solid fa-trash"></i> Delete
                                             </button>
                                         </div>
                                     {% elif file.status == 'AutoScanned' %}
                                         <div class="btn-group-vertical" role="group">
-                                            <button type="button" class="btn btn-outline-primary" title="Manual Scan">
+                                            <!-- <button type="button" class="btn btn-outline-primary" title="Manual Scan">
                                                 <i class="fa-solid fa-user-pen"></i> Manual Scan
-                                            </button>
+                                            </button> -->
                                             <button type="button" class="btn btn-outline-success" title="View Report" onclick="window.open('{{ url_for('view_report2', file_id=file.id) }}', '_blank')">
                                                 <i class="fa-regular fa-file-lines"></i> View Report
                                             </button>
@@ -425,9 +425,11 @@
                                 <button class="btn btn-info me-1" title="View Summary" onclick="viewSummaryFunction()">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
-                                <button class="btn btn-outline-primary me-1" title="Download Report" onclick="downloadReportFunction()">
+                                <button class="btn btn-outline-primary me-1" title="Download Report" 
+                                        onclick="window.location.href='{{ url_for('download_report', report_id=report.id) }}'">
                                     <i class="fa-solid fa-file-arrow-down"></i>
                                 </button>
+
                                 <button class="btn btn-danger" title="Delete Report" onclick="deleteReportFunction()">
                                     <i class="fas fa-trash"></i>
                                 </button>
