@@ -505,6 +505,9 @@ def view_metadata(file_id):
 
     return jsonify({"metadata": limited_metadata, "file_id": file_id}), 200
 
+import json
+import pprint  # This will help print the metadata in a readable format
+
 @app.route('/view_full_metadata/<int:file_id>', methods=['GET'])
 @login_required
 def view_full_metadata(file_id):
@@ -517,7 +520,11 @@ def view_full_metadata(file_id):
     with open(uploaded_file.metadata_file_path, 'r') as json_file:
         metadata = json.load(json_file)
 
+    # Log the metadata for debugging purposes
+   # pprint.pprint(metadata)
+
     return render_template('view_full_metadata.html', metadata=metadata, filename=uploaded_file.filename)
+
 
 # DOWNLOAD REPORT: @app.route('/download_report/<int:report_id>')
 import os

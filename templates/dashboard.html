@@ -461,11 +461,19 @@
                     type: 'GET',
                     success: function(response) {
                         // Function to format metadata into tables
-                        function formatMetadata(metadata) {
+                        function formatMetadata(metadata, visited = new Set()) {
                             var html = '';
+
+                            // Check for circular references
+                            if (visited.has(metadata)) {
+                                return '<p><strong>Circular reference detected</strong></p>';
+                            }
+
+                            // Mark the current object as visited
+                            visited.add(metadata);
+
                             for (var key in metadata) {
                                 if (Array.isArray(metadata[key])) {
-                                    // Create a table for arrays
                                     html += `<h5>${key}</h5>`;
                                     html += '<table class="table table-striped"><thead><tr><th>#</th><th>Details</th></tr></thead><tbody>';
                                     metadata[key].forEach((value, index) => {
@@ -473,14 +481,13 @@
                                     });
                                     html += '</tbody></table>';
                                 } else if (typeof metadata[key] === 'object' && metadata[key] !== null) {
-                                    // Handle nested objects
                                     html += `<h5>${key}</h5>`;
-                                    html += formatMetadata(metadata[key]); // Recursive call for nested objects
+                                    html += formatMetadata(metadata[key], visited);  // Pass visited set to track circular references
                                 } else {
-                                    // Display key-value pairs
                                     html += `<p><strong>${key}:</strong> ${metadata[key]}</p>`;
                                 }
                             }
+
                             return html;
                         }
     
@@ -528,7 +535,7 @@
                 $('#successModal').modal('show');
                 // Handle view metadata link
                 document.getElementById('successViewMetadataBtn').onclick = function() {
-                    window.location.href = `/view_metadata/${fileId}`;
+                    window.location.href = `/dashboard/${fileId}`;
                 };
             })
             .catch(error => {

@@ -1,0 +1,5 @@
+r/r 4:	primary-2.txt
+v/v 832003:	$MBR
+v/v 832004:	$FAT1
+v/v 832005:	$FAT2
+V/V 832006:	$OrphanFiles

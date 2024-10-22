@@ -42,6 +42,46 @@ def extract_last_processes(file_path, metadata_dir):
         subprocess.run(command, stdout=f, text=True)
     return output_file
 
+def extract_network_connections(file_path, metadata_dir):
+    """Extract the last processes from the memory image."""
+    command = ['python', os.getenv('VOL_TOOL_PATH'), '-f', file_path, 'windows.netscan']
+    output_file = os.path.join(metadata_dir, 'network_connections.txt')
+    with open(output_file, 'w') as f:
+        subprocess.run(command, stdout=f, text=True)
+    return output_file
+
+
+def parse_network_connections(file_path):
+    """Parse the network connections from the file."""
+    network_connections = []
+    
+    with open(file_path, 'r') as f:
+        for line in f:
+            # Skip unnecessary lines: Volatility header, empty lines, and actual headers
+            if "Volatility" in line or "Offset" in line or not line.strip():
+                continue
+
+            # Split the line by whitespace while preserving empty fields
+            fields = line.split()
+
+            # Extract values ensuring indices correspond to the columns
+            if len(fields) >= 9:
+                connection = {
+                    "offset": fields[0],
+                    "protocol": fields[1],
+                    "local_addr": fields[2],
+                    "local_port": fields[3],
+                    "foreign_addr": fields[4],
+                    "foreign_port": fields[5],
+                    "state": fields[6],
+                    "pid": fields[7],
+                    "owner": fields[8],
+                    "created": " ".join(fields[9:])  # Join date/time fields
+                }
+                network_connections.append(connection)
+    
+    return network_connections
+
 # Updated function to parse the user accounts file
 def parse_user_accounts(file_path):
     """Parse the user accounts file and return a list of accounts."""
@@ -111,15 +151,18 @@ def fetch_memory_metadata(file_path, output_dir):
     user_accounts_file = extract_user_accounts(file_path, metadata_dir)
     loaded_modules_file = extract_loaded_modules(file_path, metadata_dir)
     last_processes_file = extract_last_processes(file_path, metadata_dir)
+    network_connections_file = extract_network_connections(file_path,metadata_dir)
     # Parse the files into structured data
     user_accounts = parse_user_accounts(user_accounts_file)
     loaded_modules = parse_loaded_modules(loaded_modules_file)
     last_processes = parse_last_processes(last_processes_file)
+    network_connections = parse_network_connections(network_connections_file)
     # Return metadata as a JSON object
     metadata = {
         'hash': memory_hash,
         'user_accounts': user_accounts,
         'loaded_modules': loaded_modules,
-        'last_processes': last_processes
+        'last_processes': last_processes,
+        'network_connections': network_connections
     }
     return metadata

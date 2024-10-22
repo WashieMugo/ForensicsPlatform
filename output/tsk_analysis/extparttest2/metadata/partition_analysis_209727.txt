@@ -1,0 +1,35 @@
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0x90ed4150
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 63
+
+File System Layout (in sectors)
+Total Range: 0 - 52352
+* Reserved: 0 - 1
+** Boot Sector: 0
+* FAT 0: 2 - 204
+* FAT 1: 205 - 407
+* Data Area: 408 - 52352
+** Root Directory: 408 - 439
+** Cluster Area: 440 - 52352
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 831126
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51914
+
+FAT CONTENTS (in sectors)
+--------------------------------------------

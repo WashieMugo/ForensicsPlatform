@@ -1,0 +1,35 @@
+FILE SYSTEM INFORMATION
+--------------------------------------------
+File System Type: FAT16
+
+OEM Name: MSDOS5.0
+Volume ID: 0x48f58a3a
+Volume Label (Boot Sector): NO NAME    
+Volume Label (Root Directory):
+File System Type Label: FAT16   
+
+Sectors before file system: 52416
+
+File System Layout (in sectors)
+Total Range: 0 - 52415
+* Reserved: 0 - 7
+** Boot Sector: 0
+* FAT 0: 8 - 211
+* FAT 1: 212 - 415
+* Data Area: 416 - 52415
+** Root Directory: 416 - 447
+** Cluster Area: 448 - 52415
+
+METADATA INFORMATION
+--------------------------------------------
+Range: 2 - 832006
+Root Directory: 2
+
+CONTENT INFORMATION
+--------------------------------------------
+Sector Size: 512
+Cluster Size: 512
+Total Cluster Range: 2 - 51969
+
+FAT CONTENTS (in sectors)
+--------------------------------------------

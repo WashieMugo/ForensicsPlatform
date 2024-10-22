@@ -1,0 +1,30 @@
+{
+    "hash": "6c18f662744d55e2769d9510f6173f04dab668c42b67ef27b675d22e628b4ed5",
+    "metadata_dir": "output\\tsk_analysis\\2020JimmyWilson\\metadata",
+    "valid_partitions": {
+        "partition_004:": {
+            "index": "004:",
+            "slot": "000",
+            "start": "0000000034",
+            "end": "0000065569",
+            "length": "0000065536",
+            "description": "Microsoft reserved partition"
+        },
+        "partition_006:": {
+            "index": "006:",
+            "slot": "001",
+            "start": "0000065664",
+            "end": "0001736831",
+            "length": "0001671168",
+            "description": "Basic data partition"
+        }
+    },
+    "partition_004:": {
+        "partition_analysis": null,
+        "top_directories": null
+    },
+    "partition_006:": {
+        "partition_analysis": "FILE SYSTEM INFORMATION\n--------------------------------------------\nFile System Type: NTFS\nVolume Serial Number: 92E0E5E9E0E5D40F\nOEM Name: NTFS    \nVolume Name: THISONE\nVersion: Windows XP\n\nMETADATA INFORMATION\n--------------------------------------------\nFirst Cluster of MFT: 59733\nFirst Cluster of MFT Mirror: 2\nSize of MFT Entries: 1024 bytes\nSize of Index Records: 4096 bytes\nRange: 0 - 5888\nRoot Directory: 5\n\nCONTENT INFORMATION\n--------------------------------------------\nSector Size: 512\nCluster Size: 4096\nTotal Cluster Range: 0 - 208894\nTotal Sector Range: 0 - 1671166\n\n$AttrDef Attribute Values:\n$STANDARD_INFORMATION (16)   Size: 48-72   Flags: Resident\n$ATTRIBUTE_LIST (32)   Size: No Limit   Flags: Non-resident\n$FILE_NAME (48)   Size: 68-578   Flags: Resident,Index\n$OBJECT_ID (64)   Size: 0-256   Flags: Resident\n$SECURITY_DESCRIPTOR (80)   Size: No Limit   Flags: Non-resident\n$VOLUME_NAME (96)   Size: 2-256   Flags: Resident\n$VOLUME_INFORMATION (112)   Size: 12-12   Flags: Resident\n$DATA (128)   Size: No Limit   Flags: \n$INDEX_ROOT (144)   Size: No Limit   Flags: Resident\n$INDEX_ALLOCATION (160)   Size: No Limit   Flags: Non-resident\n$BITMAP (176)   Size: No Limit   Flags: Non-resident\n$REPARSE_POINT (192)   Size: 0-16384   Flags: Non-resident\n$EA_INFORMATION (208)   Size: 8-8   Flags: Resident\n$EA (224)   Size: 0-65536   Flags: \n$LOGGED_UTILITY_STREAM (256)   Size: 0-65536   Flags: Non-resident\n",
+        "top_directories": "d/d 35-144-1:\tDocuments and Settings\nd/d 4213-144-8:\tUSERS\nr/r 4-128-4:\t$AttrDef\nr/r 8-128-2:\t$BadClus\nr/r 8-128-1:\t$BadClus:$Bad\nr/r 6-128-4:\t$Bitmap\nr/r 7-128-1:\t$Boot\nd/d 11-144-4:\t$Extend\nr/r 2-128-1:\t$LogFile\nr/r 0-128-1:\t$MFT\nr/r 1-128-1:\t$MFTMirr\nd/d 4378-144-5:\t$RECYCLE.BIN\nr/r 9-128-8:\t$Secure:$SDS\nr/r 9-144-11:\t$Secure:$SDH\nr/r 9-144-14:\t$Secure:$SII\nr/r 10-128-1:\t$UpCase\nr/r 3-128-3:\t$Volume\nd/d 4214-144-5:\tWindows\nV/V 5888:\t$OrphanFiles\n"
+    }
+}
