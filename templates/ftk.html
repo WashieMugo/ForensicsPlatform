@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}FTK Imager Automation {% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">FTK Imager Automation</h2>
+
+    <!-- Upper Section: Uploaded Files and FTK Operations -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Automated FTK Operations</h5>
+        
+        <!-- Table of Uploaded Files -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Filename</th>
+              <th>File Type</th>
+              <th>Size</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for file in uploaded_files %}
+              <tr>
+                <td><input type="radio" name="file_id" value="{{ file.id }}"></td>
+                <td>{{ file.filename }}</td>
+                <td>{{ file.file_type }}</td>
+                <td>{{ file.size }} bytes</td>
+                <td>
+                  <!-- Actions for specific FTK operations -->
+                  <button class="btn btn-secondary">Verify</button>
+                  <button class="btn btn-secondary">Extract Deleted Files</button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- FTK Operations Form -->
+        <form id="ftkOperationsForm" method="POST">
+          <div class="form-group">
+            <label for="operationSelect">Select Operation</label>
+            <select class="form-control" id="operationSelect" name="operation">
+              <option value="create_disk_image">Create Disk Image</option>
+              <option value="verify_image">Verify Image</option>
+              <option value="extract_deleted_files">Extract Deleted Files</option>
+            </select>
+          </div>
+
+          <!-- Stepwise Section for Create Disk Image -->
+          <div class="form-group mt-3">
+            <label for="driveSelect">Select Drive</label>
+            <select class="form-control" id="driveSelect" name="drive">
+              <option value="C:">C:</option>
+              <option value="D:">D:</option>
+              <option value="E:">E:</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">Run Operation</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lower Section: Activity Logs -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">User Activity Logs</h5>
+        <table class="table table-striped" id="activityTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Operation</th>
+              <th>Status</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for log in logs %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ log.operation }}</td>
+                <td>{{ log.status }}</td>
+                <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const csrfToken = "{{ csrf_token() }}";
+            const forms = document.querySelectorAll('form');
+            
+            forms.forEach(form => {
+                if (!form.querySelector('input[name="csrf_token"]')) {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', 'csrf_token');
+                    input.setAttribute('value', csrfToken);
+                    form.appendChild(input);
+                }
+            });
+        });
+    </script>
+
+
+{% endblock %}

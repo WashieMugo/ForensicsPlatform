@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, send_from_directory, abort
 from flask_migrate import Migrate
-from models import db, User, UploadedFile, AutoScan, Documentation
-from forms import RegistrationForm, LoginForm, UploadFileForm
+from models import db, User, UploadedFile, AutoScan, Documentation, FTKActivityLog, FTKOps
+from forms import RegistrationForm, LoginForm, UploadFileForm, FTKOperationsForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 import os
@@ -16,11 +16,14 @@ load_dotenv('dash.env')
 
 
 # Tool paths and output directories
+FTK_TOOL_PATH  = os.getenv("FTK_TOOL_PATH")
+ftk_output_dir = os.getenv("FTK_OUTPUT_DIR")
 VOL_TOOL_PATH = os.getenv("VOL_TOOL_PATH")
 VOL_OUTPUT_DIR = os.getenv("VOL_OUTPUT_DIR")
 TSK_TOOL_PATH = os.getenv("TSK_TOOL_PATH")
 TSK_OUTPUT_DIR = os.getenv("TSK_OUTPUT_DIR")
 WHK_PATH = os.getenv("WHK_PATH")
+ftk_tool_path = FTK_TOOL_PATH 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///forensiDB.db'
@@ -128,6 +131,81 @@ def logout():
     flash('You have been logged out.', 'info')  # Flash a message
     return redirect(url_for('login'))  # Redirect to the login page
 
+
+@app.route('/ftk', methods=['GET', 'POST'])
+@login_required
+def ftk():
+    form = FTKOperationsForm()
+    logs = FTKOps.query.filter_by(user_id=current_user.id).order_by(FTKOps.timestamp.desc()).all()
+    uploaded_files = UploadedFile.query.filter_by(user_id=current_user.id).all()
+
+    if form.validate_on_submit():
+        operation = form.operation.data
+        status = "Success"
+        selected_file_id = request.form.get("file_id")
+        try:
+            if operation == "create_disk_image":
+                # Step 1: List available drives (simulated here)
+                available_drives = ["C:", "D:", "E:"]  # In practice, you'd dynamically list actual drives.
+                selected_drive = request.form.get("drive")
+
+                if selected_drive:
+                    image_folder = os.path.join(ftk_output_dir, f"{current_user.username}_{selected_drive}_image")
+                    os.makedirs(image_folder, exist_ok=True)
+                    output_path = os.path.join(image_folder, f"{selected_drive}_disk_image.img")
+                    subprocess.run([ftk_tool_path, '--create-image', selected_drive, output_path], check=True)
+
+                    # Add the newly created image to UploadedFile table
+                    new_file = UploadedFile(
+                        filename=f"{selected_drive}_disk_image.img",
+                        file_type="os_image",
+                        format=".img",
+                        size=os.path.getsize(output_path),
+                        user_id=current_user.id
+                    )
+                    db.session.add(new_file)
+                    db.session.commit()
+
+                    # Log the FTK operation with the new file ID
+                    new_ftk_op = FTKOps(
+                        operation=operation,
+                        status=status,
+                        user_id=current_user.id,
+                        file_id=new_file.id
+                    )
+                    db.session.add(new_ftk_op)
+                    db.session.commit()
+
+            elif operation == "verify_image":
+                # Assume we use a sample verify command for demonstration
+                selected_file = UploadedFile.query.get(selected_file_id)
+                if selected_file:
+                    subprocess.run([ftk_tool_path, '--verify', os.path.join(IMAGES_DIR, selected_file.filename)], check=True)
+
+            elif operation == "extract_deleted_files":
+                selected_file = UploadedFile.query.get(selected_file_id)
+                if selected_file:
+                    output_dir = os.path.join(ftk_output_dir, f"{current_user.username}_deleted_files")
+                    os.makedirs(output_dir, exist_ok=True)
+                    subprocess.run([ftk_tool_path, '--extract-deleted', os.path.join(IMAGES_DIR, selected_file.filename), output_dir], check=True)
+
+        except subprocess.CalledProcessError:
+            status = "Failed"
+
+        # Log the FTK operation with the selected file ID
+        new_ftk_op = FTKOps(
+            operation=operation,
+            status=status,
+            user_id=current_user.id,
+            file_id=selected_file_id if selected_file_id else None
+        )
+        db.session.add(new_ftk_op)
+        db.session.commit()
+
+        flash(f"Operation '{operation}' executed with status: {status}", "info")
+        return redirect(url_for('ftk'))
+
+    return render_template('ftk.html', form=form, logs=logs, uploaded_files=uploaded_files)
 
 
 ## ---- UPLOAD ------ ##

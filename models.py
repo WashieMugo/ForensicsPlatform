@@ -21,9 +21,12 @@ class UploadedFile(db.Model):
     user_id = db.Column(db.Integer)
     upload_datetime = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String(50), default='Unscanned')
-    doc_exists = db.Column(db.Boolean, default=False)  # Add this line
-    has_metadata = db.Column(db.Boolean, default=False) 
-    metadata_file_path = db.Column(db.String, nullable=True)  # Add this line for JSON file path
+    doc_exists = db.Column(db.Boolean, default=False)
+    has_metadata = db.Column(db.Boolean, default=False)
+    metadata_file_path = db.Column(db.String, nullable=True)
+
+    # Relationship to FTKOps
+    ftk_ops = db.relationship('FTKOps', backref='uploaded_file', lazy=True)
 
     def __init__(self, filename, file_type, format=None, size=None, user_id=None):
         self.filename = filename
@@ -76,3 +79,25 @@ class Documentation(db.Model):
         self.option3 = option3
         self.last_updated = datetime.utcnow()
 
+class FTKActivityLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    operation = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(20), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class FTKOps(db.Model):
+    __tablename__ = 'ftk_ops'
+
+    id = db.Column(db.Integer, primary_key=True)
+    operation = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(20), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    file_id = db.Column(db.Integer, db.ForeignKey('uploaded_files.id'), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, operation, status, user_id, file_id):
+        self.operation = operation
+        self.status = status
+        self.user_id = user_id
+        self.file_id = file_id

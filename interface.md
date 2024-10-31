@@ -23,3 +23,14 @@ challenge.raw: https://drive.usercontent.google.com/download?id=1MjMGRiPzweCOdik
 donwload and install wkhtmltopdf :  add install location to path in dash.env 
     default:"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
 > pip install pdfkit
+
+
+
+: > flask db migrate -m "Add FTKActivityLog model"
+: > flask db upgrade
+
+
+# FTK IMAGER
+ftkimager 
+    --list-drives      >> List drives
+    --verify [drive]   >> MD5 verification, Compute SHA1
