@@ -2,3 +2,6 @@ Scripts/Files/images/
 Scripts/Files/mem/
 Files/images/
 Files/mem/
+output/
+dash.env
+__pycache__/
