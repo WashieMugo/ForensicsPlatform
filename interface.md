@@ -31,6 +31,12 @@ donwload and install wkhtmltopdf :  add install location to path in dash.env
 
 
 # FTK IMAGER
+
+for FTKAutomater:
+    > pyautogui
+    > pywinauto
+    > easygui
+
 ftkimager 
     --list-drives      >> List drives
     --verify [drive]   >> MD5 verification, Compute SHA1
