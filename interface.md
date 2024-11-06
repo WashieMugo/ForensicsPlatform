@@ -40,3 +40,32 @@ for FTKAutomater:
 ftkimager 
     --list-drives      >> List drives
     --verify [drive]   >> MD5 verification, Compute SHA1
+
+
+Commands:
+
+   [Detect / Show Drives](show detected physical drives )
+        ftkimager --list-drives 
+
+   [Create Image]
+        ftkimager <source> <dest_file> --e01    
+        
+        e.g:  ftkimager \\.\PhysicalDrive0 "E:\MyDrive" --e01
+
+    [Verification /Generate Hashes]
+        ftkimager <source> <dest_file> --verify
+    
+    [GET / Print Image info / Preview ]
+        ftkimager  <source> --print-info
+
+    [Exporting Files]
+        ftkimager <source_image> <destination_path>
+
+    [ Recover Deleted Files]
+        ftkimager <source> <dest_file>
+
+    [Mounting Image]
+        ftkimager <source> <dest_file> --verify
+    
+    [Live Ram Capture]
+        ftkimager ram <dest_file>

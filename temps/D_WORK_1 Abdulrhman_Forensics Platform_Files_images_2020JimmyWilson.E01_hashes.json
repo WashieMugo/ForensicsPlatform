@@ -1,0 +1,16 @@
+{
+    "MD5": [
+        {
+            "Computed hash": "b267fb0cd94645425eee00258d3a9b58",
+            "Image hash": "b267fb0cd94645425eee00258d3a9b58",
+            "Verify result": "Match"
+        }
+    ],
+    "SHA1": [
+        {
+            "Computed hash": "a1102c70a50768b588225fdcad6efa5d5d57341b",
+            "Image hash": "a1102c70a50768b588225fdcad6efa5d5d57341b",
+            "Verify result": "Match"
+        }
+    ]
+}

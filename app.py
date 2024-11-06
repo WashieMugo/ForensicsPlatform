@@ -17,7 +17,7 @@ load_dotenv('dash.env')
 
 # Tool paths and output directories
 FTK_TOOL_PATH  = os.getenv("FTK_TOOL_PATH")
-ftk_output_dir = os.getenv("FTK_OUTPUT_DIR")
+FTK_OUTPUT_DIR = os.getenv("FTK_OUTPUT_DIR")
 VOL_TOOL_PATH = os.getenv("VOL_TOOL_PATH")
 VOL_OUTPUT_DIR = os.getenv("VOL_OUTPUT_DIR")
 TSK_TOOL_PATH = os.getenv("TSK_TOOL_PATH")
@@ -206,6 +206,9 @@ def ftk():
         return redirect(url_for('ftk'))
 
     return render_template('ftk.html', form=form, logs=logs, uploaded_files=uploaded_files)
+
+
+
 
 
 ## ---- UPLOAD ------ ##
@@ -414,6 +417,131 @@ def view_report2(file_id):
     else:
         flash('Report not found.', 'danger')
         return redirect(url_for('dashboard'))
+
+
+import json
+from flask import jsonify
+
+@app.route('/list_available_drives', methods=['GET'])
+def list_available_drives():
+    try:
+        # Run the FTK Imager command to list drives
+        ftk_command = ["ftkimager", "--list-drives"]
+        process = subprocess.Popen(ftk_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        stdout, stderr = process.communicate()
+
+        if process.returncode != 0:
+            print("Error running ftkimager:", stderr)  # Log any error
+            return jsonify({"drives": []})
+
+        # Initialize a list for storing parsed drive information
+        drive_list = []
+
+        # Combine stdout and stderr, split into lines
+        drive_lines = (stdout + stderr).splitlines()
+
+        for line in drive_lines:
+            if '\\\\.\\' in line:  # Check for any drive type (physical, logical, etc.)
+                # If the line contains a '-', we assume it's a valid drive
+                if ' - ' in line:
+                    parts = line.split(' - ')
+                    device_id = parts[0].strip()  # Get the device ID
+                    description = parts[1].strip() if len(parts) > 1 else "Unknown Drive"  # Get the description
+
+                    # Skip devices that are likely RAM or virtual drives (if needed)
+                    if "RAM" in description or "Virtual Disk" in description:
+                        continue
+
+                    drive = {
+                        "device": device_id,
+                        "label": description
+                    }
+                    drive_list.append(drive)
+                else:
+                    # Handle the case where there is no separator (likely RAM)
+                    device_id = line.strip()
+                    # Optionally, decide to include or skip it
+                    # For now, we skip drives without a proper separator
+                    if "RAM" in device_id:
+                        continue  # Skip the RAM drive
+                    else:
+                        # You can optionally add an unknown label or include it differently
+                        drive = {
+                            "device": device_id,
+                            "label": "Unknown Drive"
+                        }
+                        drive_list.append(drive)
+
+        # Log the parsed drive list
+        print("Drive List:", drive_list)
+        return jsonify({"drives": drive_list})
+    except Exception as e:
+        print("Exception:", e)  # Log any exceptions
+        return jsonify({"drives": []})
+
+
+
+@app.route('/run_disk_imaging', methods=['POST'])
+@login_required
+def run_disk_imaging():
+    drive = request.form.get('drive')
+    image_name = request.form.get('image_name')
+    
+    # Ensure the output directory exists
+    output_path = os.path.join(FTK_OUTPUT_DIR, f"{current_user.username}_{image_name}")
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    
+    output_file = os.path.join(output_path, f"{image_name}.E01")
+
+    try:
+        # Debug: print paths to ensure they are correct
+        print(f"FTK Output Directory: {output_path}")
+        print(f"FTK Output File: {output_file}")
+
+        # Run the FTK Imager command
+        subprocess.run(['ftkimager', drive, output_file, '--e01'], check=True)
+
+        # Save image info in UploadedFile and FTKOps tables
+        file_size = os.path.getsize(output_file)
+
+        # Determine the directory (MEM_DIR or IMAGES_DIR) based on file type
+        if "mem" in image_name:
+            save_dir = MEM_DIR
+        else:
+            save_dir = IMAGES_DIR
+
+        # Move the image to the appropriate directory
+        final_file_path = os.path.join(save_dir, f"{image_name}.E01")
+        os.rename(output_file, final_file_path)
+
+        # Insert file details into the database
+        uploaded_file = UploadedFile(
+            filename=f"{image_name}.E01",
+            file_type='os_image',
+            format='.E01',
+            size=file_size,
+            user_id=current_user.id,
+            ftk_imaged=True  # Mark the file as imaged
+        )
+        db.session.add(uploaded_file)
+        db.session.commit()
+
+        # Add FTK operation record (track operation details)
+        ftk_op = FTKOps(
+            operation='create_disk_image',
+            status='Completed',
+            user_id=current_user.id,
+            file_id=uploaded_file.id
+        )
+        db.session.add(ftk_op)
+        db.session.commit()
+
+        flash('Imaging successfully completed and uploaded!', 'success')
+        return redirect(url_for('ftk'))
+    except Exception as e:
+        flash(f'Failed to create disk image: {e}', 'danger')
+        return redirect(url_for('ftk'))
 
 
 
@@ -641,6 +769,104 @@ def download_report(report_id):
     else:
         abort(404, description="Report not found")
 
+
+# FTK FETCH HASHES
+
+import re
+import os
+
+def extract_hashes_and_info(ftk_output):
+    """
+    Function to extract MD5 and SHA1 hashes and associated key-value pairs from FTK Imager output.
+    Returns a dictionary containing the extracted data in JSON format.
+    """
+    hash_info = {"MD5": [], "SHA1": []}
+    
+    # Define a regular expression to find the lines containing the hash information
+    hash_regex = re.compile(r"\[([A-Za-z0-9]+)\](.*?)(?=\[|$)", re.DOTALL)
+    match = hash_regex.findall(ftk_output)
+    
+    # Iterate over MD5 and SHA1 blocks
+    for hash_type, block in match:
+        hash_type = hash_type.strip()  # MD5 or SHA1
+        key_value_pairs = {}
+        
+        # Look for all key-value pairs in the block after the hash type tag
+        pairs = re.findall(r"(\S[\w\s]+?):\s*(.*?)\s*(?=\n|$)", block.strip())
+        
+        # For each key-value pair, store it in a dictionary
+        for key, value in pairs:
+            key_value_pairs[key.strip()] = value.strip()
+        
+        # Append the results to the corresponding hash type
+        if hash_type in hash_info:
+            hash_info[hash_type].append(key_value_pairs)
+    
+    return json.dumps(hash_info, indent=4)
+
+
+def run_ftkimager_verify(file_path):
+    """
+    Function to run the FTK Imager verify command and return the output.
+    """
+    try:
+        # Make sure the FTK Imager command is available in your system PATH or specify the full path
+        result = subprocess.run(
+            ['ftkimager', '--verify', file_path],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        )
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        print(f"Error running FTK Imager: {e}")
+        return None
+
+
+@app.route('/verify_file/<int:file_id>', methods=['POST'])
+@login_required
+def verify_file(file_id):
+    # Print the file_id for debugging purposes
+    print(f"Received request to verify file with ID: {file_id}")
+    
+    # Look up the file record using file_id
+    file_record = UploadedFile.query.get(file_id)
+    
+    if not file_record:
+        flash('File not found', 'danger')
+        return redirect(url_for('ftk'))  # Redirect back to the FTK page if the file doesn't exist
+    
+    try:
+        # Determine the file's path based on its type
+        file_path = os.path.join(MEM_DIR, file_record.filename) if is_memory_file(file_record) else os.path.join(IMAGES_DIR, file_record.filename)
+        
+        # Run FTK Imager verification (this function should return the output)
+        ftk_output = run_ftkimager_verify(file_path)
+
+        if not ftk_output:
+            flash('Error running FTK Imager', 'danger')
+            return redirect(url_for('ftk'))  # Redirect back to the FTK page if there is an error
+        
+        # Extract hash values from FTK output (this function should handle extraction)
+        hash_info = extract_hashes_and_info(ftk_output)
+
+        # Insert/update hash values in the database
+        existing_ftk_ops = FTKOps.query.filter_by(file_id=file_id).first()
+        if existing_ftk_ops:
+            existing_ftk_ops.hash_values = json.dumps(hash_info)
+        else:
+            new_ftk_ops = FTKOps(user_id=current_user.id, file_id=file_id, hash_values=json.dumps(hash_info))
+            db.session.add(new_ftk_ops)
+
+        db.session.commit()
+
+        # Flash success message
+        flash('Verification successful! Hashes have been saved.', 'success')
+
+    except Exception as e:
+        print(f"Error during FTK verification: {e}")
+        flash(f"Error: {e}", 'danger')  # Flash error message if any exception occurs
+    
+    # Redirect back to the FTK page after the process is done
+    return redirect(url_for('ftk'))
 
 
 if __name__ == '__main__':

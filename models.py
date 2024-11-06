@@ -24,17 +24,19 @@ class UploadedFile(db.Model):
     doc_exists = db.Column(db.Boolean, default=False)
     has_metadata = db.Column(db.Boolean, default=False)
     metadata_file_path = db.Column(db.String, nullable=True)
+    ftk_imaged = db.Column(db.Boolean, default=False)  # New column added
 
     # Relationship to FTKOps
     ftk_ops = db.relationship('FTKOps', backref='uploaded_file', lazy=True)
 
-    def __init__(self, filename, file_type, format=None, size=None, user_id=None):
+    def __init__(self, filename, file_type, format=None, size=None, user_id=None, ftk_imaged=False):
         self.filename = filename
         self.file_type = file_type
         self.format = format
         self.size = size
         self.user_id = user_id
-        # No explicit handling of upload_datetime, it's managed by SQLAlchemy
+        self.ftk_imaged = ftk_imaged  # Initialize the new field
+
 
 class AutoScan(db.Model):
     __tablename__ = 'autoscans'
@@ -90,14 +92,16 @@ class FTKOps(db.Model):
     __tablename__ = 'ftk_ops'
 
     id = db.Column(db.Integer, primary_key=True)
-    operation = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     file_id = db.Column(db.Integer, db.ForeignKey('uploaded_files.id'), nullable=False)
+    hash_values = db.Column(db.Text, nullable=True)
+    drive_info = db.Column(db.Text, nullable=True)
+    deleted_files = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, operation, status, user_id, file_id):
-        self.operation = operation
-        self.status = status
+    def __init__(self, user_id, file_id, hash_values=None, drive_info=None, deleted_files=None):
         self.user_id = user_id
         self.file_id = file_id
+        self.hash_values = hash_values
+        self.drive_info = drive_info
+        self.deleted_files = deleted_files

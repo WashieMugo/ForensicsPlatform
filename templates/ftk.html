@@ -9,62 +9,119 @@
       <div class="card-body">
         <h5 class="card-title">Automated FTK Operations</h5>
         
-        <!-- Table of Uploaded Files -->
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Select</th>
               <th>Filename</th>
               <th>File Type</th>
               <th>Size</th>
+              <th>Verification Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {% for file in uploaded_files %}
-              <tr>
-                <td><input type="radio" name="file_id" value="{{ file.id }}"></td>
-                <td>{{ file.filename }}</td>
-                <td>{{ file.file_type }}</td>
-                <td>{{ file.size }} bytes</td>
-                <td>
-                  <!-- Actions for specific FTK operations -->
-                  <button class="btn btn-secondary">Verify</button>
-                  <button class="btn btn-secondary">Extract Deleted Files</button>
-                </td>
-              </tr>
+            <tr>
+              <td>{{ file.filename }}</td>
+              <td>{{ file.file_type }}</td>
+              <td>{{ file.size }} bytes</td>
+              <td>
+                {% if file.verified %}
+                  Verified
+                {% else %}
+                  Not yet verified
+                {% endif %}
+              </td>
+              <td>
+                {% if file.verified %}
+                  <!-- Button to view hashes -->
+                  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#hashModal_{{ file.id }}">
+                    View Hashes
+                  </button>
+                {% else %}
+                  <!-- Form for file verification -->
+                  <form id="verifyFileForm_{{ file.id }}" method="POST" action="{{ url_for('verify_file', file_id=file.id) }}">
+                    <button type="submit" class="btn btn-secondary">Verify</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+        
+            <!-- Modal for displaying hashes -->
+            <div class="modal fade" id="hashModal_{{ file.id }}" tabindex="-1" aria-labelledby="hashModalLabel_{{ file.id }}" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="hashModalLabel_{{ file.id }}">Hash Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <pre>{{ file.hash_values }}</pre>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             {% endfor %}
           </tbody>
         </table>
+        
+        
+        <!-- Loading Popup -->
+        <div id="loadingPopup" style="display: none;">
+          <div class="popup-content">
+            <p>Calculating...</p>
+            <img src="static\loading.gif" alt="Loading..." />
+          </div>
+        </div>
 
-        <!-- FTK Operations Form -->
-        <form id="ftkOperationsForm" method="POST">
-          <div class="form-group">
-            <label for="operationSelect">Select Operation</label>
-            <select class="form-control" id="operationSelect" name="operation">
-              <option value="create_disk_image">Create Disk Image</option>
-              <option value="verify_image">Verify Image</option>
-              <option value="extract_deleted_files">Extract Deleted Files</option>
-            </select>
+
+        <br>
+        <hr>
+         <!-- New Disk Imaging Button -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#diskImagingModal">
+            New Disk Imaging
+          </button>
+
+          <!-- Modal Popup for Disk Imaging -->
+          <div class="modal fade" id="diskImagingModal" tabindex="-1" role="dialog" aria-labelledby="diskImagingModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="diskImagingModalLabel">Create Disk Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="diskImagingForm" method="POST" action="{{ url_for('run_disk_imaging') }}">
+                            <!-- Select Disk -->
+                            <div class="form-group">
+                                <label for="driveSelect">Select Drive</label>
+                                <select class="form-control" id="driveSelect" name="drive" required>
+                                    <!-- Options populated dynamically with JavaScript -->
+                                </select>
+                            </div>
+                            <!-- Image Name -->
+                            <div class="form-group">
+                                <label for="imageName">Image Name</label>
+                                <input type="text" class="form-control" id="imageName" name="image_name" placeholder="Enter image name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Start Imaging</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
           </div>
 
-          <!-- Stepwise Section for Create Disk Image -->
-          <div class="form-group mt-3">
-            <label for="driveSelect">Select Drive</label>
-            <select class="form-control" id="driveSelect" name="drive">
-              <option value="C:">C:</option>
-              <option value="D:">D:</option>
-              <option value="E:">E:</option>
-            </select>
-          </div>
 
-          <div class="form-group mt-3">
-            <button type="submit" class="btn btn-primary">Run Operation</button>
-          </div>
-        </form>
       </div>
     </div>
 
+
+   
     <!-- Lower Section: Activity Logs -->
     <div class="card">
       <div class="card-body">
@@ -114,5 +171,83 @@
         });
     </script>
 
+    <!-- Script Create New Image | Scan Current Drives -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script>
+      $(document).ready(function() {
+          // When the modal opens, fetch the available drives
+          $('#diskImagingModal').on('show.bs.modal', function() {
+              $.ajax({
+                  url: "{{ url_for('list_available_drives') }}",
+                  type: "GET",
+                  success: function(response) {
+                      if (response.drives && response.drives.length > 0) {
+                          // Clear previous options
+                          $('#driveSelect').empty();
+                          // Populate with new drive options
+                          $.each(response.drives, function(index, drive) {
+                              $('#driveSelect').append(new Option(drive.label, drive.device));
+                          });
+                      } else {
+                          $('#driveSelect').append(new Option('No drives available', ''));
+                      }
+                  },
+                  error: function(xhr) {
+                      alert('Failed to load available drives');
+                  }
+              });
+          });
+      });
+    </script>
+  
+ <!-- file verification | Calculating Hashes -->
+<script>
+  function verifyFile(fileId) {
+    // Show loading popup
+    document.getElementById('loadingPopup').style.display = 'block';
+    
+    // Send AJAX request to Flask backend to start FTK verification
+    fetch(`/verify_file/${fileId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ file_id: fileId })  // Ensure you're sending the correct payload
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Server responded with error: ' + response.status);
+      }
+      return response.json(); // Parse response as JSON
+    })
+    .then(data => {
+      // Hide loading popup
+      document.getElementById('loadingPopup').style.display = 'none';
+    
+      // Check if the verification was successful
+      if (data.success) {
+        alert("Verification complete. Hashes have been saved.");
+      } else {
+        alert("An error occurred during verification: " + data.error || "Unknown error.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('loadingPopup').style.display = 'none';
+      alert("An error occurred: " + error.message);
+    });
+  }
+</script>
+  
+<script>
+  // Optionally handle form submission via AJAX if you want to control the UI flow
+  document.querySelectorAll('form').forEach(function(form) {
+    form.addEventListener('submit', function() {
+      // Show loading popup
+      document.getElementById('loadingPopup').style.display = 'block';
+    });
+  });
+</script>
+    
 {% endblock %}

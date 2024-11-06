@@ -1,0 +1,20 @@
+{
+    "drives": [
+        {
+            "id": "\\\\.\\PHYSICALDRIVE0",
+            "description": "Geonix Gold 512GB [512GB IDE]"
+        },
+        {
+            "id": "\\\\.\\PHYSICALDRIVE1",
+            "description": "JMicron Generic SCSI Disk Device [500GB SCSI]"
+        },
+        {
+            "id": "\\\\.\\PHYSICALDRIVE2 [8GB]",
+            "description": "No description available"
+        },
+        {
+            "id": "\\\\.\\PHYSICALDRIVE3",
+            "description": "Microsoft Virtual Disk [1GB SCSI]"
+        }
+    ]
+}
