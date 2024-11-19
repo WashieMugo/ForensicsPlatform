@@ -1,73 +1,150 @@
 {% extends "base.html" %}
 {% block title %}FTK Imager Automation {% endblock %}
 {% block content %}
-<div class="container mt-5">
+<div class="container">
     <h2 class="text-center">FTK Imager Automation</h2>
 
-    <!-- Upper Section: Uploaded Files and FTK Operations -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Automated FTK Operations</h5>
-        
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Filename</th>
-              <th>File Type</th>
-              <th>Size</th>
-              <th>Verification Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for file in uploaded_files %}
-            <tr>
-              <td>{{ file.filename }}</td>
-              <td>{{ file.file_type }}</td>
-              <td>{{ file.size }} bytes</td>
-              <td>
-                {% if file.verified %}
-                  Verified
-                {% else %}
-                  Not yet verified
-                {% endif %}
-              </td>
-              <td>
-                {% if file.verified %}
-                  <!-- Button to view hashes -->
-                  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#hashModal_{{ file.id }}">
-                    View Hashes
-                  </button>
-                {% else %}
-                  <!-- Form for file verification -->
-                  <form id="verifyFileForm_{{ file.id }}" method="POST" action="{{ url_for('verify_file', file_id=file.id) }}">
-                    <button type="submit" class="btn btn-secondary">Verify</button>
-                  </form>
-                {% endif %}
-              </td>
-            </tr>
-        
-            <!-- Modal for displaying hashes -->
-            <div class="modal fade" id="hashModal_{{ file.id }}" tabindex="-1" aria-labelledby="hashModalLabel_{{ file.id }}" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="hashModalLabel_{{ file.id }}">Hash Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+   <!-- Upper Section: Uploaded Files and FTK Operations -->
+<div class="card">
+  <div class="card-body">
+      <h5 class="card-title">Automated FTK Operations</h5>
+
+      <!-- Buttons to Scroll the Table -->
+      <div class="d-flex justify-content-between mb-2">
+          <button class="btn btn-outline-primary" id="scrollLeft">Scroll <- </button>
+          <button class="btn btn-outline-primary" id="scrollRight">Scroll -></button>
+      </div>
+
+      <div class="table-responsive" style="width: 100%; overflow: hidden;"> <!-- Added responsive wrapper with hidden overflow -->
+          <table class="tab-content table table-striped">
+              <thead>
+                  <tr>
+                      <th>Filename</th>
+                      <th>File Type</th>
+                      <th>Size</th>
+                      <th>Ver. Status</th>
+                      <th style="min-width: 250px;">Hashes</th> <!-- Increased space for Hashes column -->
+                      <th style="min-width: 300px;">Drive Info</th> <!-- Increased space for Drive Info column -->
+                      <th>Deleted Files</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for file in files %}
+                  <tr>
+                      <td>{{ file.filename }}</td>
+                      <td>{{ file.file_type }}</td>
+                      <td>{{ file.size }}</td>
+                      <td>
+                          {% if file.verified %}
+                          Verified
+                          {% else %}
+                          Not yet verified
+                          {% endif %}
+                      </td>
+
+                      <!-- Dynamic Display of Hashes -->
+                      <td style="word-wrap: break-word; white-space: normal;">
+                          {% if file.hash_values %}
+                              <ul>
+                                  {% for hash_name, hash_list in file.hash_values.items() %}
+                                      <li><strong>{{ hash_name }}:</strong>
+                                          <ul>
+                                              {% for hash_item in hash_list %}
+                                                  {% for key, value in hash_item.items() %}
+                                                      <li>{{ key }}: {{ value }}</li>
+                                                  {% endfor %}
+                                              {% endfor %}
+                                          </ul>
+                                      </li>
+                                  {% endfor %}
+                              </ul>
+                          {% else %}
+                          <form method="POST" action="{{ url_for('verify_file', file_id=file.id) }}">
+                              <button type="submit" class="btn btn-secondary">Verify > Hash</button>
+                          </form>
+                          {% endif %}
+                      </td>
+
+                      <!-- Drive Info Actions -->
+                      <td style="word-wrap: break-word; white-space: normal;">
+                          {% if file.drive_info %}
+                              {{ file.drive_info }}
+                          {% else %}
+                          <form method="POST" action="{{ url_for('get_drive_info', file_id=file.id) }}">
+                              <button type="submit" class="btn btn-secondary">Fetch Drive Info</button>
+                          </form>
+                          {% endif %}
+                      </td>
+
+                      <!-- Deleted Files Actions -->
+                      <td>
+                          {% if file.deleted_files %}
+                          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#deletedFilesModal_{{ file.id }}">
+                              View Deleted Files
+                          </button>
+                          {% else %}
+                          <form method="POST" action="{{ url_for('check_deleted_files', file_id=file.id) }}">
+                              <button type="submit" class="btn btn-secondary">Fetch Deleted Files</button>
+                          </form>
+                          {% endif %}
+                      </td>
+                  </tr>
+
+                  <!-- Modal for displaying drive info -->
+                  <div class="modal fade" id="driveInfoModal_{{ file.id }}" tabindex="-1" aria-labelledby="driveInfoModalLabel_{{ file.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="driveInfoModalLabel_{{ file.id }}">Drive Info</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <pre>{{ file.drive_info }}</pre>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                  <div class="modal-body">
-                    <pre>{{ file.hash_values }}</pre>
+
+                  <!-- Modal for displaying deleted files -->
+                  <div class="modal fade" id="deletedFilesModal_{{ file.id }}" tabindex="-1" aria-labelledby="deletedFilesModalLabel_{{ file.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="deletedFilesModalLabel_{{ file.id }}">Deleted Files</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <pre>{{ file.deleted_files }}</pre>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-          </tbody>
-        </table>
-        
+
+                  {% endfor %}
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+
+<script>
+  // Scroll buttons functionality
+  const tableWrapper = document.querySelector('.table-responsive');
+
+  document.getElementById('scrollLeft').addEventListener('click', function() {
+      tableWrapper.scrollLeft -= 100;
+  });
+
+  document.getElementById('scrollRight').addEventListener('click', function() {
+      tableWrapper.scrollLeft += 100;
+  });
+</script>
         
         <!-- Loading Popup -->
         <div id="loadingPopup" style="display: none;">
@@ -77,8 +154,7 @@
           </div>
         </div>
 
-
-        <br>
+       <br>
         <hr>
          <!-- New Disk Imaging Button -->
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#diskImagingModal">
@@ -249,5 +325,6 @@
     });
   });
 </script>
-    
+
+
 {% endblock %}

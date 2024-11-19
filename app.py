@@ -131,6 +131,16 @@ def logout():
     flash('You have been logged out.', 'info')  # Flash a message
     return redirect(url_for('login'))  # Redirect to the login page
 
+import json
+def human_readable_size(size_in_bytes):
+    """
+    Convert a byte value to a human-readable size (KB, MB, GB).
+    """
+    for unit in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if size_in_bytes < 1024.0:
+            return f"{size_in_bytes:.2f} {unit}"
+        size_in_bytes /= 1024.0
+    return f"{size_in_bytes:.2f} PB"
 
 @app.route('/ftk', methods=['GET', 'POST'])
 @login_required
@@ -139,73 +149,35 @@ def ftk():
     logs = FTKOps.query.filter_by(user_id=current_user.id).order_by(FTKOps.timestamp.desc()).all()
     uploaded_files = UploadedFile.query.filter_by(user_id=current_user.id).all()
 
-    if form.validate_on_submit():
-        operation = form.operation.data
-        status = "Success"
-        selected_file_id = request.form.get("file_id")
-        try:
-            if operation == "create_disk_image":
-                # Step 1: List available drives (simulated here)
-                available_drives = ["C:", "D:", "E:"]  # In practice, you'd dynamically list actual drives.
-                selected_drive = request.form.get("drive")
+    # Combine file data with FTKOps data
+    files_with_ops = []
+    for file in uploaded_files:
+        # Find corresponding FTKOps record if it exists
+        ftk_op = FTKOps.query.filter_by(file_id=file.id).first()
 
-                if selected_drive:
-                    image_folder = os.path.join(ftk_output_dir, f"{current_user.username}_{selected_drive}_image")
-                    os.makedirs(image_folder, exist_ok=True)
-                    output_path = os.path.join(image_folder, f"{selected_drive}_disk_image.img")
-                    subprocess.run([ftk_tool_path, '--create-image', selected_drive, output_path], check=True)
+        # Parse the hash_values field as JSON if it's not None or empty
+        hash_values = None
+        if ftk_op and ftk_op.hash_values:
+            try:
+                hash_values = json.loads(ftk_op.hash_values)  # Parse JSON string into dictionary
+            except json.JSONDecodeError:
+                hash_values = None  # Handle any JSON parsing errors
 
-                    # Add the newly created image to UploadedFile table
-                    new_file = UploadedFile(
-                        filename=f"{selected_drive}_disk_image.img",
-                        file_type="os_image",
-                        format=".img",
-                        size=os.path.getsize(output_path),
-                        user_id=current_user.id
-                    )
-                    db.session.add(new_file)
-                    db.session.commit()
+        # Add a dictionary combining both tables' data
+        files_with_ops.append({
+            'id': file.id,
+            'filename': file.filename,
+            'file_type': file.file_type,
+            'size': human_readable_size(file.size),
+            'verified': file.status,  # Assuming "status" is used for verification
+            'hash_values': hash_values,  # Pass parsed hash_values here
+            'drive_info': ftk_op.drive_info if ftk_op else None,
+            'deleted_files': ftk_op.deleted_files if ftk_op else None,
+        })
 
-                    # Log the FTK operation with the new file ID
-                    new_ftk_op = FTKOps(
-                        operation=operation,
-                        status=status,
-                        user_id=current_user.id,
-                        file_id=new_file.id
-                    )
-                    db.session.add(new_ftk_op)
-                    db.session.commit()
+    return render_template('ftk.html', form=form, logs=logs, files=files_with_ops)
 
-            elif operation == "verify_image":
-                # Assume we use a sample verify command for demonstration
-                selected_file = UploadedFile.query.get(selected_file_id)
-                if selected_file:
-                    subprocess.run([ftk_tool_path, '--verify', os.path.join(IMAGES_DIR, selected_file.filename)], check=True)
 
-            elif operation == "extract_deleted_files":
-                selected_file = UploadedFile.query.get(selected_file_id)
-                if selected_file:
-                    output_dir = os.path.join(ftk_output_dir, f"{current_user.username}_deleted_files")
-                    os.makedirs(output_dir, exist_ok=True)
-                    subprocess.run([ftk_tool_path, '--extract-deleted', os.path.join(IMAGES_DIR, selected_file.filename), output_dir], check=True)
-
-        except subprocess.CalledProcessError:
-            status = "Failed"
-
-        # Log the FTK operation with the selected file ID
-        new_ftk_op = FTKOps(
-            operation=operation,
-            status=status,
-            user_id=current_user.id,
-            file_id=selected_file_id if selected_file_id else None
-        )
-        db.session.add(new_ftk_op)
-        db.session.commit()
-
-        flash(f"Operation '{operation}' executed with status: {status}", "info")
-        return redirect(url_for('ftk'))
-
-    return render_template('ftk.html', form=form, logs=logs, uploaded_files=uploaded_files)
 
 
 
@@ -802,7 +774,7 @@ def extract_hashes_and_info(ftk_output):
         if hash_type in hash_info:
             hash_info[hash_type].append(key_value_pairs)
     
-    return json.dumps(hash_info, indent=4)
+    return hash_info
 
 
 def run_ftkimager_verify(file_path):
@@ -819,6 +791,7 @@ def run_ftkimager_verify(file_path):
     except subprocess.CalledProcessError as e:
         print(f"Error running FTK Imager: {e}")
         return None
+
 
 
 @app.route('/verify_file/<int:file_id>', methods=['POST'])
@@ -868,6 +841,130 @@ def verify_file(file_id):
     # Redirect back to the FTK page after the process is done
     return redirect(url_for('ftk'))
 
+# Function to run FTK Imager and retrieve drive information
+def run_ftkimager_getinfo(file_path):
+    """
+    FTK function to retrieve drive information.
+    """
+    try:
+        # Ensure the FTK Imager command is available or use the full executable path
+        result = subprocess.run(
+            ['ftkimager', '--print-info', file_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True
+        )
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        print(f"Error running FTK Imager: {e.stderr}")
+        return None
+
+
+# Flask route to fetch drive information
+@app.route('/get_drive_info/<int:file_id>', methods=['POST'])
+@login_required
+def get_drive_info(file_id):
+    print("FTK: ----- Fetching drive information ------")
+
+    # Look up the file record using file_id
+    file_record = UploadedFile.query.get(file_id)
+    
+    if not file_record:
+        flash('File not found', 'danger')
+        return redirect(url_for('ftk'))
+
+    try:
+        # Determine the file's path
+        file_path = os.path.join(MEM_DIR, file_record.filename) if is_memory_file(file_record) else os.path.join(IMAGES_DIR, file_record.filename)
+        
+        # Run FTK Imager command to get drive info
+        ftk_output = run_ftkimager_getinfo(file_path)
+
+        if not ftk_output:
+            flash('Error running FTK Imager', 'danger')
+            return redirect(url_for('ftk'))
+
+        # Save the output to the database or process further
+        existing_ftk_ops = FTKOps.query.filter_by(file_id=file_id).first()
+        if existing_ftk_ops:
+            existing_ftk_ops.drive_info = ftk_output
+        else:
+            new_ftk_ops = FTKOps(user_id=current_user.id, file_id=file_id, drive_info=ftk_output)
+            db.session.add(new_ftk_ops)
+        
+        db.session.commit()
+
+        # Flash success message
+        flash('Drive information fetched successfully.', 'success')
+
+    except Exception as e:
+        print(f"Error fetching drive information: {e}")
+        flash(f"Error: {e}", 'danger')
+
+    return redirect(url_for('ftk'))
+
+# Function to run FTK Imager and check for deleted files
+def run_ftkimager_deletedfiles(file_path):
+    """
+    FTK function to check for deleted files.
+    """
+    try:
+        result = subprocess.run(
+            ['ftkimager', '--list-deleted-files', file_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True
+        )
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        print(f"Error running FTK Imager: {e.stderr}")
+        return None
+
+
+# Flask route to check for deleted files
+@app.route('/check_deleted_files/<int:file_id>', methods=['POST'])
+@login_required
+def check_deleted_files(file_id):
+    print("FTK: ----- Checking for deleted files ------")
+
+    # Look up the file record using file_id
+    file_record = UploadedFile.query.get(file_id)
+    
+    if not file_record:
+        flash('File not found', 'danger')
+        return redirect(url_for('ftk'))
+
+    try:
+        # Determine the file's path
+        file_path = os.path.join(MEM_DIR, file_record.filename) if is_memory_file(file_record) else os.path.join(IMAGES_DIR, file_record.filename)
+        
+        # Run FTK Imager command to list deleted files
+        ftk_output = run_ftkimager_deletedfiles(file_path)
+
+        if not ftk_output:
+            flash('Error running FTK Imager', 'danger')
+            return redirect(url_for('ftk'))
+
+        # Save the deleted file records into the database for the file
+        existing_ftk_ops = FTKOps.query.filter_by(file_id=file_id).first()
+        if existing_ftk_ops:
+            existing_ftk_ops.deleted_files = ftk_output
+        else:
+            new_ftk_ops = FTKOps(user_id=current_user.id, file_id=file_id, deleted_files=ftk_output)
+            db.session.add(new_ftk_ops)
+        
+        db.session.commit()
+
+        # Flash success message
+        flash('Deleted files fetched successfully.', 'success')
+
+    except Exception as e:
+        print(f"Error fetching deleted files: {e}")
+        flash(f"Error: {e}", 'danger')
+
+    return redirect(url_for('ftk'))
 
 if __name__ == '__main__':
     with app.app_context():
