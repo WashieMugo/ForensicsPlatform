@@ -48,7 +48,15 @@
                     <option value="windows.cmdline.CmdLine" data-description="Displays the command line used to launch processes." data-parameters='[{"name": "Display hidden processes", "type": "checkbox"}]'>windows.cmdline.CmdLine</option>
                     <option value="windows.psxview.PsXview" data-description="Detects hidden or unlinked processes in memory." data-parameters='[{"name": "Include hidden processes", "type": "checkbox"}]'>windows.psxview.PsXview</option>
                     <option value="windows.ssdt.Ssdt" data-description="Lists the System Service Descriptor Table (SSDT) to detect hooking of system calls." data-parameters='[{"name": "Scan for SSDT hooks", "type": "checkbox"}]'>windows.ssdt.Ssdt</option>
-                    <!-- Add more commands here -->
+                    <option value="windows.netscan.NetScan" data-description="Scans network artifacts like sockets and connections in memory." data-parameters='[{"name": "Include closed connections", "type": "checkbox"}]'>windows.netscan.NetScan</option>
+                    <option value="windows.callbacks.Callbacks" data-description="Lists registered callbacks in kernel memory." data-parameters='[{"name": "Display detailed information", "type": "checkbox"}]'>windows.callbacks.Callbacks</option>
+                    <option value="windows.handles.Handles" data-description="Lists open handles in memory, such as files, registry keys, or events." data-parameters='[{"name": "Filter by Process ID", "type": "text"}]'>windows.handles.Handles</option>
+                    <option value="windows.modules.Modules" data-description="Lists loaded kernel modules." data-parameters='[{"name": "Include driver paths", "type": "checkbox"}]'>windows.modules.Modules</option>
+                    <option value="windows.registry.RegistryHiveList" data-description="Lists registry hives in memory." data-parameters='[{"name": "Display physical offsets", "type": "checkbox"}]'>windows.registry.RegistryHiveList</option>
+                    <option value="windows.registry.RegistryHiveScan" data-description="Scans for registry hives in memory." data-parameters='[{"name": "Include unused hives", "type": "checkbox"}]'>windows.registry.RegistryHiveScan</option>
+                    <option value="windows.info.Info" data-description="Displays general information about the memory image, such as operating system version and architecture." data-parameters='[]'>windows.info.Info</option>
+                    <option value="windows.verinfo.VerInfo" data-description="Displays version information of loaded modules." data-parameters='[{"name": "Include version details", "type": "checkbox"}]'>windows.verinfo.VerInfo</option>
+                    <option value="windows.mbr.MBR" data-description="Displays the Master Boot Record (MBR) to check for modifications." data-parameters='[{"name": "Scan all sectors", "type": "checkbox"}]'>windows.mbr.MBR</option>
                 </select>
             </div>
             <div id="command-description" class="mb-3 text-muted">

@@ -12,6 +12,8 @@ from sqlalchemy import func
 from dotenv import load_dotenv
 from flask_wtf.csrf import CSRFProtect
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 load_dotenv('dash.env')
 
 
@@ -100,6 +102,8 @@ def format_file_size(size_in_bytes):
     s = round(size_in_bytes / p, 2)
     return f"{s} {size_name[i]}"
 
+#from werkzeug.security import generate_password_hash, check_password_hash
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -110,8 +114,11 @@ def register():
             flash('Username already exists. Please choose a different one.', 'danger')
             return redirect(url_for('register'))
 
-        # If the username is unique, create a new user
-        new_user = User(username=form.username.data, password=form.password.data)
+        # Hash the password before storing it
+        hashed_password = generate_password_hash(form.password.data)  # Default is 'pbkdf2:sha256'
+        
+        # Create a new user with the hashed password
+        new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         flash('Registration successful! You can now log in.', 'success')
@@ -124,9 +131,12 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and user.password == form.password.data:
+        if user and check_password_hash(user.password, form.password.data):
             login_user(user)
+            flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid username or password. Please try again.', 'danger')
     return render_template('login.html', form=form)
 
 # for volatility manual scanning: 
