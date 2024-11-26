@@ -9,6 +9,9 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
+    
+    # Add this relationship
+    vol_manual = db.relationship('VolManual', back_populates='user')
 
 class UploadedFile(db.Model):
     __tablename__ = 'uploaded_files'
@@ -28,6 +31,8 @@ class UploadedFile(db.Model):
 
     # Relationship to FTKOps
     ftk_ops = db.relationship('FTKOps', backref='uploaded_file', lazy=True)
+    # Relationship to VolManual
+    vol_manual = db.relationship('VolManual', back_populates='file')
 
     def __init__(self, filename, file_type, format=None, size=None, user_id=None, ftk_imaged=False):
         self.filename = filename
@@ -105,3 +110,14 @@ class FTKOps(db.Model):
         self.hash_values = hash_values
         self.drive_info = drive_info
         self.deleted_files = deleted_files
+
+class VolManual(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    file_id = db.Column(db.Integer, db.ForeignKey('uploaded_files.id'), nullable=False)  # Corrected foreign key reference
+    file_name = db.Column(db.String(255), nullable=False)
+    date_time = db.Column(db.DateTime, default=datetime.utcnow)
+    output = db.Column(db.String(255), nullable=False)
+
+    user = db.relationship('User', back_populates='vol_manual')
+    file = db.relationship('UploadedFile', back_populates='vol_manual')

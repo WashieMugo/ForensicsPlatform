@@ -28,7 +28,8 @@ donwload and install wkhtmltopdf :  add install location to path in dash.env
 
 : > flask db migrate -m "Add FTKActivityLog model"
 : > flask db upgrade
-
+: > flask db migrate -m "Added volatility manual save"
+: > flask db upgrade
 
 # FTK IMAGER
 

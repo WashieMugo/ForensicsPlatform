@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, send_from_directory, abort
 from flask_migrate import Migrate
-from models import db, User, UploadedFile, AutoScan, Documentation, FTKActivityLog, FTKOps
+from models import db, User, UploadedFile, AutoScan, Documentation, FTKActivityLog, FTKOps, VolManual
 from forms import RegistrationForm, LoginForm, UploadFileForm, FTKOperationsForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
@@ -21,7 +21,12 @@ FTK_OUTPUT_DIR = os.getenv("FTK_OUTPUT_DIR")
 VOL_TOOL_PATH = os.getenv("VOL_TOOL_PATH")
 VOL_OUTPUT_DIR = os.getenv("VOL_OUTPUT_DIR")
 TSK_TOOL_PATH = os.getenv("TSK_TOOL_PATH")
+VOL_OUTPUT_DIR = os.getenv("VOL_OUTPUT_DIR")
 TSK_OUTPUT_DIR = os.getenv("TSK_OUTPUT_DIR")
+
+VOL_OUTPUT_MAN = os.getenv("VOL_OUTPUT_MAN")
+
+
 WHK_PATH = os.getenv("WHK_PATH")
 ftk_tool_path = FTK_TOOL_PATH 
 
@@ -124,6 +129,181 @@ def login():
             return redirect(url_for('dashboard'))
     return render_template('login.html', form=form)
 
+# for volatility manual scanning: 
+@app.route('/volatility', methods=['GET', 'POST'])
+@login_required
+def volatility():
+    # Retrieve the uploaded files for the current user
+    uploaded_files = UploadedFile.query.filter_by(user_id=current_user.id, file_type='memory').all()
+    
+    # Retrieve saved files for the current user, ordered by datetime
+    saved_files = VolManual.query.filter_by(user_id=current_user.id).order_by(VolManual.date_time.desc()).all()
+    
+    return render_template('volatility.html', uploaded_files=uploaded_files, saved_files=saved_files)
+
+from flask import jsonify
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+@app.route('/get_process_list', methods=['POST'])
+@login_required
+def get_process_list():
+    """Fetches the process list using windows.psscan.PsScan."""
+    logging.debug(f"CSRF Token Header: {request.headers.get('X-CSRFToken')}")
+    logging.debug(f"Request JSON: {request.json}")
+    
+    memory_file_name = request.json.get('memory_file')
+    if not memory_file_name:
+        return jsonify({"error": "Memory file name is required"}), 400
+
+    memory_file = UploadedFile.query.filter_by(filename=memory_file_name, user_id=current_user.id, file_type='memory').first()
+    if not memory_file:
+        return jsonify({"error": "Memory file not found or unauthorized access."}), 404
+
+    memory_file_path = os.path.join(MEM_DIR, memory_file.filename)
+    output = run_volatility_command(memory_file_path, "windows.psscan.PsScan")
+    
+    if "error" in output:
+        return jsonify(output), 500
+
+    process_data = [
+        {
+            "description": "Scans for processes present in a Windows memory image.",
+            "name": "windows.psscan.PsScan",
+            "parameters": [
+                {"name": "Display physical offsets", "type": "checkbox"},
+                {"name": "Process ID", "options": ["wininit.exe (568)", "csrss.exe (584)", "services.exe (712)"], "type": "select"}
+            ]
+        }
+    ]
+    return jsonify(process_data)
+
+
+
+import subprocess
+import json
+
+def run_volatility_command(memory_file, command, params=None):
+    """Runs a volatility command and returns the parsed output."""
+    try:
+        base_cmd = ["python", VOL_TOOL_PATH, "-f", memory_file, command]
+        if params:
+            base_cmd.extend(params)
+        
+        # Run command and capture output
+        result = subprocess.run(base_cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            return {"error": result.stderr.strip()}
+        
+        return {"output": result.stdout.strip()}
+    except Exception as e:
+        return {"error": str(e)}
+
+import subprocess
+
+@app.route('/run_command', methods=['POST'])
+@login_required
+def run_command():
+    data = request.json
+    file_id = data.get('fileId')
+    command = data.get('command')
+    parameters = data.get('parameters', {})
+
+    # Validate the memory file
+    memory_file = UploadedFile.query.filter_by(id=file_id, user_id=current_user.id, file_type='memory').first()
+    if not memory_file:
+        return jsonify({'success': False, 'error': 'Memory file not found or unauthorized access.'}), 404
+
+    memory_file_path = os.path.join(MEM_DIR, memory_file.filename)
+
+    # Build the Volatility command
+    vol_command = ["python", VOL_TOOL_PATH, "-f", memory_file_path, command]
+    for key, value in parameters.items():
+        if isinstance(value, bool) and value:  # Checkbox options
+            vol_command.append(f"--{key}")
+        elif value:  # Non-checkbox options
+            vol_command.append(f"--{key}={value}")
+
+    # Execute the command
+    try:
+        process = subprocess.Popen(vol_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        stdout, stderr = process.communicate()
+
+        if process.returncode == 0:
+            return jsonify({'success': True, 'output': stdout})
+        else:
+            return jsonify({'success': False, 'error': stderr})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+
+@app.route('/save_output', methods=['POST'])
+@csrf.exempt  # Disable CSRF protection for this route (not recommended)
+@login_required
+def save_output():
+    data = request.json
+    file_id = data.get('fileId')
+    file_name = data.get('fileName')
+    output_content = data.get('output')  # Use the actual output content
+
+    # Ensure the VOL_OUTPUT_MAN environment variable is set
+    if not VOL_OUTPUT_MAN:
+        return jsonify({'success': False, 'error': 'Output directory is not configured.'}), 500
+
+    # Validate memory file
+    memory_file = UploadedFile.query.filter_by(id=file_id, user_id=current_user.id, file_type='memory').first()
+    if not memory_file:
+        return jsonify({'success': False, 'error': 'Memory file not found or unauthorized access.'}), 404
+
+    # Ensure the directory exists
+    if not os.path.exists(VOL_OUTPUT_MAN):
+        os.makedirs(VOL_OUTPUT_MAN)
+
+    # Save the output content to a file
+    file_path = os.path.join(VOL_OUTPUT_MAN, file_name)
+
+    try:
+        with open(file_path, 'w') as f:
+            f.write(output_content)
+
+        # Save the record in vol_manual table
+        vol_manual = VolManual(user_id=current_user.id, file_id=file_id, file_name=file_name, output=file_path)
+        db.session.add(vol_manual)
+        db.session.commit()
+
+        return jsonify({'success': True, 'message': 'Output saved successfully!', 'filePath': file_path})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+from flask import send_from_directory
+
+@app.route('/output/<filename>')
+def serve_output(filename):
+    return send_from_directory(VOL_OUTPUT_MAN, filename)
+
+from flask import Response
+
+@app.route('/view_output/<filename>')
+def view_output(filename):
+    try:
+        # Construct the full file path
+        file_path = os.path.join(VOL_OUTPUT_MAN, filename)
+        
+        # Debugging line to check the full file path
+        print(f"Attempting to open file at: {file_path}")
+
+        # Read the content of the file
+        with open(file_path, 'r') as file:
+            file_content = file.read()
+
+        # Return the content as plain text
+        return Response(file_content, mimetype='text/plain')
+    
+    except Exception as e:
+        return f"Error reading file: {str(e)}", 500
+
+
+    
 @app.route('/logout')
 @login_required
 def logout():
