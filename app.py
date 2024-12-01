@@ -445,26 +445,53 @@ def upload_file():
 def delete_file(file_id):
     uploaded_file = UploadedFile.query.get(file_id)
     
-    if uploaded_file:
-        if uploaded_file.status == 'Unscanned':
-            # Delete the file from the filesystem
-            file_path = os.path.join(MEM_DIR if uploaded_file.file_type == 'memory' else IMAGES_DIR, uploaded_file.filename)
-            if os.path.exists(file_path):
-                os.remove(file_path)
-                
-            # Delete the record from the database
-            db.session.delete(uploaded_file)
-            db.session.commit()
-            flash('File deleted successfully!', 'success')
-        elif uploaded_file.status == 'Scanned':
-            # Update the status to 'file_deleted'
-            uploaded_file.status = 'file_deleted'
-            db.session.commit()
-            flash('File marked as deleted!', 'success')
-
-    else:
+    if not uploaded_file:
         flash('File not found!', 'danger')
-
+        return redirect(url_for('dashboard'))
+        
+    try:
+        # Delete associated records first
+        # Delete metadata if exists
+        if uploaded_file.metadata_file_path and os.path.exists(uploaded_file.metadata_file_path):
+            os.remove(uploaded_file.metadata_file_path)
+            
+        # Delete any associated AutoScan records
+        auto_scans = AutoScan.query.filter_by(file_id=file_id).all()
+        for scan in auto_scans:
+            # Delete the report file if it exists
+            if scan.report and os.path.exists(scan.report):
+                os.remove(scan.report)
+            db.session.delete(scan)
+            
+        # Delete any associated Documentation
+        documentation = Documentation.query.filter_by(file_id=file_id).first()
+        if documentation:
+            db.session.delete(documentation)
+            
+        # Delete any associated FTKOps
+        ftk_ops = FTKOps.query.filter_by(file_id=file_id).all()
+        for op in ftk_ops:
+            db.session.delete(op)
+            
+        # Delete the actual file from filesystem
+        file_path = os.path.join(
+            MEM_DIR if uploaded_file.file_type == 'memory' else IMAGES_DIR, 
+            uploaded_file.filename
+        )
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            
+        # Delete the database record
+        db.session.delete(uploaded_file)
+        db.session.commit()
+        
+        flash('File and all associated data deleted successfully!', 'success')
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting file: {str(e)}', 'danger')
+        print(f"Error deleting file: {str(e)}")  # For debugging
+        
     return redirect(url_for('dashboard'))
 
 
@@ -815,33 +842,41 @@ def fetch_metadata(file_id):
     """Fetch metadata for the uploaded file based on its type."""
     uploaded_file = UploadedFile.query.get(file_id)
     if not uploaded_file:
+        flash('File not found', 'danger')
         return jsonify({"error": "File not found"}), 404
 
-    # Get the path of the file
-    file_path = os.path.join(MEM_DIR if uploaded_file.file_type == 'memory' else IMAGES_DIR, uploaded_file.filename)
-    output_dir = os.getenv('VOL_OUTPUT_DIR' if uploaded_file.file_type == 'memory' else 'TSK_OUTPUT_DIR')
+    try:
+        # Get the path of the file
+        file_path = os.path.join(MEM_DIR if uploaded_file.file_type == 'memory' else IMAGES_DIR, uploaded_file.filename)
+        output_dir = os.getenv('VOL_OUTPUT_DIR' if uploaded_file.file_type == 'memory' else 'TSK_OUTPUT_DIR')
 
-    # Initialize metadata variable
-    metadata = {}
+        # Initialize metadata variable
+        metadata = {}
 
-    if uploaded_file.file_type == 'memory':
-        metadata = fetch_memory_metadata(file_path, output_dir)
-    elif uploaded_file.file_type == 'os_image':
-        metadata = fetch_image_metadata(file_path, output_dir)  # Assuming similar function exists for image
-    else:
-        return jsonify({"error": "Unsupported file type"}), 400
+        if uploaded_file.file_type == 'memory':
+            metadata = fetch_memory_metadata(file_path, output_dir)
+        elif uploaded_file.file_type == 'os_image':
+            metadata = fetch_image_metadata(file_path, output_dir)
+        else:
+            flash('Unsupported file type', 'danger')
+            return jsonify({"error": "Unsupported file type"}), 400
 
-    # Save metadata to a JSON file
-    metadata_file_path = os.path.join(output_dir, f'{uploaded_file.filename}_metadata.json')
-    with open(metadata_file_path, 'w') as json_file:
-        json.dump(metadata, json_file)
+        # Save metadata to a JSON file
+        metadata_file_path = os.path.join(output_dir, f'{uploaded_file.filename}_metadata.json')
+        with open(metadata_file_path, 'w') as json_file:
+            json.dump(metadata, json_file)
 
-    # Update the uploaded file record
-    uploaded_file.has_metadata = True
-    uploaded_file.metadata_file_path = metadata_file_path  # Store the JSON file path
-    db.session.commit()  # Commit the changes to the database
+        # Update the uploaded file record
+        uploaded_file.has_metadata = True
+        uploaded_file.metadata_file_path = metadata_file_path
+        db.session.commit()
 
-    return jsonify({"message": "Metadata fetched successfully", "data": metadata, "metadata_file_path": metadata_file_path}), 200
+        flash('Metadata fetched successfully!', 'success')
+        return jsonify({"message": "Metadata fetched successfully"}), 200
+
+    except Exception as e:
+        flash(f'Error fetching metadata: {str(e)}', 'danger')
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/view_metadata/<int:file_id>', methods=['GET'])
 @login_required
@@ -1155,6 +1190,54 @@ def check_deleted_files(file_id):
         flash(f"Error: {e}", 'danger')
 
     return redirect(url_for('ftk'))
+
+# Add this near the top of app.py with other route imports
+from flask import url_for, flash, redirect, send_from_directory
+
+# Make sure this route is defined BEFORE any templates that use url_for('delete_report')
+@app.route('/delete_report/<int:report_id>', methods=['POST'])
+@login_required
+def delete_report(report_id):
+    """Delete an auto scan report and update associated file status."""
+    try:
+        # Get the report
+        report = AutoScan.query.get(report_id)
+        if not report:
+            flash('Report not found.', 'danger')
+            return redirect(url_for('dashboard'))
+
+        # Verify the report belongs to the current user
+        if report.user_id != current_user.id:
+            flash('Unauthorized access.', 'danger')
+            return redirect(url_for('dashboard'))
+
+        # Get the associated file
+        file = UploadedFile.query.get(report.file_id)
+
+        # Delete the physical report file if it exists
+        if report.report and os.path.exists(report.report):
+            try:
+                os.remove(report.report)
+            except OSError as e:
+                print(f"Error removing file: {e}")  # Log the error but continue
+
+        # Delete the report record from the database
+        db.session.delete(report)
+
+        # Update the file status if this was the only report for this file
+        remaining_reports = AutoScan.query.filter_by(file_id=file.id).filter(AutoScan.id != report_id).first()
+        if file and not remaining_reports:
+            file.status = 'Unscanned'  # Reset status to unscanned
+
+        db.session.commit()
+        flash('Report deleted successfully.', 'success')
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting report: {str(e)}', 'danger')
+        print(f"Error deleting report: {str(e)}")  # For debugging
+
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
     with app.app_context():
