@@ -25,7 +25,7 @@
                       <th>Ver. Status</th>
                       <th style="min-width: 250px;">Hashes</th> <!-- Increased space for Hashes column -->
                       <th style="min-width: 300px;">Drive Info</th> <!-- Increased space for Drive Info column -->
-                      <th>Deleted Files</th>
+                      <!-- <th>Deleted Files</th> -->
                   </tr>
               </thead>
               <tbody>
@@ -83,9 +83,9 @@
                               View Deleted Files
                           </button>
                           {% else %}
-                          <form method="POST" action="{{ url_for('check_deleted_files', file_id=file.id) }}">
+                          <!-- <form method="POST" action="{{ url_for('check_deleted_files', file_id=file.id) }}">
                               <button type="submit" class="btn btn-secondary">Fetch Deleted Files</button>
-                          </form>
+                          </form> -->
                           {% endif %}
                       </td>
                   </tr>

@@ -681,7 +681,7 @@ def run_disk_imaging():
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     
-    output_file = os.path.join(output_path, f"{image_name}.E01")
+    output_file = os.path.join(output_path, f"{image_name}")
 
     try:
         # Debug: print paths to ensure they are correct
@@ -701,12 +701,12 @@ def run_disk_imaging():
             save_dir = IMAGES_DIR
 
         # Move the image to the appropriate directory
-        final_file_path = os.path.join(save_dir, f"{image_name}.E01")
+        final_file_path = os.path.join(save_dir, f"{image_name}")
         os.rename(output_file, final_file_path)
 
         # Insert file details into the database
         uploaded_file = UploadedFile(
-            filename=f"{image_name}.E01",
+            filename=f"{image_name}",
             file_type='os_image',
             format='.E01',
             size=file_size,
