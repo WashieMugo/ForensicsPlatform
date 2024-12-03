@@ -595,10 +595,20 @@ def view_report(report_id):
 @app.route('/view_report2/<int:file_id>')
 @login_required
 def view_report2(file_id):
-    # Fetch the AutoScan record by report_id
-    auto_scan = AutoScan.query.get(file_id)
+    """View report for a file from the uploaded files table."""
+    # Fetch the most recent AutoScan record for this file
+    auto_scan = AutoScan.query.filter_by(file_id=file_id).order_by(AutoScan.end_time.desc()).first()
 
-    if auto_scan:
+    if not auto_scan:
+        flash('Report not found.', 'danger')
+        return redirect(url_for('dashboard'))
+
+    # Verify the report belongs to the current user
+    if auto_scan.user_id != current_user.id:
+        flash('Unauthorized access.', 'danger')
+        return redirect(url_for('dashboard'))
+
+    try:
         # Get the directory and file name from the report path
         report_path = auto_scan.report
         report_directory = os.path.dirname(report_path)
@@ -606,8 +616,8 @@ def view_report2(file_id):
 
         # Serve the HTML report file
         return send_from_directory(report_directory, report_filename)
-    else:
-        flash('Report not found.', 'danger')
+    except Exception as e:
+        flash(f'Error viewing report: {str(e)}', 'danger')
         return redirect(url_for('dashboard'))
 
 
