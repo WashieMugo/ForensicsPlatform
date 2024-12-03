@@ -14,6 +14,9 @@ from flask_wtf.csrf import CSRFProtect
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import shutil
+import time
+
 load_dotenv('dash.env')
 
 
@@ -681,55 +684,65 @@ def run_disk_imaging():
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     
+    # Add .E01 extension to the output file path since FTK Imager will add it automatically
     output_file = os.path.join(output_path, f"{image_name}")
+    final_output_file = f"{output_file}.E01"
 
     try:
         # Debug: print paths to ensure they are correct
         print(f"FTK Output Directory: {output_path}")
         print(f"FTK Output File: {output_file}")
+        print(f"Final Output File (with E01): {final_output_file}")
 
         # Run the FTK Imager command
-        subprocess.run(['ftkimager', drive, output_file, '--e01'], check=True)
+        subprocess.run(['ftkimager', drive, output_file, '--e01', '--compress', '1'], check=True)
 
-        # Save image info in UploadedFile and FTKOps tables
-        file_size = os.path.getsize(output_file)
+        # Wait briefly to ensure the file is fully written
+        time.sleep(2)
+
+        # Get the file size of the created .E01 file
+        if os.path.exists(final_output_file):
+            file_size = os.path.getsize(final_output_file)
+        else:
+            raise FileNotFoundError(f"Expected image file not found: {final_output_file}")
 
         # Determine the directory (MEM_DIR or IMAGES_DIR) based on file type
-        if "mem" in image_name:
-            save_dir = MEM_DIR
-        else:
-            save_dir = IMAGES_DIR
+        save_dir = IMAGES_DIR  # Since disk images are always OS images
+
+        # Create the final destination path with .E01 extension
+        final_destination = os.path.join(save_dir, f"{image_name}.E01")
 
         # Move the image to the appropriate directory
-        final_file_path = os.path.join(save_dir, f"{image_name}")
-        os.rename(output_file, final_file_path)
+        shutil.move(final_output_file, final_destination)
 
         # Insert file details into the database
         uploaded_file = UploadedFile(
-            filename=f"{image_name}",
+            filename=f"{image_name}.E01",  # Include the .E01 extension
             file_type='os_image',
             format='.E01',
             size=file_size,
             user_id=current_user.id,
-            ftk_imaged=True  # Mark the file as imaged
+            ftk_imaged=True
         )
         db.session.add(uploaded_file)
         db.session.commit()
 
-        # Add FTK operation record (track operation details)
+        # Add FTK operation record
         ftk_op = FTKOps(
-            operation='create_disk_image',
-            status='Completed',
             user_id=current_user.id,
-            file_id=uploaded_file.id
+            file_id=uploaded_file.id,
+            operation='create_disk_image',  # This field should now be recognized
+            status='Completed',
+            timestamp=datetime.utcnow()
         )
         db.session.add(ftk_op)
         db.session.commit()
 
         flash('Imaging successfully completed and uploaded!', 'success')
         return redirect(url_for('ftk'))
+
     except Exception as e:
-        flash(f'Failed to create disk image: {e}', 'danger')
+        flash(f'Failed to create disk image: {str(e)}', 'danger')
         return redirect(url_for('ftk'))
 
 

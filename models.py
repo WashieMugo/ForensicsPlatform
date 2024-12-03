@@ -30,7 +30,8 @@ class UploadedFile(db.Model):
     ftk_imaged = db.Column(db.Boolean, default=False)  # New column added
 
     # Relationship to FTKOps
-    ftk_ops = db.relationship('FTKOps', backref='uploaded_file', lazy=True)
+    ftk_ops = db.relationship('FTKOps', backref='uploaded_file', lazy=True,
+                            foreign_keys='FTKOps.file_id')
     # Relationship to VolManual
     vol_manual = db.relationship('VolManual', back_populates='file')
 
@@ -99,17 +100,17 @@ class FTKOps(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     file_id = db.Column(db.Integer, db.ForeignKey('uploaded_files.id'), nullable=False)
-    hash_values = db.Column(db.Text, nullable=True)
-    drive_info = db.Column(db.Text, nullable=True)
-    deleted_files = db.Column(db.Text, nullable=True)
+    hash_values = db.Column(db.Text)  # Store hash values as JSON string
+    drive_info = db.Column(db.Text)   # Store drive information
+    deleted_files = db.Column(db.Text) # Store deleted files information
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(50))
+    operation = db.Column(db.String(100))  # Add this field
 
-    def __init__(self, user_id, file_id, hash_values=None, drive_info=None, deleted_files=None):
-        self.user_id = user_id
-        self.file_id = file_id
-        self.hash_values = hash_values
-        self.drive_info = drive_info
-        self.deleted_files = deleted_files
+    # Define relationships
+    user = db.relationship('User', backref='ftk_ops')
+    file = db.relationship('UploadedFile', backref='ftk_operations', 
+                          foreign_keys=[file_id])
 
 class VolManual(db.Model):
     id = db.Column(db.Integer, primary_key=True)
