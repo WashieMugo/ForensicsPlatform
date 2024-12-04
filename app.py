@@ -453,18 +453,32 @@ def delete_file(file_id):
         return redirect(url_for('dashboard'))
         
     try:
-        # Delete associated records first
+        # Delete VolManual records first (due to foreign key constraint)
+        vol_manual_records = VolManual.query.filter_by(file_id=file_id).all()
+        for record in vol_manual_records:
+            db.session.delete(record)
+
         # Delete metadata if exists
-        if uploaded_file.metadata_file_path and os.path.exists(uploaded_file.metadata_file_path):
-            os.remove(uploaded_file.metadata_file_path)
+        if uploaded_file.metadata_file_path:
+            try:
+                if os.path.exists(uploaded_file.metadata_file_path):
+                    os.remove(uploaded_file.metadata_file_path)
+            except Exception as e:
+                print(f"Warning: Could not delete metadata file: {e}")
+                # Continue deletion process even if metadata deletion fails
             
         # Delete any associated AutoScan records
         auto_scans = AutoScan.query.filter_by(file_id=file_id).all()
         for scan in auto_scans:
-            # Delete the report file if it exists
-            if scan.report and os.path.exists(scan.report):
-                os.remove(scan.report)
-            db.session.delete(scan)
+            try:
+                # Delete the report file if it exists
+                if scan.report and os.path.exists(scan.report):
+                    os.remove(scan.report)
+            except Exception as e:
+                print(f"Warning: Could not delete report file: {e}")
+            finally:
+                # Always delete the scan record
+                db.session.delete(scan)
             
         # Delete any associated Documentation
         documentation = Documentation.query.filter_by(file_id=file_id).first()
@@ -476,19 +490,24 @@ def delete_file(file_id):
         for op in ftk_ops:
             db.session.delete(op)
             
-        # Delete the actual file from filesystem
-        file_path = os.path.join(
-            MEM_DIR if uploaded_file.file_type == 'memory' else IMAGES_DIR, 
-            uploaded_file.filename
-        )
-        if os.path.exists(file_path):
-            os.remove(file_path)
+        # Try to delete the physical file if it exists
+        try:
+            file_path = os.path.join(
+                MEM_DIR if uploaded_file.file_type == 'memory' else IMAGES_DIR, 
+                uploaded_file.filename
+            )
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            print(f"Warning: Could not delete physical file: {e}")
+            # Continue with database record deletion even if file deletion fails
             
-        # Delete the database record
+        # Finally delete the uploaded file record
         db.session.delete(uploaded_file)
-        db.session.commit()
         
-        flash('File and all associated data deleted successfully!', 'success')
+        # Commit all changes
+        db.session.commit()
+        flash('File and associated data deleted successfully!', 'success')
         
     except Exception as e:
         db.session.rollback()
@@ -595,20 +614,10 @@ def view_report(report_id):
 @app.route('/view_report2/<int:file_id>')
 @login_required
 def view_report2(file_id):
-    """View report for a file from the uploaded files table."""
-    # Fetch the most recent AutoScan record for this file
-    auto_scan = AutoScan.query.filter_by(file_id=file_id).order_by(AutoScan.end_time.desc()).first()
+    # Fetch the AutoScan record by report_id
+    auto_scan = AutoScan.query.get(file_id)
 
-    if not auto_scan:
-        flash('Report not found.', 'danger')
-        return redirect(url_for('dashboard'))
-
-    # Verify the report belongs to the current user
-    if auto_scan.user_id != current_user.id:
-        flash('Unauthorized access.', 'danger')
-        return redirect(url_for('dashboard'))
-
-    try:
+    if auto_scan:
         # Get the directory and file name from the report path
         report_path = auto_scan.report
         report_directory = os.path.dirname(report_path)
@@ -616,8 +625,8 @@ def view_report2(file_id):
 
         # Serve the HTML report file
         return send_from_directory(report_directory, report_filename)
-    except Exception as e:
-        flash(f'Error viewing report: {str(e)}', 'danger')
+    else:
+        flash('Report not found.', 'danger')
         return redirect(url_for('dashboard'))
 
 

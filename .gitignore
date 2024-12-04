@@ -5,3 +5,5 @@ Files/mem/
 output/
 dash.env
 __pycache__/
+instance/
+instance/forensiDB.db
